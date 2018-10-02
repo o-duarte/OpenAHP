@@ -1,0 +1,15 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - AhPserverApplication",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "com.ahpServer.AHPserver.AhPserverApplication",
+            "args": "",
+            "projectName": "AHPserver"
+        }
+    ]
+}
