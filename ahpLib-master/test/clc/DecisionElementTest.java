@@ -837,7 +837,7 @@ public class DecisionElementTest {
         }
         
         /* Clear results */
-        decisionElement.clearResultsRecursively();
+        decisionElement.clearResultsRecursively(false);
         
         /* Rankings */
         double[] rankExpected = {142d/495, 877d/3465, 1594d/3465};

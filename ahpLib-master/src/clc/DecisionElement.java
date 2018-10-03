@@ -805,7 +805,11 @@ public class DecisionElement {
         }
         return null;
     }
-    
+
+    public DecisionElement addSubCriterion(DecisionElement decisionElement) {
+        return addSubCriterion(decisionElement,false);
+    }
+
     /**
      * Adds a new criterion with the given name as a child (sub-criterion)
      * of this criterion
@@ -818,6 +822,10 @@ public class DecisionElement {
     public DecisionElement addSubCriterion(String name, boolean recompute) {
         DecisionElement decisionElement = new DecisionElement(name);
         return addSubCriterion(decisionElement, recompute);
+    }
+
+    public DecisionElement addSubCriterion(String name) {
+        return addSubCriterion(name, false );
     }
     
     /**
@@ -900,6 +908,9 @@ public class DecisionElement {
     public boolean removeSubCriterion(String name, boolean recompute) {
         return removeSubCriterion(getSubCriterionIndex(name), recompute);
     }
+    public boolean removeSubCriterion(String name) {
+        return removeSubCriterion(getSubCriterionIndex(name), false);
+    }
     
     /**
      * Removes the sub-decisionElement decisionElement
@@ -909,7 +920,12 @@ public class DecisionElement {
     public boolean removeSubCriterion(DecisionElement decisionElement, boolean recompute){
         return removeSubCriterion(getSubCriterionIndex(decisionElement), recompute);
     }
-    
+
+    public boolean removeSubCriterion(DecisionElement decisionElement){
+        return removeSubCriterion(getSubCriterionIndex(decisionElement), false);
+    }
+
+
     /**
      * Removes all children (sub-criteria) from this criterion
      */
@@ -951,6 +967,10 @@ public class DecisionElement {
             throw new IllegalArgumentException("Matrix size must match with sub-criteria number");
         }
         clearResults(recompute);
+    }
+
+    public void setComparisonMatrix(ComparisonMatrix comparisonMatrix){
+        setComparisonMatrix(comparisonMatrix, false);
     }
     
     /**

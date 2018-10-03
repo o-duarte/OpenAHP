@@ -734,7 +734,7 @@ public class DecisionProblem {
         _alternatives.addAll(Arrays.asList(Arrays.copyOf(alternatives, alternatives.length)));
     }
     
-    // TODO do this to return (all) list
+    // TODO do this to return list
     public List<String> getAlternatives(){
         return Collections.unmodifiableList(_alternatives);
     }
@@ -769,13 +769,13 @@ public class DecisionProblem {
         parentNode.addSubCriterion(node, compute);
         _decisionElements.add(node);
     }
-    
-    public void addSubCriterion(DecisionElement node, DecisionElement parentNode){
-        this.addSubCriterion(node, parentNode, false);
-    }
-    
+
     public void addSubCriterion(DecisionElement node, boolean compute){
         addSubCriterion(node, _root, compute);
+    }
+
+    public void addSubCriterion(DecisionElement node){
+        addSubCriterion(node, _root, false);
     }
     
     public void removeSubCriteria(DecisionElement node){

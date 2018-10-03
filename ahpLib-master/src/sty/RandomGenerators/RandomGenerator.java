@@ -680,23 +680,8 @@ package sty.RandomGenerators;
 
 import java.util.ArrayList;
 
-/**
- * Interface RandomGenerator
- * <p>
- *     Declares the behavior that need to implement all random
- *     generator classes.
- * </p>
- *
- * @author <a href="mailto:daniel.quinteros.12@sansano.usm.cl">Daniel Quinteros</a>
- */
+// TODO: documentation
 
 public interface RandomGenerator{
-    /**
-     * Generates random weights for some distribution using the given weights
-     * as parameter
-     *
-     * @param   weights values to be used as parameter
-     * @return  an array with the random weights
-     */
     ArrayList<Double> generateWeights(ArrayList<Double> weights);
 }

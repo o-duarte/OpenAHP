@@ -832,7 +832,7 @@ public class DecisionProblemSolverTest {
         DecisionElement decisionElementC2 = new DecisionElement(criterionC2);
         decisionElementC2.setComparisonMatrix(comparisonMatrix);
     
-        problem.addSubCriterion(decisionElementC2, problem.getRoot());
+        problem.addSubCriterion(decisionElementC2);
         assertEquals(3, problem.getNodeCount(), 0);
         
         comparisonMatrix.set(0, 1, 1d/2);
@@ -943,7 +943,7 @@ public class DecisionProblemSolverTest {
         DecisionElement decisionElementC2 = new DecisionElement(criterionC2);
         decisionElementC2.setComparisonMatrix(comparisonMatrix);
         
-        problem.addSubCriterion(decisionElementC2, problem.getRoot());
+        problem.addSubCriterion(decisionElementC2);
         assertEquals(3, problem.getNodeCount(), 0);
     
         comparisonMatrix.set(0, 1, 1d/7);
