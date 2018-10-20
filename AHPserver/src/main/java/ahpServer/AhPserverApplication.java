@@ -1,4 +1,4 @@
-package com.ahpServer.AHPserver;
+package ahpServer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,4 +9,6 @@ public class AhPserverApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AhPserverApplication.class, args);
 	}
+
+	
 }

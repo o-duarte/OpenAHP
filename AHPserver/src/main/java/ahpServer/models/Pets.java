@@ -1,4 +1,4 @@
-package com.ahpServer.AHPserver.models;
+package ahpServer.models;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 public class Pets {

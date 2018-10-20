@@ -1,6 +1,6 @@
-package com.ahpServer.AHPserver;
-import com.ahpServer.AHPserver.models.Pets;
-import com.ahpServer.AHPserver.repositories.PetsRepository;
+package ahpServer;
+import ahpServer.models.Pets;
+import ahpServer.repositories.PetsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;

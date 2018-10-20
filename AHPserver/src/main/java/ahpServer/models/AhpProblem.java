@@ -1,23 +1,24 @@
-package com.ahpServer.AHPserver.models;
+package ahpServer.models;
 
 import java.util.ArrayList;
-import com.ahpServer.AHPserver.models.problemCriteria;
+
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collection = "ahpProblem")
 public class AhpProblem {
   @Id
   public ObjectId _id;
  
   public String name;
   public String goal;
+  public ArrayList<ArrayList<Double>> rootMatrix;
   public ArrayList<String> alternatives;
   public ArrayList<Integer> priorityMethod;
   public ArrayList<Integer> consistencyMethod;
   public ArrayList<Integer> errorMeasure;
-  @DBRef
   public ArrayList<problemCriteria> criteria;
 
   // Constructors

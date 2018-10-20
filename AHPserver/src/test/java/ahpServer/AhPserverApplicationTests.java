@@ -1,4 +1,4 @@
-package com.ahpServer.AHPserver;
+package ahpServer;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
