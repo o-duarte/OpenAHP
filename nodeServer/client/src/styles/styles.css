@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css?family=Great+Vibes|Oleo+Script+Swash+Caps|Material+Icons|Oleo+Script+Swash+Caps|Lato');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700,600,800,300');
+@import url('https://fonts.googleapis.com/css?family=Halant:400,300|Raleway:400,300,500,700|Lora:400,400italic,700,700italic&subset=latin,latin-ext');
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px; /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
+body,
+html {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Raleway', sans-serif;
+}
+
+h1 {
+  font-size: 62px;
+  font-weight: 700;
+  letter-spacing: -2px;
+  word-wrap: break-word;
+}
+
+.editor-paragraph {
+  font-family: 'Open Sans', serif;
+  color: rgba(0, 0, 0, 0.72);
+  font-size: 20px;
+  display: block;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 30px;
+  margin-bottom: 30px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 0px;
+  word-wrap: break-word;
+  word-spacing: 0.05em;
+}
+
+.public-DraftEditorPlaceholder-inner {
+  position: absolute;
+  font-family: 'Raleway', Georgia, serif;
+  color: #ddd;
+  font-size: 58px;
+  font-weight: 700;
+  letter-spacing: -3px;
+  word-wrap: break-word;
+}
