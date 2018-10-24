@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
+import { graphql } from 'react-apollo';
 
 import { withStyles } from '@material-ui/core/styles';
 import Icon from '@material-ui/core/Icon';
 import Avatar from '@material-ui/core/Avatar';
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 import { Layout, LayoutTypes } from '../widgets/layouts';
 import { MenuListWithButton } from '../widgets/menuList';
 import Logo from '../widgets/Logo';
 
+import {CURRENT_USER} from '../../graphql'
 import { headerMenuItems, sideBarMenuItems } from './config.js';
 
 /*
@@ -35,7 +38,6 @@ const styleDashboardHeaderComponent = theme => ({
 class DashboardHeaderComponent extends Component {
   render() {
     const { classes } = this.props;
-
     return (
       <div className={classes.root}>
         <Logo />
@@ -44,7 +46,7 @@ class DashboardHeaderComponent extends Component {
           <Icon className={classes.icon}>notifications</Icon>
 
           <MenuListWithButton
-            component={<Avatar className={classes.avatar}>A</Avatar>}
+            component={<Avatar className={classes.avatar}>{this.props.currentUser.fullname.charAt(0)}</Avatar>}
             items={headerMenuItems}
           />
         </div>
@@ -61,17 +63,36 @@ const DashboardHeader = withStyles(styleDashboardHeaderComponent)(
  * Module exports.
  */
 
-const DashboardLayout = props => {
-  return (
-    <Layout
-      menuItems={sideBarMenuItems}
-      type={LayoutTypes.LAYOUT_SHIFT_MENU}
-      direction="left"
-      headerContent={<DashboardHeader />}
-    >
-      {props.component()}
-    </Layout>
-  );
+class DashboardLayout extends Component {
+  componentDidMount() {
+    const { refetch } = this.props.data;
+    refetch();
+  }
+  render() {
+    const { classes } = this.props;
+    const { currentUser, loading, error } = this.props.data;
+    if (loading) {
+      return  (
+        <CircularProgress
+            size={150}
+            className={classes.progress}
+        />
+
+    );
+    } else if (error) {
+      return <h1>Error</h1>;
+    } else {
+      return (
+        <Layout
+          menuItems={sideBarMenuItems}
+          type={LayoutTypes.LAYOUT_SHIFT_MENU}
+          direction="left"
+          headerContent={<DashboardHeader currentUser={currentUser}/>}
+        >
+          {this.props.component()}
+        </Layout>
+        );}
+  };
 };
 
-export default DashboardLayout;
+export default graphql(CURRENT_USER)(withStyles(styleDashboardHeaderComponent)(DashboardLayout));

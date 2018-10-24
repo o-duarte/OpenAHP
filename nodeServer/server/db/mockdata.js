@@ -101,7 +101,7 @@ const createUsers = async () => {
 };
 
 const createDocuments = async () => {
-  const user = await User.findOne({ email: 'me@ccosming.com' }).select('_id');
+  const user = await User.findOne({ email: 'me@asdf.com' }).select('_id');
 
   for (let i = 0; i < 5; i++) {
     const doc = new Document({

@@ -121,7 +121,7 @@ app.use('/*', staticFiles);
 app.set('port', process.env.PORT || 3001);
 
 app.listen(app.get('port'), () => {
-  console.log(`Riskovery app running on ${app.get('port')}`);
+  console.log(`OpenChoice app running on ${app.get('port')}`);
 });
 
 // mocking some data.

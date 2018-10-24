@@ -1,5 +1,5 @@
 {
-  "name": "riskovery-server",
+  "name": "openchoice-server",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
