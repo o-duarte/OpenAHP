@@ -44,9 +44,10 @@ class DashboardHeaderComponent extends Component {
         <div className={classes.leftSide}>
           <Icon className={classes.icon}>bookmark</Icon>
           <Icon className={classes.icon}>notifications</Icon>
-
           <MenuListWithButton
-            component={<Avatar className={classes.avatar}>{this.props.currentUser.fullname.charAt(0)}</Avatar>}
+            component={<Avatar className={classes.avatar}>
+                      { this.props.currentUser? this.props.currentUser.fullname.charAt(0): 'A'}           
+                      </Avatar>}
             items={headerMenuItems}
           />
         </div>
@@ -81,7 +82,7 @@ class DashboardLayout extends Component {
     );
     } else if (error) {
       return <h1>Error</h1>;
-    } else {
+    } else  {
       return (
         <Layout
           menuItems={sideBarMenuItems}

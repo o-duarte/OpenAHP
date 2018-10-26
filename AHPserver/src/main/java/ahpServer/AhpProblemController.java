@@ -2,7 +2,6 @@ package ahpServer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Arrays;
 
 import javax.validation.Valid;
 
@@ -110,8 +109,6 @@ public class AhpProblemController {
     ArrayList<RankReversal> rank = sensitivityMethod.getRankReversals(decisionProblem.getRoot(), 2);
     
     //double delta = 1e-2;
-    double weightExpected[] = {0.68, 0.41, 0.30};
-    double alternativeExpected[][] = {{0, 1},{0, 2}, {1, 2}};
 
     for(int i = 0; i < rank.size(); i++){
         System.out.println("weight----"+ rank.get(i).getWeight());

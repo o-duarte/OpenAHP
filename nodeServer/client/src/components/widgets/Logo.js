@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import strings from '../../strings'
 
 const styles = {
   root: {
@@ -18,7 +19,7 @@ const Logo = props => {
   const { classes } = props;
   return (
     <Typography type="headline" className={classes.root}>
-      OpenChoice
+      {strings.appName}
     </Typography>
   );
 };

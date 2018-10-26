@@ -2,6 +2,8 @@ import React from 'react';
 
 import DashboardLayout from './DashboardLayout';
 import DashboardLayoutDocuments from './DashboardLayoutDocuments';
+import TreeView from '../widgets/treeView'
+
 
 const DashboardDefault = () => {
   return <DashboardLayout component={() => <h1>Default</h1>} />;
@@ -12,7 +14,7 @@ const DashboardDocuments = () => {
 };
 
 const DashboardProcess = () => {
-  return <DashboardLayout component={() => <h1>Process</h1>} />;
+  return <DashboardLayout component={() => <TreeView/>} />;
 };
 
 export { DashboardDefault, DashboardDocuments, DashboardProcess };
