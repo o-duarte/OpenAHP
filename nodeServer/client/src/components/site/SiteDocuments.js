@@ -65,7 +65,7 @@ class SiteDocuments extends Component {
 
     return (
       <div className={classes.sticky}>
-        <Typography type="display1" gutterBottom>
+        <Typography variant="h4" gutterBottom>
           Top Tags
         </Typography>
         <div className={classes.root}>

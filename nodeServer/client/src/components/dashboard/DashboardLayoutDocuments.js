@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
-import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -63,11 +62,11 @@ class TabContentComponent extends Component {
 
               return (
                 <div key={doc.id} className={classes.item}>
-                  <Typography variant="title" gutterBottom>
+                  <Typography variant="h6" gutterBottom>
                     {doc.title}
                   </Typography>
 
-                  <Typography variant="subheading" gutterBottom>
+                  <Typography variant="subtitle1" gutterBottom>
                     {doc.description + '...'}
                   </Typography>
                   <Link to={url}>Editar</Link>

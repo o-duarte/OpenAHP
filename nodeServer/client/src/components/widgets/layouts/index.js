@@ -8,6 +8,7 @@ import LayoutPermanentMenu from './LayoutPermanentMenu';
 import LayoutShiftMenu from './LayoutShiftMenu';
 import LayoutResponsiveMenu from './LayoutResponsiveMenu';
 import LayoutWithTabs from './LayoutWithTabs';
+import Loading from './Loading'
 
 const LayoutTypes = {
   LAYOUT_SHIFT_MENU: 1,
@@ -73,4 +74,4 @@ class Layout extends Component {
   }
 }
 
-export { Layout, LayoutTypes, FullScreen, Centered, Fluid, LayoutWithTabs };
+export { Layout, LayoutTypes, FullScreen, Centered, Fluid, LayoutWithTabs, Loading };

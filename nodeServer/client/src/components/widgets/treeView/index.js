@@ -3,9 +3,23 @@ import TreeData from './sample.data.js';
 import './style.css';
 import './font-awesome.min.css'
 import strings from '../../../strings'
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
 
-export default class Treeview extends Component {
 
+const styles = theme => ({
+  whiteText: {
+    paddingTop: '3px',
+    color: 'white',
+    display: 'inline-block'
+  },
+  text: {
+    display: 'inline-block'
+  },
+});
+
+
+class Treeview extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -100,7 +114,7 @@ export default class Treeview extends Component {
             <input value={value.name}
               type="text"
               name='name'
-              placeholder='Option'
+              placeholder={strings.criteria}
               onChange={(e)=> { this.handleEditChange(e, value) }}
             />
           </div>
@@ -114,8 +128,9 @@ export default class Treeview extends Component {
   }
 
   makeChildren = (node) => {
+    const {classes} = this.props;
     if (typeof node === 'undefined' || node.length === 0) return null;
-
+    
     let children;
     children = node.map((value, index)=> {
 
@@ -126,7 +141,7 @@ export default class Treeview extends Component {
         let babies = this.makeChildren(value.children);
         let normalMode = (
           <div className="node">
-            <i className="fa fa-minus-square-o"></i>{value.name}
+            <i className="fa fa-minus-square-o"></i><Typography className={classes.text} gutterBottom>{value.name}</Typography>
             <span className="actions">
               <i className="fa fa-close" onClick={(e)=> { e.stopPropagation(); this.deleteNode(node, index) }}></i>
               <i className="fa fa-pencil" onClick={(e)=> { e.stopPropagation(); this.makeEditable(value) }}></i>
@@ -145,7 +160,7 @@ export default class Treeview extends Component {
       else if (value.children.length > 0 && !value.showChildren) {
         item = (
           <li key={index} onClick={(e)=> { e.stopPropagation(); this.toggleView(value) }}>
-            <div className="node"><i className="fa fa-plus-square-o"></i>{value.name}</div>
+            <div className="node"><i className="fa fa-plus-square-o"></i><Typography className={classes.text} gutterBottom>{value.name}</Typography></div>
           </li>
         );
       }
@@ -153,7 +168,7 @@ export default class Treeview extends Component {
       // A node has no children
       else if (value.children.length === 0) {
         let normalMode = (
-          <div className="node"><i className="fa fa-square-o"></i>{value.name}
+          <div className="node"><i className="fa fa-square-o"></i><Typography className={classes.text} gutterBottom>{value.name}</Typography>
             <span className="actions">
               <i className="fa fa-plus" onClick={(e)=> { e.stopPropagation(); this.addChild(value) }}> </i>
               <i className="fa fa-pencil" onClick={(e)=> { e.stopPropagation(); this.makeEditable(value) }}></i>
@@ -177,7 +192,7 @@ export default class Treeview extends Component {
         <li>
           <div className="node add_node" onClick={(e)=> { e.stopPropagation();this.addMember(node) }}>
             <i className="fa fa-square" ></i>
-            <a >Add New</a>
+            <a ><Typography className={classes.text} gutterBottom>{strings.addCriteria}</Typography></a>
           </div>
         </li>
       </ul>
@@ -185,10 +200,11 @@ export default class Treeview extends Component {
   }
 
   getNodes = () => {
+    const {classes} = this.props;
     if (typeof this.state.data.name === 'undefined') return null;
     let children = this.makeChildren(this.state.data.children);
     let root = (
-      <span className="root">{this.state.data.name}
+      <span className="root"><Typography className={classes.whiteText} gutterBottom>{this.state.data.name}</Typography>
         <span className="actions"> &nbsp;  &nbsp;
           <i className="fa fa-pencil" onClick={(e)=> { e.stopPropagation(); this.makeEditable(this.state.data) }}>&nbsp;&nbsp;&nbsp;</i>
           <i className="fa fa-plus" onClick={(e)=> { e.stopPropagation(); this.addChild(this.state.data) }}></i>
@@ -216,3 +232,5 @@ export default class Treeview extends Component {
     );
   }
 }
+
+export default withStyles(styles)(Treeview)

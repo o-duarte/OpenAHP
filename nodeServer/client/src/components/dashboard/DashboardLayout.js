@@ -4,9 +4,8 @@ import { graphql } from 'react-apollo';
 import { withStyles } from '@material-ui/core/styles';
 import Icon from '@material-ui/core/Icon';
 import Avatar from '@material-ui/core/Avatar';
-import CircularProgress from '@material-ui/core/CircularProgress'
 
-import { Layout, LayoutTypes } from '../widgets/layouts';
+import { Layout, LayoutTypes, Loading } from '../widgets/layouts';
 import { MenuListWithButton } from '../widgets/menuList';
 import Logo from '../widgets/Logo';
 
@@ -70,15 +69,11 @@ class DashboardLayout extends Component {
     refetch();
   }
   render() {
-    const { classes } = this.props;
+
     const { currentUser, loading, error } = this.props.data;
     if (loading) {
       return  (
-        <CircularProgress
-            size={150}
-            className={classes.progress}
-        />
-
+        <Loading/>
     );
     } else if (error) {
       return <h1>Error</h1>;

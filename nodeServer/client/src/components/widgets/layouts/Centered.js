@@ -6,7 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 const styles = {
   root: {
     display: 'flex',
-    justifyCcontent: 'center',
+    justifyContent: 'center',
     alignItems: 'center',
     margin: '0 auto'
   }

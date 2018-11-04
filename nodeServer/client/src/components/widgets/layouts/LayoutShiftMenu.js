@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -84,7 +83,7 @@ const styles = theme => ({
   headerContent: {
     ...theme.custom.globals.flex,
     width: '100%',
-    padding: '0 20px'
+    padding: '0 0px'
   },
   toolbar: theme.custom.globals.flex
 });
@@ -112,7 +111,6 @@ class LayoutShiftMenu extends Component {
   render() {
     const {
       classes,
-      theme,
       children,
       menuItems,
       direction,

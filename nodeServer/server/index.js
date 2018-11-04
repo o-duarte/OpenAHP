@@ -20,6 +20,7 @@ import { MONGO_URI } from './lib/config';
 import schemas from './lib/schema';
 import resolvers from './lib/resolvers';
 import mockData from './db/mockdata';
+import {CLIENT_URL} from './lib/config'
 
 const app = express();
 const router = express.Router();
@@ -101,8 +102,8 @@ app.get(
 app.get(
   '/auth/google/callback',
   passport.authenticate('google', {
-    successRedirect: '/dashboard',
-    failureRedirect: '/login'
+    successRedirect: CLIENT_URL + '/dashboard',
+    failureRedirect: CLIENT_URL + '/login'
   })
 );
 

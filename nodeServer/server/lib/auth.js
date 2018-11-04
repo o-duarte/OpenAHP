@@ -3,7 +3,7 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 
-import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from './config';
+import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, SERVER_URL } from './config';
 
 const User = mongoose.model('User');
 
@@ -116,7 +116,7 @@ passport.use(
     {
       clientID: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
-      callbackURL: 'http://localhost:3001/auth/google/callback',
+      callbackURL: SERVER_URL+'/auth/google/callback',
       proxy: true
     },
     async function(accessToken, refreshToken, profile, done) {

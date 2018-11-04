@@ -53,8 +53,8 @@ class DocumentCard extends Component {
 
     return (
       <div>
-        <Typography variant="headline">{docTitle}</Typography>
-        <Typography variant="subheading">{docDescription}</Typography>
+        <Typography variant="h5">{docTitle}</Typography>
+        <Typography variant="subtitle1">{docDescription}</Typography>
 
         <Button color="primary">Share</Button>
         <Button color="primary">Learn More</Button>
@@ -97,7 +97,7 @@ class DocumentCard extends Component {
           title={docTitle}
         />
         <CardContent>
-          <Typography type="headline" component="h2">
+          <Typography variant="h5" component="h2">
             {docTitle}
           </Typography>
           <Typography component="p">{docDescription}</Typography>

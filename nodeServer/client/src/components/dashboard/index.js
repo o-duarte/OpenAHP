@@ -2,7 +2,7 @@ import React from 'react';
 
 import DashboardLayout from './DashboardLayout';
 import DashboardLayoutDocuments from './DashboardLayoutDocuments';
-import TreeView from '../widgets/treeView'
+import AhpEditor from '../ahpEditor'
 
 
 const DashboardDefault = () => {
@@ -14,7 +14,7 @@ const DashboardDocuments = () => {
 };
 
 const DashboardProcess = () => {
-  return <DashboardLayout component={() => <TreeView/>} />;
+  return <DashboardLayout component={() => <AhpEditor/>} />;
 };
 
 export { DashboardDefault, DashboardDocuments, DashboardProcess };
