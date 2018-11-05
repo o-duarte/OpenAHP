@@ -49,6 +49,9 @@ const styles = {
   caption:{
     display: 'inline-block',
     marginTop: '40px '
+  },
+  criteria:{
+    paddingTop: '40px',
   }
 };
 
@@ -94,9 +97,11 @@ class VSlider extends React.Component {
         <Typography variant='subtitle1'>Comparar la relativa importancia respeto a: criterio </Typography>
         <Grid container spacing={8}>
                     <Grid item xs={3}>
-                        <Typography variant="h6" align='right' gutterBottom>
-                        ab
-                        </Typography>
+                        <div className ={classes.criteria}> 
+                          <Typography variant="h6" align='right' gutterBottom>
+                          ab
+                          </Typography>
+                        </div>
                     </Grid>
                     <Grid item xs={6}>
                       <div className={classes.root}>
@@ -127,9 +132,11 @@ class VSlider extends React.Component {
                       </div>   
                     </Grid>
                     <Grid item xs={3}>
-                        <Typography variant="h6" align='left' gutterBottom>
-                        c
-                        </Typography>
+                        <div className ={classes.criteria}> 
+                          <Typography variant="h6" align='left' gutterBottom>
+                          c
+                          </Typography>
+                        </div>
                     </Grid>
         </Grid>
       </div>
