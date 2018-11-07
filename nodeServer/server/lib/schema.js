@@ -61,6 +61,25 @@ const types = `
     createdAt: String
     updatedAt: String
   }
+
+  type Criteria {
+    name: String
+    matrix: [[Float]]
+    subCriteria: [Criteria]
+  }
+
+  type ahpProblem {
+    id: ID
+    name: String
+    goal: String
+    rootMatrix: [[Float]]
+    alternatives: [String]
+    priorityMethod: [Int]
+    consistencyMethod: [Int]
+    errorMeasure: [Int]
+    criteria: [Criteria]
+    owner: User
+  }
 `;
 
 /*
@@ -72,6 +91,8 @@ const queries = `
     currentUser: User
     currentUserDocuments(statusList:[String]): [Document]!
     currentUserSingleDocument(documentId: ID!): Document
+    currentUserProblem(statusList:[String]): [ahpProblem]!
+    currentUserSingleProblem(documentId: ID!): ahpProblem
   }
 `;
 

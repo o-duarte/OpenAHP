@@ -1,9 +1,15 @@
 const strings = {
     logout: 'logout',
     appName: 'OpenChoice',
-    edit: '   ',
+    //criteria tree
+    edit: 'Editar',
+    delete: 'Eliminar',
+    save: 'Guardar',
+    acept: 'Aceptar',
+    cancel: 'Cancelar',
     criteria: 'Criterios',
     addCriteria: 'Añadir criterio',
+    addSubcriteria: 'Añadir Subcriterio',
     // verval pairwise
     equal:'Igual',
     moderate: 'Moderada',

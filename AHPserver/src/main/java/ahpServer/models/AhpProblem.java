@@ -6,11 +6,12 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "ahpProblem")
+@Document(collection = "ahpproblems")
 public class AhpProblem {
   @Id
   public ObjectId _id;
- 
+
+  public ObjectId owner;
   public String name;
   public String goal;
   public ArrayList<ArrayList<Double>> rootMatrix;
@@ -19,7 +20,7 @@ public class AhpProblem {
   public ArrayList<Integer> consistencyMethod;
   public ArrayList<Integer> errorMeasure;
   public ArrayList<problemCriteria> criteria;
-
+  
   // Constructors
   public AhpProblem() {
 
@@ -44,6 +45,9 @@ public class AhpProblem {
   // ObjectId needs to be converted to string
   public String get_id() { return _id.toHexString(); }
   public void set_id(ObjectId _id) { this._id = _id; }
+
+  public String get_owner() { return owner.toHexString(); }
+  public void set_owner(ObjectId owner) { this.owner = owner; }
  
   public String getName() { return name; }
   public void setName(String name) { this.name = name; }
@@ -51,6 +55,4 @@ public class AhpProblem {
   public String  getGoal() { return goal; }
   public void setGoal(String goal) { this.goal = goal; }
  
-  //public String getbreed() { return breed; }
-  //public void setBreed(String breed) { this.breed = breed; }
 }

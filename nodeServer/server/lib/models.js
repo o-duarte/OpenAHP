@@ -246,6 +246,70 @@ const TagSchema = new Schema({
 
 const TagModel = mongoose.model('Tag', TagSchema);
 
+
+/*
+ * Problem schema.
+ */
+
+const Criteria = new Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  subCriteria: {
+    type: [Criteria],
+  },
+  matrix:{
+    type: [[]],
+  },
+});
+
+
+const AhpProblemSchema = new Schema(
+  {
+    name: {
+      type: String,
+      default: null
+    },
+    goal: {
+      type: String,
+      default: null
+    },
+    rootMatrix: {
+      type: [[]],
+    },
+    alternatives: {
+      type: [String],
+    },
+    priorityMethod: {
+      type: [Number],
+    },
+    consistencyMethod: {
+      type: [Number],
+    },
+    errorMeasure: {
+      type: [Number],
+    },
+    criteria: {
+      type: [Criteria],
+    },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+    },
+  },
+  {
+    timestamps: true
+  }
+);
+
+const AhpProblemModel = mongoose.model('AhpProblem', AhpProblemSchema);
+
+/*
+ * Document Content schema.
+ */
+
 /*
  * Module exports.
  */
@@ -262,5 +326,7 @@ export {
   DocumentTypeModel,
   DocumentTypeSchema,
   TagModel,
-  TagSchema
+  TagSchema,
+  AhpProblemModel,
+  AhpProblemSchema,
 };

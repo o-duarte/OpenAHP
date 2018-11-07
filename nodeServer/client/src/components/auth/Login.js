@@ -23,7 +23,7 @@ const styles = theme => ({
   },
   paper: {
     minWidth: '300px',
-    padding: '12px',
+    padding: '20px',
     textAlign: 'center',
     color: theme.palette.text.secondary,
   },
@@ -116,7 +116,7 @@ class Login extends React.Component {
     return (
       <FullScreen>
         <Centered>
-          <Paper className={classes.paper}>
+          <Paper className={classes.paper} elevation={10} >
             <LoginForm errors={this.state.errors} onSubmit={this.onSubmit} />
             </Paper>
         </Centered>

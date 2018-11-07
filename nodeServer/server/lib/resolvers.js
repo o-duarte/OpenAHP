@@ -6,6 +6,7 @@ const User = mongoose.model('User');
 const Tag = mongoose.model('Tag');
 const Document = mongoose.model('Document');
 const DocumentContent = mongoose.model('DocumentContent');
+const AhpProblem = mongoose.model('AhpProblem');
 
 const resolvers = {
   Query: {
@@ -41,6 +42,27 @@ const resolvers = {
           .populate('contributors')
           .populate('tags')
           .populate('content')
+          .exec();
+      } catch (e) {
+        console.log(e.message);
+      }
+    },
+    currentUserProblem: (_, args, req) => {
+      const {
+        statusList = ['draft', 'published', 'archived', 'contributor']
+      } = args;
+      console.log('currentUserDocuments called!', statusList, req.user.email);
+
+      return AhpProblem.find({
+        //owner: req.user._id,
+        //status: { $in: statusList }
+      })
+        .sort({ createdAt: -1 })
+        .exec();
+    },
+    currentUserSingleProblem: async (_, { ProblemId }, req) => {
+      try {
+        return await AhpProblem.findOne({ _id: ProblemId })
           .exec();
       } catch (e) {
         console.log(e.message);

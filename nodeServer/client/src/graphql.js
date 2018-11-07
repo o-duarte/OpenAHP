@@ -99,3 +99,14 @@ export const CURRENT_USER_SINGLE_DOCUMENT = gql`
     }
   }
 `;
+
+export const CURRENT_USER_SINGLE_PROBLEM= gql`
+  query currentUserSingleProblem($documentId: ID!) {
+    currentUserSingleProblem(documentId: $documentId) {
+      id
+      name
+      goal
+      criteria
+    }
+  }
+`;
