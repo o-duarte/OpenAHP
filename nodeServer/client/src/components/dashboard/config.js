@@ -24,7 +24,7 @@ const sideBarMenuItems = [
       },
       {
         type: 'button',
-        link: '/dashboard/process',
+        link: '/dashboard/ahp',
         icon: 'settings',
         text: 'Procesos'
       },
@@ -130,5 +130,19 @@ const documentsTabItems = [
     label: 'Archivados'
   }
 ];
+const problemsTabItems = [
+  {
+    value: 'all',
+    label: 'Todos'
+  },
+  {
+    value: 'draft',
+    label: 'Borradores'
+  },
+  {
+    value: 'resolved',
+    label: 'Resueltos'
+  }
+];
 
-export { sideBarMenuItems, headerMenuItems, documentsTabItems };
+export { sideBarMenuItems, headerMenuItems, documentsTabItems,  problemsTabItems };

@@ -47,17 +47,13 @@ const resolvers = {
         console.log(e.message);
       }
     },
-    currentUserProblem: (_, args, req) => {
-      const {
-        statusList = ['draft', 'published', 'archived', 'contributor']
-      } = args;
-      console.log('currentUserDocuments called!', statusList, req.user.email);
-
+    currentUserProblems: (_, args, req) => {
       return AhpProblem.find({
         //owner: req.user._id,
         //status: { $in: statusList }
       })
         .sort({ createdAt: -1 })
+        .populate('owner')
         .exec();
     },
     currentUserSingleProblem: async (_, { ProblemId }, req) => {

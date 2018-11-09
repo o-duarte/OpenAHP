@@ -106,7 +106,23 @@ export const CURRENT_USER_SINGLE_PROBLEM= gql`
       id
       name
       goal
-      criteria
+      criteria{
+        subCriteria
+        matrix
+      }
+    }
+  }
+`;
+
+export const CURRENT_USER_PROBLEMS = gql`
+  query currentUserProblems($statusList: [String]) {
+    currentUserProblems(statusList: $statusList) {
+      id
+      name
+      goal
+      owner {
+        fullname
+      }
     }
   }
 `;

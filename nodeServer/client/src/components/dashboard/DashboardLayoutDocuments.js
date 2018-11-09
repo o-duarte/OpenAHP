@@ -9,7 +9,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 
 import { CURRENT_USER_DOCUMENTS, DOCUMENT_NEW } from '../../graphql';
-import { documentsTabItems } from './config.js';
+import { problemsTabItems } from './config.js';
 import { LayoutWithTabs } from '../widgets/layouts';
 
 /*
@@ -166,7 +166,7 @@ class DashboardLayoutDocuments extends Component {
     return (
       <div>
         <LayoutWithTabs
-          tabItems={documentsTabItems}
+          tabItems={problemsTabItems}
           onChangeCallback={this.onTabChange}
           initialTab={this.state.activeTabValue}
         >

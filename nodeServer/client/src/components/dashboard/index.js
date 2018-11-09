@@ -2,6 +2,7 @@ import React from 'react';
 
 import DashboardLayout from './DashboardLayout';
 import DashboardLayoutDocuments from './DashboardLayoutDocuments';
+import DashboardLayoutProblems from './DashboardLayoutProblems'
 import AhpEditor from '../ahpEditor'
 
 
@@ -14,9 +15,17 @@ const DashboardDocuments = () => {
 };
 
 const DashboardProcess = () => {
+  return <DashboardLayout component={() => <DashboardLayoutProblems/>} />;
+};
+
+const DashboardProblems = () => {
+  return <DashboardLayout component={() => <DashboardLayoutProblems/>} />;
+};
+
+const DashboardProblem = () => {
   return <DashboardLayout component={() => <AhpEditor/>} />;
 };
 
-export { DashboardDefault, DashboardDocuments, DashboardProcess };
+export { DashboardDefault, DashboardDocuments, DashboardProcess, DashboardProblems, DashboardProblem };
 
 

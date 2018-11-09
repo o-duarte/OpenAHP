@@ -5,11 +5,16 @@ import { graphql } from 'react-apollo';
 import {
   DashboardDefault,
   DashboardDocuments,
-  DashboardProcess
+  DashboardProcess,
+  DashboardProblems,
+  DashboardProblem
 } from './components/dashboard';
 import { EditorLayout } from './components/editor';
 import { Login } from './components/auth';
 import { CURRENT_USER } from './graphql';
+import AhpEditor from './components/ahpEditor'
+
+
 
 /*
  * Module privates.
@@ -33,6 +38,18 @@ const Dashboard = props => {
         path={`${props.match.path}/process/`}
         component={requireAuth(DashboardProcess)}
       />
+
+      <Route
+        exact
+        path={`${props.match.path}/ahp/`}
+        component={requireAuth(DashboardProblems)}
+      />
+      <Route
+        path={`${props.match.path}/ahp/:problemId`}
+        render={({ match }) => {
+            return <DashboardProblem processId={match.params.problemId} />;
+        }}
+      />
     </Switch>
   );
 };
@@ -53,6 +70,7 @@ const RootRoute = () => {
             return <EditorLayout documentId={match.params.documentId} />;
           }}
         />
+
         {/* </Route> */}
         {/* <Route path="/site" component={Site} /> */}
       </Switch>
