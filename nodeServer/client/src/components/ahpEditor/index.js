@@ -111,7 +111,7 @@ class ProblemStepper extends React.Component {
     const { classes } = this.props;
     const steps = getSteps();
     const { activeStep } = this.state;
-
+    console.log(this.props)
     return (
       <Centered>
         <div className={classes.root}>

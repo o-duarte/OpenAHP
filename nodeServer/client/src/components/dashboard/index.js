@@ -22,8 +22,8 @@ const DashboardProblems = () => {
   return <DashboardLayout component={() => <DashboardLayoutProblems/>} />;
 };
 
-const DashboardProblem = () => {
-  return <DashboardLayout component={() => <AhpEditor/>} />;
+const DashboardProblem = (args) => {
+  return <DashboardLayout component={() => <AhpEditor problemId={args.problemId}/>} />;
 };
 
 export { DashboardDefault, DashboardDocuments, DashboardProcess, DashboardProblems, DashboardProblem };
