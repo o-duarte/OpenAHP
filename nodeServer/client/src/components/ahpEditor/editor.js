@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import {compose, graphql} from "react-apollo/index";
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography'
@@ -8,6 +9,7 @@ import strings from '../../strings'
 import GPSlider from './gpslider'
 import PSlider from './pslider'
 import VSlider from './vslider';
+import { Loading } from '../widgets/layouts';
 
 import {
     CURRENT_USER_SINGLE_PROBLEM,
@@ -32,37 +34,54 @@ const styles = theme => ({
         padding: '12px',
         textAlign: 'left',
         color: theme.palette.text.secondary,
+        overflow: 'auto',
       },
   });
 
 class Editor extends Component{
 
     render() {
-        const {classes} = this.props;
-        return(
-           <div className={classes.root}>
-                <Grid container spacing={16}>
-                    <Grid item xs={2}>
-                        <Paper className={classes.treeView}>
-                        <Typography variant="h6" gutterBottom>
-                            {strings.criteria}
-                        </Typography>
-                        <TreeView/>
-                        </Paper>
+        const { classes } = this.props;
+        const { currentUserSingleProblem, loading, error } = this.props.data;
+        if (loading) {
+            return (
+                <Loading/>
+            );
+        } else if (error) {
+            return <h1>Error</h1>;
+        } else {
+            console.log(currentUserSingleProblem);
+            return(
+            <div className={classes.root}>
+                    <Grid container spacing={16}>
+                        <Grid item xs={2}>
+                            <Paper className={classes.treeView}>
+                                <Typography variant="h6" gutterBottom>
+                                    {strings.criteria}
+                                </Typography>
+                                <TreeView/>
+                            </Paper>
+                        </Grid>
+                        <Grid item xs={10}>
+                            <Paper className={classes.paper}>
+                                xs=6
+                            <GPSlider/>
+                            <VSlider/>
+                            <PSlider/>
+                            </Paper>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={10}>
-                        <Paper className={classes.paper}>
-                            xs=6
-                        <GPSlider/>
-                        <VSlider/>
-                        <PSlider/>
-                            
-                        </Paper>
-                    </Grid>
-                </Grid>
-            </div> 
+                </div> 
         )
+    }
     }
 }
 
-export default withStyles(styles)(Editor);
+export default compose(
+    graphql(CURRENT_USER_SINGLE_PROBLEM, {
+        options: ({ problemId }) => ({
+            variables: { problemId }
+        })
+    }),
+    //graphql(PROCESS_UPDATE_RECORD)
+)(withStyles(styles)(Editor));

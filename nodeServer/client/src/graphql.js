@@ -101,14 +101,43 @@ export const CURRENT_USER_SINGLE_DOCUMENT = gql`
 `;
 
 export const CURRENT_USER_SINGLE_PROBLEM= gql`
-  query currentUserSingleProblem($documentId: ID!) {
-    currentUserSingleProblem(documentId: $documentId) {
+  query currentUserSingleProblem($problemId: String) {
+    currentUserSingleProblem(problemId: $problemId) {
       id
       name
       goal
-      criteria{
-        subCriteria
+      rootMatrix
+      alternatives
+      priorityMethod
+      consistencyMethod
+      errorMeasure
+      criteria {
+        name
         matrix
+        subCriteria {
+          name
+          matrix
+          subCriteria {
+            name
+            matrix
+             subCriteria{
+              name
+              matrix
+               subCriteria{
+                name
+                matrix
+                 subCriteria{
+                  name
+                  matrix
+                   subCriteria{
+                    name
+                    matrix
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -126,3 +155,4 @@ export const CURRENT_USER_PROBLEMS = gql`
     }
   }
 `;
+

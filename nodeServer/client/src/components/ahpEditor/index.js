@@ -40,7 +40,7 @@ function getSteps() {
 function getStepContent(step) {
   switch (step) {
     case 0:
-      return <Editor/>; 
+      return <Editor processId={this.props.problemId}/>; 
     case 1:
       return 'What is an ad group anyways?';
     case 2:
@@ -49,6 +49,31 @@ function getStepContent(step) {
       return 'Unknown step';
   }
 }
+
+export class GetStepContent extends React.Component {
+  state = {
+      responsable: '',
+
+  };
+  handleChange = event => {
+      this.setState({ [event.target.name]: event.target.value });
+  };
+  render(){
+      const step = this.props.step;
+      const { classes } = this.props;
+      switch (step) {
+        case 0:
+          return <Editor problemId={this.props.problemId}/>; 
+        case 1:
+          return 'What is an ad group anyways?';
+        case 2:
+          return 'This is the bit I really care about!';
+        default:
+          return 'Unknown step';
+      }
+    }
+  }
+
 
 class ProblemStepper extends React.Component {
   state = {
@@ -166,7 +191,11 @@ class ProblemStepper extends React.Component {
               </div>
             ) : (
               <div>
-                <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
+                <GetStepContent ref={(step) => { this.stepContent = step; }}
+                                            step={activeStep}
+                                            classes={classes}
+                                            problemId={this.props.problemId}
+                />
                                                                                                                         
               </div>
             )}

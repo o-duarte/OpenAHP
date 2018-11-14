@@ -47,7 +47,7 @@ const Dashboard = props => {
       <Route
         path={`${props.match.path}/ahp/:problemId`}
         render={({ match }) => {
-            return <DashboardProblem processId={match.params.problemId} />;
+            return <DashboardProblem problemId={match.params.problemId} />;
         }}
       />
     </Switch>

@@ -92,7 +92,7 @@ const queries = `
     currentUserDocuments(statusList:[String]): [Document]!
     currentUserSingleDocument(documentId: ID!): Document
     currentUserProblems(statusList:[String]): [ahpProblem]!
-    currentUserSingleProblem(documentId: ID!): ahpProblem
+    currentUserSingleProblem(problemId: String): ahpProblem
   }
 `;
 

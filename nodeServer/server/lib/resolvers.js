@@ -56,9 +56,10 @@ const resolvers = {
         .populate('owner')
         .exec();
     },
-    currentUserSingleProblem: async (_, { ProblemId }, req) => {
+    currentUserSingleProblem: async (_, { problemId }, req) => {
+      console.log(problemId)
       try {
-        return await AhpProblem.findOne({ _id: ProblemId })
+        return await AhpProblem.findOne({ _id: problemId })
           .exec();
       } catch (e) {
         console.log(e.message);

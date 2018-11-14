@@ -168,7 +168,9 @@ class Treeview extends Component {
       // A node has no children
       else if (value.children.length === 0) {
         let normalMode = (
-          <div className="node"><i className="fa fa-square-o"></i><Typography className={classes.text} gutterBottom>{value.name}</Typography>
+          <div className="node">
+            <i className="fa fa-square-o"/>
+            <Typography className={classes.text} gutterBottom>{value.name}</Typography>
             <span className="actions">
               <Tooltip title={strings.addSubcriteria} placement="top"><i className="fa fa-plus" onClick={(e)=> { e.stopPropagation(); this.addChild(value) }}> </i></Tooltip>
               <Tooltip title={strings.edit} placement="top"><i className="fa fa-pencil" onClick={(e)=> { e.stopPropagation(); this.makeEditable(value) }}></i></Tooltip>
