@@ -16,21 +16,36 @@ import Typography from '@material-ui/core/Typography';
 import {CURRENT_USER as query, CURRENT_USER_PROBLEMS} from '../../graphql';
 import { problemsTabItems } from './config.js';
 import { LayoutWithTabs } from '../widgets/layouts';
-import { Loading } from '../widgets/layouts';
-
+import { Loading, Centered} from '../widgets/layouts';
 
 
 /*
  * Private components.
  */
 
-const stylesTabContentComponent = {
+const stylesTabContentComponent = theme => ({
     root: {
         maxWidth: '100%',
         alignItems: 'baseline',
         margin: 10
-    }
-};
+    },
+    
+    row: {
+        '&:nth-of-type(odd)': {
+            backgroundColor: '#ffffff',
+        },
+        textDecoration: 'none'
+    },
+});
+
+const CustomTableCell = withStyles(theme => ({
+    head: {
+      backgroundColor: theme.palette.common.black,
+      color: theme.palette.common.white,
+    },
+  }))(TableCell);
+  
+  
 
 class TabContentComponent extends React.Component {
     constructor() {
@@ -45,6 +60,7 @@ class TabContentComponent extends React.Component {
 
     render(){
         const { classes } = this.props;
+        console.log(classes)
         const { currentUserProblems, loading, error } = this.props.data;
         if (loading) {
             return (
@@ -58,25 +74,28 @@ class TabContentComponent extends React.Component {
                 return (
                     <div className={classes.root}>
                         <Table className={classes.table}>
+                            
                             <TableHead>
                                 <TableRow>
-                                    <TableCell padding="dense"><Typography>Problema</Typography></TableCell>
-                                    <TableCell padding="dense"><Typography>Objetivo</Typography></TableCell>
-                                    <TableCell padding="dense"><Typography>Autor</Typography></TableCell>
-                                    <TableCell padding="dense"><Typography>Ultima edicion</Typography></TableCell>
-                                    <TableCell padding="dense"><Typography>Ultima resolucion</Typography></TableCell>
+                                    <TableCell padding="dense"><Typography variant='h6'>Problema</Typography></TableCell>
+                                    <TableCell padding="dense"><Typography variant='h6'>Objetivo</Typography></TableCell>
+                                    <TableCell padding="dense"><Typography variant='h6'>Autor</Typography></TableCell>
+                                    <TableCell padding="dense"><Typography variant='h6'>Ultima edicion</Typography></TableCell>
+                                    <TableCell padding="dense"><Typography variant='h6'>Ultima resolucion</Typography></TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {currentUserProblems.map( n => {
                                     const url = `/dashboard/ahp/${n.id}`;
                                     return (
-                                        <TableRow key={n.id} hover component={Link} to={url}>
-                                            <TableCell padding="dense">{n.name}</TableCell>
-                                            <TableCell padding="dense">{n.goal}</TableCell>
-                                            <TableCell padding="dense">{n.owner.fullname}</TableCell>
-                                            <TableCell padding="dense">{n.owner.fullname}</TableCell>
-                                            <TableCell padding="dense">{n.owner.fullname}</TableCell>
+                                        <TableRow key={n.id} hover component={Link} to={url} className={classes.row}>
+                                            <CustomTableCell component="th" 
+                                                             scope="row"
+                                                             padding="dense"><Typography>{n.name}</Typography></CustomTableCell>
+                                            <CustomTableCell padding="dense"><Typography>{n.goal}</Typography></CustomTableCell>
+                                            <CustomTableCell padding="dense"><Typography>{n.owner.fullname}</Typography></CustomTableCell>
+                                            <CustomTableCell padding="dense"><Typography>{n.owner.fullname}</Typography></CustomTableCell>
+                                            <CustomTableCell padding="dense"><Typography>{n.owner.fullname}</Typography></CustomTableCell>
                                             
                                         </TableRow>
                                     );
@@ -88,7 +107,9 @@ class TabContentComponent extends React.Component {
             } else {
                 return (
                     <div className={classes.root}>
-                        <p>No elements...</p>
+                        <Centered>
+                            <Typography variant='h4'>Sin Resultados</Typography>
+                        </Centered>
                     </div>
                 );
             }
@@ -121,8 +142,7 @@ class newDocumentButtonComponent extends Component {
         this.props.mutate({
             refetchQueries: [{ query }]
         }).then(({ data }) => {
-            console.log('got data', data);
-            this.props.history.push(`/dashboard/process/edit/${data.processNew.id}`)
+            this.props.history.push(`/dashboard/ahp/${data.processNew.id}`)
         });
     }
 
@@ -159,7 +179,7 @@ class DashboardLayoutProcess extends Component {
         super(props);
 
         this.state = {
-            activeTabValue: 'draft'
+            activeTabValue: 'all'
         };
 
         this.onTabChange = this.onTabChange.bind(this);

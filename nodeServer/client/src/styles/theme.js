@@ -55,8 +55,6 @@ const theme = createMuiTheme({
     fontSize: 12,
     title: TYPOGRAPHY.title
   },
-
-  // This is the custom styles for the entire app.
   custom: {
     globals: {
       flex: {

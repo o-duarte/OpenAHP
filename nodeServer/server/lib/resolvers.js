@@ -49,7 +49,7 @@ const resolvers = {
     },
     currentUserProblems: (_, args, req) => {
       return AhpProblem.find({
-        //owner: req.user._id,
+        owner: req.user._id,
         //status: { $in: statusList }
       })
         .sort({ createdAt: -1 })
