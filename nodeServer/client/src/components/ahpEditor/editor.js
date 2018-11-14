@@ -15,6 +15,7 @@ import {
     CURRENT_USER_SINGLE_PROBLEM,
   } from '../../graphql';
 
+import { problemToTree } from '../../utils/treeAdapter';
 
 const styles = theme => ({
     root: {
@@ -50,7 +51,7 @@ class Editor extends Component{
         } else if (error) {
             return <h1>Error</h1>;
         } else {
-            console.log(currentUserSingleProblem);
+            const tree = problemToTree(currentUserSingleProblem)
             return(
             <div className={classes.root}>
                     <Grid container spacing={16}>
@@ -59,7 +60,7 @@ class Editor extends Component{
                                 <Typography variant="h6" gutterBottom>
                                     {strings.criteria}
                                 </Typography>
-                                <TreeView/>
+                                <TreeView tree={tree}/>
                             </Paper>
                         </Grid>
                         <Grid item xs={10}>

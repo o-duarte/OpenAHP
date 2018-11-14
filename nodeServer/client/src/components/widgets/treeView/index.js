@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import TreeData from './sample.data.js';
 import './style.css';
 import './font-awesome.min.css'
 import strings from '../../../strings'
@@ -14,7 +13,8 @@ const styles = theme => ({
     display: 'inline-block'
   },
   text: {
-    display: 'inline-block'
+    display: 'inline-block',
+    marginBottom: '5px'
   },
 });
 
@@ -23,7 +23,7 @@ class Treeview extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: TreeData,
+      data: this.props.tree,
       editableNode: ''
     }
   }
@@ -141,7 +141,8 @@ class Treeview extends Component {
         let babies = this.makeChildren(value.children);
         let normalMode = (
           <div className="node">
-            <i className="fa fa-minus-square-o"></i><Typography className={classes.text} gutterBottom>{value.name}</Typography>
+            <i className="fa fa-minus-square-o"></i>
+            <Typography className={classes.text} gutterBottom>{value.name}</Typography>
             <span className="actions">
               <Tooltip title={strings.delete} placement="top"><i className="fa fa-close" onClick={(e)=> { e.stopPropagation(); this.deleteNode(node, index) }}></i></Tooltip>
               <Tooltip title={strings.edit} placement="top"><i className="fa fa-pencil" onClick={(e)=> { e.stopPropagation(); this.makeEditable(value) }}></i></Tooltip>
