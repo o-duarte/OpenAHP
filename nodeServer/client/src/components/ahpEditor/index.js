@@ -11,6 +11,7 @@ import IconButton from '@material-ui/core/IconButton';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import SkipNext from '@material-ui/icons/SkipNext'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
+import Save from '@material-ui/icons/Save'
 import Publish from '@material-ui/icons/Publish'
 import Paper from '@material-ui/core/Paper'
 import Editor from './editor'
@@ -170,7 +171,12 @@ class ProblemStepper extends React.Component {
                           <SkipNext />
                       </IconButton>
                   )}
-
+                  <IconButton
+                      onClick={this.handleNext}
+                      disabled={activeStep === 1}
+                  >
+                      <Save />
+                  </IconButton>
                   <IconButton
                       onClick={this.handleNext}
                       disabled={activeStep > steps.length - 1}

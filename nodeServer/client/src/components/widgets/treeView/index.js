@@ -5,6 +5,7 @@ import strings from '../../../strings'
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
+import zIndex from '@material-ui/core/styles/zIndex';
 
 const styles = theme => ({
   whiteText: {
@@ -85,7 +86,6 @@ class Treeview extends Component {
   addMember = (parent) => {
     let newChild = {
       name: '',
-      exportValue: '',
       showChildren: false,
       editMode: true,
       children: []
@@ -98,13 +98,16 @@ class Treeview extends Component {
     node.showChildren = true;
     node.children.push({
       name: '',
-      exportValue: '',
       showChildren: false,
       editMode: true,
       children: []
     });
     this.setState({ node });
   }
+  //TODO
+  onNodeClick = (node,index) =>{
+    console.log(node[index])
+  };
 
   nodeEditForm = (value, parent, index) => {
     return (
@@ -144,13 +147,15 @@ class Treeview extends Component {
             <i className="fa fa-minus-square-o"></i>
             <Typography className={classes.text} gutterBottom>{value.name}</Typography>
             <span className="actions">
-              <Tooltip title={strings.delete} placement="top"><i className="fa fa-close" onClick={(e)=> { e.stopPropagation(); this.deleteNode(node, index) }}></i></Tooltip>
-              <Tooltip title={strings.edit} placement="top"><i className="fa fa-pencil" onClick={(e)=> { e.stopPropagation(); this.makeEditable(value) }}></i></Tooltip>
+              <Tooltip title={strings.delete} placement="top"><i className="fa fa-close" 
+                       onClick={(e)=> { e.stopPropagation(); this.deleteNode(node, index) }}></i></Tooltip>
+              <Tooltip title={strings.edit} placement="top"><i className="fa fa-pencil" 
+                       onClick={(e)=> { e.stopPropagation(); this.makeEditable(value) }}></i></Tooltip>
             </span>
           </div>
         )
         item = (
-          <li key={index} onClick={(e) => { e.stopPropagation(); this.toggleView(value) }}>
+          <li key={index} onClick={(e) => { e.stopPropagation(); this.toggleView(value); this.onNodeClick(node, index) }}>
             {(value.editMode) ? this.nodeEditForm(value, node, index) : normalMode}
             {babies}
           </li>
@@ -160,7 +165,7 @@ class Treeview extends Component {
       // A node has children but don't want to showing her children
       else if (value.children.length > 0 && !value.showChildren) {
         item = (
-          <li key={index} onClick={(e)=> { e.stopPropagation(); this.toggleView(value) }}>
+          <li key={index} onClick={(e)=> { e.stopPropagation(); this.toggleView(value) ; this.onNodeClick(node, index)}}>
             <div className="node"><i className="fa fa-plus-square-o"></i><Typography className={classes.text} gutterBottom>{value.name}</Typography></div>
           </li>
         );
@@ -173,15 +178,18 @@ class Treeview extends Component {
             <i className="fa fa-square-o"/>
             <Typography className={classes.text} gutterBottom>{value.name}</Typography>
             <span className="actions">
-              <Tooltip title={strings.addSubcriteria} placement="top"><i className="fa fa-plus" onClick={(e)=> { e.stopPropagation(); this.addChild(value) }}> </i></Tooltip>
-              <Tooltip title={strings.edit} placement="top"><i className="fa fa-pencil" onClick={(e)=> { e.stopPropagation(); this.makeEditable(value) }}></i></Tooltip>
-              <Tooltip title={strings.delete} placement="top"><i className="fa fa-close" onClick={(e)=> { e.stopPropagation(); this.deleteNode(node, index) }}></i></Tooltip>
+              <Tooltip title={strings.addSubcriteria} placement="top"><i className="fa fa-plus" 
+                       onClick={(e)=> { e.stopPropagation(); this.addChild(value) }}> </i></Tooltip>
+              <Tooltip title={strings.edit} placement="top"><i className="fa fa-pencil" 
+                       onClick={(e)=> { e.stopPropagation(); this.makeEditable(value) }}></i></Tooltip>
+              <Tooltip title={strings.delete} placement="top"><i className="fa fa-close" 
+                      onClick={(e)=> { e.stopPropagation(); this.deleteNode(node, index) }}></i></Tooltip>
             </span>
           </div>
         );
 
         item = (
-          <li key={index} onClick={(e) => e.stopPropagation()}>
+          <li key={index} onClick={(e) => {e.stopPropagation(); this.onNodeClick(node, index) }}>
             {(value.editMode) ? this.nodeEditForm(value, node, index) : normalMode}
           </li>
         );
@@ -193,7 +201,7 @@ class Treeview extends Component {
       <ul >
         {children}
         <li>
-          <div className="node add_node" onClick={(e)=> { e.stopPropagation();this.addMember(node) }}>
+          <div className="node add_node" onClick={(e)=> { e.stopPropagation();this.addMember(node)}}>
             <i className="fa fa-square" ></i>
             <a ><Typography className={classes.text} gutterBottom>{strings.addCriteria}</Typography></a>
           </div>

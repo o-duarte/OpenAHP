@@ -52,6 +52,7 @@ class Editor extends Component{
             return <h1>Error</h1>;
         } else {
             const tree = problemToTree(currentUserSingleProblem)
+            console.log(tree)
             return(
             <div className={classes.root}>
                     <Grid container spacing={16}>
