@@ -5,6 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography'
 import TreeView from '../widgets/treeView'
+import Matrix from '../widgets/matrix'
 import strings from '../../strings'
 import GPSlider from './gpslider'
 import PSlider from './pslider'
@@ -40,6 +41,19 @@ const styles = theme => ({
   });
 
 class Editor extends Component{
+    constructor() {
+        super();
+        //bind the children functions
+        this.onSelectedCriteria = this.onSelectedCriteria.bind(this);
+        this.state = {
+          tree: '',
+          initialLoad: true,
+        };
+      }
+    onSelectedCriteria(nodeid){
+        console.log(nodeid)
+        console.log(this.state.tree)
+    }
 
     render() {
         const { classes } = this.props;
@@ -51,8 +65,10 @@ class Editor extends Component{
         } else if (error) {
             return <h1>Error</h1>;
         } else {
-            const tree = problemToTree(currentUserSingleProblem)
-            console.log(tree)
+            if (this.state.initialLoad) {
+                this.state.tree = problemToTree(currentUserSingleProblem);
+                this.state.initialLoad = false;
+            }
             return(
             <div className={classes.root}>
                     <Grid container spacing={16}>
@@ -61,7 +77,10 @@ class Editor extends Component{
                                 <Typography variant="h6" gutterBottom>
                                     {strings.criteria}
                                 </Typography>
-                                <TreeView tree={tree}/>
+                                <TreeView tree={this.state.tree} 
+                                          onSelectedCriteria={this.onSelectedCriteria}
+                                          onChangedtree={''}
+                                          />
                             </Paper>
                         </Grid>
                         <Grid item xs={10}>
@@ -70,6 +89,7 @@ class Editor extends Component{
                             <GPSlider/>
                             <VSlider/>
                             <PSlider/>
+                            <Matrix data={currentUserSingleProblem.rootMatrix}/>
                             </Paper>
                         </Grid>
                     </Grid>
