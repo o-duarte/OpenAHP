@@ -47,12 +47,12 @@ class Editor extends Component{
         this.onSelectedCriteria = this.onSelectedCriteria.bind(this);
         this.state = {
           tree: '',
+          selectedCriteria: -1,
           initialLoad: true,
         };
       }
     onSelectedCriteria(nodeid){
-        console.log(nodeid)
-        console.log(this.state.tree)
+        this.setState({selectedCriteria: nodeid})
     }
 
     render() {
@@ -89,7 +89,9 @@ class Editor extends Component{
                             <GPSlider/>
                             <VSlider/>
                             <PSlider/>
-                            <Matrix data={currentUserSingleProblem.rootMatrix}/>
+                            <Matrix data={this.state.tree} 
+                                    selectedCriteria={this.state.selectedCriteria}
+                                    />
                             </Paper>
                         </Grid>
                     </Grid>

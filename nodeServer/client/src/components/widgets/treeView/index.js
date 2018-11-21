@@ -104,11 +104,13 @@ class Treeview extends Component {
     });
     this.setState({ node });
   }
-  //TODO
   onNodeClick = (node,index) =>{
-    console.log(node,index)
-    console.log(this.props)
-    this.props.onSelectedCriteria(index)
+    if(index==-1){
+      this.props.onSelectedCriteria(-1)  
+    }
+    else{
+      this.props.onSelectedCriteria(node[index].id)
+    }   
   };
 
   nodeEditForm = (value, parent, index) => {
@@ -185,7 +187,7 @@ class Treeview extends Component {
               <Tooltip title={strings.edit} placement="top"><i className="fa fa-pencil" 
                        onClick={(e)=> { e.stopPropagation(); this.makeEditable(value) }}></i></Tooltip>
               <Tooltip title={strings.delete} placement="top"><i className="fa fa-close" 
-                      onClick={(e)=> { e.stopPropagation(); this.deleteNode(node, index) }}></i></Tooltip>
+                       onClick={(e)=> { e.stopPropagation(); this.deleteNode(node, index) }}></i></Tooltip>
             </span>
           </div>
         );
@@ -219,7 +221,7 @@ class Treeview extends Component {
     let root = (
       <span className="root">
         <Typography className={classes.whiteText} gutterBottom 
-                    onClick={(e) => {e.stopPropagation(); this.onNodeClick('a', '0') }}>
+                    onClick={(e) => {e.stopPropagation(); this.onNodeClick('goal',-1) }}>
                     {this.state.data.name}
         </Typography>
         <span className="actions"> &nbsp;  &nbsp;

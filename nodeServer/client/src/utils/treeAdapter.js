@@ -11,6 +11,7 @@ function addChildren(subcriteria, parent){
     for (x in subcriteria){
         var children = {};
         children.name = subcriteria[x].name;
+        children.matrix = subcriteria[x].matrix
         children.showChildren = false;
         children.editMode = false;
         children.id = parent.id.concat([parseInt(x)])
@@ -28,14 +29,17 @@ function addChildren(subcriteria, parent){
 export function problemToTree(problem){
     var tree = {};
     tree.name = problem.goal;
+    tree.alternatives = problem.alternatives
     tree.showChildren = true;
+    tree.rootMatrix = problem.rootMatrix
     tree.editMode =  false;
     tree.children = [];
-    tree.id = [0];
+    tree.id = [];
     var criteria;
     for (criteria in problem.criteria){
         var children = {};
         children.name = problem.criteria[criteria].name;
+        children.matrix = problem.criteria[criteria].matrix
         children.showChildren = false;
         children.editMode = false;
         children.id = tree.id.concat([parseInt(criteria)])
