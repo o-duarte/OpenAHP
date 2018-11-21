@@ -45,14 +45,19 @@ class Editor extends Component{
         super();
         //bind the children functions
         this.onSelectedCriteria = this.onSelectedCriteria.bind(this);
+        this.onSelectedMatrixItem = this.onSelectedMatrixItem.bind(this);
         this.state = {
+          initialLoad: true,
           tree: '',
           selectedCriteria: -1,
-          initialLoad: true,
+          selectedMatrixItem: [0,1]
         };
       }
     onSelectedCriteria(nodeid){
         this.setState({selectedCriteria: nodeid})
+    }
+    onSelectedMatrixItem(x,y){
+        this.setState({selectedMatrixItem: [x,y]})
     }
 
     render() {
@@ -86,11 +91,15 @@ class Editor extends Component{
                         <Grid item xs={10}>
                             <Paper className={classes.paper}>
                                 xs=6
-                            <GPSlider/>
-                            <VSlider/>
-                            <PSlider/>
+                            
+                            <GPSlider data={this.state.tree}
+                                      selectedCriteria={this.state.selectedCriteria}
+                                    />
+
                             <Matrix data={this.state.tree} 
                                     selectedCriteria={this.state.selectedCriteria}
+                                    selectedMatrixItem={this.state.selectedMatrixItem}
+                                    onSelectedMatrixItem={this.onSelectedMatrixItem}
                                     />
                             </Paper>
                         </Grid>

@@ -27,19 +27,28 @@ const styles = {
 
 class GPSlider extends React.Component {
   state = {
-    valuea: 50,
-    valueb: 50,
+    valuea: 0,
+    valueb: 0,
   };
 
   handleChangea = (event, value) => {
     this.setState({valuea: value });
-    this.setState({valueb: 100 - value})
+    this.setState({valueb: - value})
   };
 
   handleChangeb = (event, value) => {
     this.setState({valueb: value });
-    this.setState({valuea: 100 - value})
+    this.setState({valuea: - value})
   };
+
+  returnValue(value){
+    if(value>=0){
+      return(value+1)
+    }
+    else{
+      return(-Math.pow(value-1,-1))
+    }
+  }
 
   render() {
     const { classes } = this.props;
@@ -53,6 +62,8 @@ class GPSlider extends React.Component {
         <Slider
           classes={{ container: classes.slider }}
           value={valuea}
+          min={-10}
+          max={+10}
           aria-labelledby="slider-image"
           onChange={this.handleChangea}
         />
@@ -60,9 +71,13 @@ class GPSlider extends React.Component {
         <Slider
           classes={{ container: classes.slider, track: classes.track, thumb: classes.track }}
           value={valueb}
+          min={-10}
+          max={+10}
           aria-labelledby="slider-icon"
           onChange={this.handleChangeb}
         />
+        {this.state.valuea}----
+        {this.returnValue(this.state.valuea)}
       </div>
     );
   }

@@ -19,8 +19,11 @@ const styles = theme => ({
       color: theme.palette.text.secondary,
     },
     row: {
-        display: 'flex',
+        display: 'inline-block',
         flexDirection: 'row',
+    },
+    yheader:{
+        width: '80px',
     },
     item:{
         cursor: 'pointer',
@@ -81,43 +84,44 @@ class Matrix extends Component{
         const { classes, data, selectedCriteria } = this.props;
         const matrix = this.matrixData(data, selectedCriteria)
         const headers = this.headers(data, selectedCriteria)
-        console.log(headers)
         return(
             <div className={classes.root}>
                 <div>
                     <div className={classes.row}>
-                    {headers.map((head) =>{
-                        return(
-                            <div className={classes.optionalItem}>
-                                    <Typography>{head}</Typography>
-                            </div>
-                        )
-                    })}
+                        <div className={classes.yheader}></div>
+                        {headers.map((head) =>{
+                            return(
+                                <div className={classes.optionalItem}>
+                                        <Typography align="justify">{head}</Typography>
+                                </div>
+                            )
+                        })}
                     </div>
                     {matrix.map((row,i) =>{
                         return(
                             <div className={classes.row}>
-                                <div className={classes.optionalItem}>
-                                    <Typography>{headers[i]}</Typography>
+                                <div className={classes.yheader}>
+                                    <Typography align="center">{headers[i]}</Typography>
                                 </div>
                                 {row.map((item,j) =>{
                                     if(i<j){
                                         return(
                                         <div key={[i,j]} className={classes.item} 
-                                                onClick={(e) => { e.stopPropagation(); console.log(i,j)}}>
-                                                <Typography>{item}</Typography>
+                                                onClick={(e) => { e.stopPropagation(); 
+                                                                  this.props.onSelectedMatrixItem(i,j)}}>
+                                                <Typography align="center">{matrix[i][j]}</Typography>
                                         </div>)
                                     }
                                     if(i==j){
                                         return(
                                         <div key={[i,j]} className={classes.optionalItem}>
-                                                <Typography>{item}</Typography>
+                                                <Typography align="center" >{item}</Typography>
                                         </div>)
                                     }
                                     else{
                                         return(
                                         <div key={[i,j]} className={classes.optionalItem}>
-                                                <Typography>-</Typography>
+                                                <Typography align="center">-</Typography>
                                         </div>)
                                     }
                                 })}

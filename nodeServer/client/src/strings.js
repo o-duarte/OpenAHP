@@ -15,7 +15,9 @@ const strings = {
     moderate: 'Moderada',
     strong: 'Esecial',
     vStrong: 'Mucha',
-    extreme: 'Extrema'
+    extreme: 'Extrema',
+    //sliders
+    sliderText: ''
 
 }
 export default strings

@@ -33,12 +33,10 @@ const Dashboard = props => {
         path={`${props.match.path}/docs/`}
         component={requireAuth(DashboardDocuments)}
       />
-
       <Route
         path={`${props.match.path}/process/`}
         component={requireAuth(DashboardProcess)}
       />
-
       <Route
         exact
         path={`${props.match.path}/ahp/`}
