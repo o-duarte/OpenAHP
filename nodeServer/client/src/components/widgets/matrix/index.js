@@ -24,10 +24,12 @@ const styles = theme => ({
     },
     yheader:{
         width: '80px',
+        align: 'center'
     },
     item:{
         cursor: 'pointer',
         margin: 20 ,
+        fontWeight:'bold',
     },
     optionalItem:{
         margin: 20 ,
@@ -106,22 +108,23 @@ class Matrix extends Component{
                                 {row.map((item,j) =>{
                                     if(i<j){
                                         return(
-                                        <div key={[i,j]} className={classes.item} 
-                                                onClick={(e) => { e.stopPropagation(); 
-                                                                  this.props.onSelectedMatrixItem(i,j)}}>
-                                                <Typography align="center">{matrix[i][j]}</Typography>
+                                        <div key={[i,j]} className={classes.optionalItem} >
+                                                <Typography  align="center">-</Typography>
                                         </div>)
                                     }
                                     if(i==j){
                                         return(
                                         <div key={[i,j]} className={classes.optionalItem}>
-                                                <Typography align="center" >{item}</Typography>
+                                                <Typography  align="center">{item}</Typography>
                                         </div>)
                                     }
                                     else{
                                         return(
-                                        <div key={[i,j]} className={classes.optionalItem}>
-                                                <Typography align="center">-</Typography>
+                                        <div key={[i,j]} className={classes.item}
+                                            onClick={(e) => { e.stopPropagation();
+                                                    console.log(j,i);
+                                                    this.props.onSelectedMatrixItem(j,i)}}>
+                                                <Typography align="center"><b>{String(matrix[j][i]).slice(0,4)}</b></Typography>
                                         </div>)
                                     }
                                 })}
