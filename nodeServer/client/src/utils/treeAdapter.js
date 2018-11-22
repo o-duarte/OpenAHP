@@ -1,53 +1,49 @@
-///this function adapts the model of database to the model of component treeview 
-function addChildren(subcriteria, parent){
-    if(subcriteria.length == 0){
+///this function adapts the model of tree to the model of database 
+function addChildren(children){
+    if(children.length == 0){
         return []
     }
     var subtree = []
-    subtree.showChildren = true;
-    subtree.editMode =  false;
-    subtree.children = [];
+    subtree.subcriteria = [];
+    delete children.editMode
+    delete children.showChildren
     var x;
-    for (x in subcriteria){
-        var children = {};
-        children.name = subcriteria[x].name;
-        children.matrix = subcriteria[x].matrix
-        children.showChildren = false;
-        children.editMode = false;
-        children.id = parent.id.concat([parseInt(x)])
-        if(subcriteria[x].subCriteria.length>0){
-            children.children = addChildren(subcriteria[x].subCriteria, children);
+    for (x in children){
+        if(x=='children'){
+
         }
         else{
-            children.children = []
-        }
-        subtree.push(children)
+            var subcriteria = {};
+            subcriteria.name = children[x].name;
+            subcriteria.matrix = children[x].matrix
+            if(children[x].children.length>0){
+                subcriteria.subCriteria = addChildren(children[x].children);
+            }
+            else{
+                subcriteria.subCriteria = []
+            }
+            subtree.push(subcriteria)
+        }    
     }
     return subtree
 }
 
-export function problemToTree(problem){
-    var tree = {};
-    tree.name = problem.goal;
-    tree.alternatives = problem.alternatives
-    tree.showChildren = true;
-    tree.rootMatrix = problem.rootMatrix
-    tree.editMode =  false;
-    tree.children = [];
-    tree.id = [];
-    var criteria;
-    for (criteria in problem.criteria){
-        var children = {};
-        children.name = problem.criteria[criteria].name;
-        children.matrix = problem.criteria[criteria].matrix
-        children.showChildren = false;
-        children.editMode = false;
-        children.id = tree.id.concat([parseInt(criteria)])
-        children.children = addChildren(problem.criteria[criteria].subCriteria, children);
+export function treeToProblem(tree){
+    var problem = {};
+    problem.goal = tree.name;
+    problem.alternatives = tree.alternatives
+    problem.rootMatrix = tree.rootMatrix
+    problem.criteria = [];
+    var x;
+    for (x in tree.children){
+        var criteria = {};
+        criteria.name = tree.children[x].name;
+        criteria.matrix = tree.children[x].matrix
+        criteria.subCriteria = addChildren(tree.children[x].children);
         /////
-        tree.children.push(children)
+        problem.criteria.push(criteria)
     }
 
 
-    return tree;
+    return problem;
   };

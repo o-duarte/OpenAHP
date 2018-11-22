@@ -122,7 +122,9 @@ class Matrix extends Component{
                                         <div key={[i,j]} className={classes.item}
                                             onClick={(e) => { e.stopPropagation();
                                                     this.props.onSelectedMatrixItem(j,i)}}>
-                                                <Typography align="center"><b>{String(matrix[j][i]).slice(0,4)}</b></Typography>
+                                                <Typography align="center">
+                                                    <b>{String(matrix[j][i]).slice(0,4)}</b>
+                                                </Typography>
                                         </div>)
                                     }
                                 })}

@@ -16,7 +16,8 @@ import {
     CURRENT_USER_SINGLE_PROBLEM,
   } from '../../graphql';
 
-import { problemToTree } from '../../utils/treeAdapter';
+import { problemToTree } from '../../utils/problemAdapter';
+import { treeToProblem } from '../../utils/treeAdapter';
 
 const styles = theme => ({
     root: {
@@ -87,6 +88,7 @@ class Editor extends Component{
     render() {
         const { classes } = this.props;
         const { currentUserSingleProblem, loading, error } = this.props.data;
+        
         if (loading) {
             return (
                 <Loading/>
@@ -97,6 +99,9 @@ class Editor extends Component{
             if (this.state.initialLoad) {
                 this.state.tree = problemToTree(currentUserSingleProblem);
                 this.state.initialLoad = false;
+                console.log(this.state.tree)
+                console.log(currentUserSingleProblem)
+                console.log(treeToProblem(this.state.tree))
             }
             return(
             <div className={classes.root}>

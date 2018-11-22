@@ -1,6 +1,6 @@
 const strings = {
     logout: 'logout',
-    appName: 'OpenChoice',
+    appName: 'OpenAHP',
     //criteria tree
     edit: 'Editar',
     delete: 'Eliminar',
