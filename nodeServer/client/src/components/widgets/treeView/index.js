@@ -5,7 +5,6 @@ import strings from '../../../strings'
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
-import zIndex from '@material-ui/core/styles/zIndex';
 
 const styles = theme => ({
   whiteText: {

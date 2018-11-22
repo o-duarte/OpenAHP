@@ -17,7 +17,8 @@ const strings = {
     vStrong: 'Mucha',
     extreme: 'Extrema',
     //sliders
-    sliderText: ''
+    sliderTextImp: 'Comparar la relativa importancia respeto a:',
+    sliderTextPref: 'Comparar la relativa preferencia respeto a:'
 
 }
 export default strings

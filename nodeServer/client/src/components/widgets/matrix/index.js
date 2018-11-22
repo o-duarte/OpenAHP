@@ -18,9 +18,8 @@ const styles = theme => ({
       textAlign: 'center',
       color: theme.palette.text.secondary,
     },
-    row: {
+    col: {
         display: 'inline-block',
-        flexDirection: 'row',
     },
     yheader:{
         width: '80px',
@@ -89,7 +88,7 @@ class Matrix extends Component{
         return(
             <div className={classes.root}>
                 <div>
-                    <div className={classes.row}>
+                    <div className={classes.col}>
                         <div className={classes.yheader}></div>
                         {headers.map((head) =>{
                             return(
@@ -101,7 +100,7 @@ class Matrix extends Component{
                     </div>
                     {matrix.map((row,i) =>{
                         return(
-                            <div className={classes.row}>
+                            <div className={classes.col}>
                                 <div className={classes.yheader}>
                                     <Typography align="center">{headers[i]}</Typography>
                                 </div>
@@ -122,7 +121,6 @@ class Matrix extends Component{
                                         return(
                                         <div key={[i,j]} className={classes.item}
                                             onClick={(e) => { e.stopPropagation();
-                                                    console.log(j,i);
                                                     this.props.onSelectedMatrixItem(j,i)}}>
                                                 <Typography align="center"><b>{String(matrix[j][i]).slice(0,4)}</b></Typography>
                                         </div>)
