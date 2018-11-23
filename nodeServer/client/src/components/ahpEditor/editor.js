@@ -14,6 +14,7 @@ import { Loading } from '../widgets/layouts';
 import immutable from 'object-path-immutable'
 import {
     CURRENT_USER_SINGLE_PROBLEM,
+    PROBLEM_SAVE
   } from '../../graphql';
 
 import { problemToTree } from '../../utils/problemAdapter';
@@ -64,6 +65,10 @@ class Editor extends Component{
         this.slider.onMatrixChange(this.state.tree, this.state.selectedCriteria, [x,y]);
 
     }
+    makeMutations = () => { 
+        console.log('make')
+    }
+
     onChangedMatrixValue(value){
         const tree = this.state.tree
         const x = this.state.selectedMatrixItem[0]
@@ -99,9 +104,6 @@ class Editor extends Component{
             if (this.state.initialLoad) {
                 this.state.tree = problemToTree(currentUserSingleProblem);
                 this.state.initialLoad = false;
-                console.log(this.state.tree)
-                console.log(currentUserSingleProblem)
-                console.log(treeToProblem(this.state.tree))
             }
             return(
             <div className={classes.root}>
@@ -148,5 +150,5 @@ export default compose(
             variables: { problemId }
         })
     }),
-    //graphql(PROCESS_UPDATE_RECORD)
+    graphql(PROBLEM_SAVE)
 )(withStyles(styles)(Editor));

@@ -38,18 +38,6 @@ function getSteps() {
   return ['Datos del Problema', 'Variables de Resolucion', 'Resultados', 'Analisis de Sensibilidad'];
 }
 
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <Editor processId={this.props.problemId}/>; 
-    case 1:
-      return 'What is an ad group anyways?';
-    case 2:
-      return 'This is the bit I really care about!';
-    default:
-      return 'Unknown step';
-  }
-}
 
 export class GetStepContent extends React.Component {
   state = {
@@ -64,7 +52,8 @@ export class GetStepContent extends React.Component {
       const { classes } = this.props;
       switch (step) {
         case 0:
-          return <Editor problemId={this.props.problemId}/>; 
+          return <Editor innerRef={(item) => { this.editor = item; }}
+                         problemId={this.props.problemId}/>; 
         case 1:
           return 'What is an ad group anyways?';
         case 2:
@@ -85,7 +74,6 @@ class ProblemStepper extends React.Component {
   isStepOptional = step => {
     return false;
   };
-
   handleNext = () => {
     const { activeStep } = this.state;
     let { skipped } = this.state;
@@ -98,13 +86,11 @@ class ProblemStepper extends React.Component {
       skipped,
     });
   };
-
   handleBack = () => {
     this.setState(state => ({
       activeStep: state.activeStep - 1,
     }));
   };
-
   handleSkip = () => {
     const { activeStep } = this.state;
     if (!this.isStepOptional(activeStep)) {
@@ -122,22 +108,23 @@ class ProblemStepper extends React.Component {
       };
     });
   };
-
   handleReset = () => {
     this.setState({
       activeStep: 0,
     });
   };
-
   isStepSkipped(step) {
     return this.state.skipped.has(step);
+  }
+  handleMutation(){
+    //this.stepContent.editor.makeMutations()
   }
 
   render() {
     const { classes } = this.props;
     const steps = getSteps();
     const { activeStep } = this.state;
-    console.log(this.props)
+    console.log(this)
     return (
       <Centered>
         <div className={classes.root}>
@@ -171,12 +158,14 @@ class ProblemStepper extends React.Component {
                           <SkipNext />
                       </IconButton>
                   )}
-                  <IconButton
-                      onClick={this.handleNext}
-                      disabled={activeStep === 1}
-                  >
-                      <Save />
-                  </IconButton>
+                  {activeStep === 0 && (
+                      <IconButton
+                        onClick={this.handleMutation()}
+                        >
+                        <Save />
+                      </IconButton>
+                  )}
+
                   <IconButton
                       onClick={this.handleNext}
                       disabled={activeStep > steps.length - 1}

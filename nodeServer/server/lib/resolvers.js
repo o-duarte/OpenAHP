@@ -104,11 +104,7 @@ const resolvers = {
         console.log(e.message);
       }
     },
-    documentSaveContent: async (
-      _,
-      { documentId, title, description, html, raw },
-      req
-    ) => {
+    documentSaveContent: async (_, { documentId, title, description, html, raw }, req ) => {
       try {
         console.log('documentSaveContent called!', documentId, html);
 
@@ -128,6 +124,22 @@ const resolvers = {
           },
           { new: true }
         ).exec();
+      } catch (e) {
+        console.log(e.message);
+      }
+    },
+    problemSave: async (_, { documentId, rawdata }, req ) => {
+      try {
+        const data = JSON.parse(rawdata)
+        return await AhpProblem.findOneAndUpdate(
+          { _id: documentId },
+          { $set: { criteria: data.criteria ,
+                    rootMatrix: data.rootMatrix,
+                    alternatives: data.alternatives,
+                     } },
+          { new: true }
+        ).exec();
+
       } catch (e) {
         console.log(e.message);
       }

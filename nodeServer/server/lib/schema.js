@@ -107,6 +107,7 @@ const mutations = `
     logout: User
     documentNew: Document
     documentSaveContent(documentId: ID!, title: String!, description: String!, html: String!, raw: String!): DocumentContent
+    problemSave(documentId: ID!, rawData: String!): ahpProblem 
   }
 `;
 

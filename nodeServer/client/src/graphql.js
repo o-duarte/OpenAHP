@@ -156,3 +156,11 @@ export const CURRENT_USER_PROBLEMS = gql`
   }
 `;
 
+export const PROBLEM_SAVE  = gql`
+  mutation ProblemSave($documentId: ID!, $rawData: String!) {
+    problemSave(documentId: $documentId, rawData: $rawData) {
+      id
+    }
+  }
+`;
+
