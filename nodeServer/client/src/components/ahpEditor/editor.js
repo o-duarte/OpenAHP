@@ -12,6 +12,7 @@ import PSlider from './pslider'
 import VSlider from './vslider';
 import { Loading } from '../widgets/layouts';
 import immutable from 'object-path-immutable'
+
 import {
     CURRENT_USER_SINGLE_PROBLEM,
     PROBLEM_SAVE
@@ -65,7 +66,7 @@ class Editor extends Component{
         this.slider.onMatrixChange(this.state.tree, this.state.selectedCriteria, [x,y]);
 
     }
-    makeMutations = () => { 
+    makeMutations(){ 
         console.log('make')
     }
 

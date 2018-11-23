@@ -38,6 +38,10 @@ const styles = theme => ({
   });
 
 class Matrix extends Component{
+    constructor() {
+        super();
+
+      }
     matrixData(data, index) {
         if(index==-1){
             return(

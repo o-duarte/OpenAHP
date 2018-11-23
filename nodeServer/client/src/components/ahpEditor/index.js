@@ -40,10 +40,9 @@ function getSteps() {
 
 
 export class GetStepContent extends React.Component {
-  state = {
-      responsable: '',
-
-  };
+  constructor(props) {
+    super(props);
+  }
   handleChange = event => {
       this.setState({ [event.target.name]: event.target.value });
   };
@@ -52,7 +51,7 @@ export class GetStepContent extends React.Component {
       const { classes } = this.props;
       switch (step) {
         case 0:
-          return <Editor innerRef={(item) => { this.editor = item; }}
+          return <Editor innerRef={(step) => { this.editor = step; }}
                          problemId={this.props.problemId}/>; 
         case 1:
           return 'What is an ad group anyways?';
@@ -66,6 +65,9 @@ export class GetStepContent extends React.Component {
 
 
 class ProblemStepper extends React.Component {
+  constructor(props) {
+    super(props);
+  }
   state = {
     activeStep: 0,
     skipped: new Set(),
@@ -116,8 +118,8 @@ class ProblemStepper extends React.Component {
   isStepSkipped(step) {
     return this.state.skipped.has(step);
   }
-  handleMutation(){
-    //this.stepContent.editor.makeMutations()
+  handleMutation = () => {
+    this.stepContent.editor.makeMutations()
   }
 
   render() {
@@ -160,7 +162,7 @@ class ProblemStepper extends React.Component {
                   )}
                   {activeStep === 0 && (
                       <IconButton
-                        onClick={this.handleMutation()}
+                        onClick={() => this.handleMutation()}
                         >
                         <Save />
                       </IconButton>
@@ -190,7 +192,7 @@ class ProblemStepper extends React.Component {
                                             step={activeStep}
                                             classes={classes}
                                             problemId={this.props.problemId}
-                />
+                                            />
                                                                                                                         
               </div>
             )}
