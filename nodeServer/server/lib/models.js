@@ -257,7 +257,8 @@ const Criteria = new Schema({
     required: true
   },
   subCriteria: {
-    type: [Criteria],
+    type: [],
+    default: [] 
   },
   matrix:{
     type: [[]],

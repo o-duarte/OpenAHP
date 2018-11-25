@@ -12,16 +12,31 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
+import Modal from '@material-ui/core/Modal';
+import TextField from '@material-ui/core/TextField';
+
 //
-import {CURRENT_USER as query, CURRENT_USER_PROBLEMS} from '../../graphql';
+import {CURRENT_USER as query, CURRENT_USER_PROBLEMS, PROBLEM_NEW} from '../../graphql';
 import { problemsTabItems } from './config.js';
 import { LayoutWithTabs } from '../widgets/layouts';
 import { Loading, Centered} from '../widgets/layouts';
+import strings from '../../strings';
 
 
 /*
  * Private components.
  */
+function getModalStyle() {
+    const top = 50;
+    const left = 50;
+  
+    return {
+      top: `${top}%`,
+      left: `${left}%`,
+      transform: `translate(-${top}%, -${left}%)`,
+    };
+  }
+  
 
 const stylesTabContentComponent = theme => ({
     root: {
@@ -36,6 +51,7 @@ const stylesTabContentComponent = theme => ({
         },
         textDecoration: 'none'
     },
+    
 });
 
 const CustomTableCell = withStyles(theme => ({
@@ -87,6 +103,9 @@ class TabContentComponent extends React.Component {
                             <TableBody>
                                 {currentUserProblems.map( n => {
                                     const url = `/dashboard/ahp/${n.id}`;
+                                    const update = n.updatedAt.split(" ")
+                                    const updateTime = update[4].split(':')
+
                                     return (
                                         <TableRow key={n.id} hover component={Link} to={url} className={classes.row}>
                                             <CustomTableCell component="th" 
@@ -94,7 +113,7 @@ class TabContentComponent extends React.Component {
                                                              padding="dense"><Typography>{n.name}</Typography></CustomTableCell>
                                             <CustomTableCell padding="dense"><Typography>{n.goal}</Typography></CustomTableCell>
                                             <CustomTableCell padding="dense"><Typography>{n.owner.fullname}</Typography></CustomTableCell>
-                                            <CustomTableCell padding="dense"><Typography>{n.owner.fullname}</Typography></CustomTableCell>
+                                            <CustomTableCell padding="dense"><Typography>{updateTime[0]+':'+updateTime[1]+" | "+update[2]+' '+update[1]+' '+update[3]}</Typography></CustomTableCell>
                                             <CustomTableCell padding="dense"><Typography>{n.owner.fullname}</Typography></CustomTableCell>
                                             
                                         </TableRow>
@@ -123,26 +142,52 @@ const TabContent = graphql(CURRENT_USER_PROBLEMS, {
     options: ({ status }) => ({ variables: { status } })
 })(withStyles(stylesTabContentComponent)(TabContentComponent));
 
-const styleNewDocumentButtonComponent = theme => ({
+const styleNewProblemButtonComponent = theme => ({
     button: {
         position: 'fixed',
         bottom: 20,
         right: 20
-    }
+    },
+    paper: {
+        position: 'absolute',
+        width: theme.spacing.unit * 50,
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing.unit * 4,
+    },
 });
 
-class newDocumentButtonComponent extends Component {
+class newProblemButtonComponent extends Component {
     constructor(props) {
         super(props);
 
         this.onClick = this.onClick.bind(this);
-    }
+        this.state = {
+            open: false,
+            name: ''
+         };
+    }  
+    handleOpen = () => {
+        this.setState({ open: true });
+    };
+
+    handleClose = () => {
+        this.setState({ open: false });
+    };
+
+    handleChange = name => event => {
+        this.setState({
+          [name]: event.target.value,
+        });
+      };
+    
 
     onClick() {
         this.props.mutate({
+            variables: {name :this.state.name},
             refetchQueries: [{ query }]
         }).then(({ data }) => {
-            this.props.history.push(`/dashboard/ahp/${data.processNew.id}`)
+            this.props.history.push(`/dashboard/ahp/${data.problemNew.id}`)
         });
     }
 
@@ -150,25 +195,52 @@ class newDocumentButtonComponent extends Component {
         const { classes } = this.props;
 
         return (
-            <Button
-                variant="fab"
-                color="primary"
-                aria-label="new document"
-                className={classes.button}
-                onClick={this.onClick}
-            >
-                <Icon>add</Icon>
-            </Button>
+            <div>
+                <Button
+                    variant="fab"
+                    color="primary"
+                    aria-label= "new document"
+                    className={classes.button}
+                    onClick={this.handleOpen}
+                >
+                    <Icon>add</Icon>
+                </Button>
+                <Modal
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                >
+                    <div style={getModalStyle()} className={classes.paper}>
+                    <Typography variant="h6" id="modal-title">
+                        {strings.new}
+                    </Typography>
+                    <TextField
+                        id="outlined-name"
+                        label= {strings.name}
+                        className={classes.textField}
+                        value={this.state.name}
+                        onChange={this.handleChange('name')}
+                        margin="normal"
+                        variant="outlined"
+                    />
+                    <Button variant="outlined" color="primary" 
+                            className={classes.button} onClick={() => this.onClick()}>
+                         Crear
+                    </Button>
+
+                    </div>
+            </Modal>
+          </div>
         );
     }
 }
 
-/*
-const NewDocumentButton =
-    graphql(PROCESS_NEW)(
-    withStyles(styleNewDocumentButtonComponent)(
-    withRouter(newDocumentButtonComponent)));
-/*
+
+const NewProblemButton =
+    graphql(PROBLEM_NEW)(
+    withStyles(styleNewProblemButtonComponent)(
+    withRouter(newProblemButtonComponent)));
 
 /*
  * Exported components.
@@ -184,6 +256,7 @@ class DashboardLayoutProcess extends Component {
 
         this.onTabChange = this.onTabChange.bind(this);
     }
+    
 
     onTabChange(value) {
         this.setState({ activeTabValue: value });
@@ -203,7 +276,7 @@ class DashboardLayoutProcess extends Component {
                                 innerRef={(step) => { this.Tabcontent = step; }}
                     />
                 </LayoutWithTabs>
-
+                <NewProblemButton/>
             </div>
         );
     }

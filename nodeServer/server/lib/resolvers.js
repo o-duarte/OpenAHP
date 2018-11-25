@@ -128,12 +128,15 @@ const resolvers = {
         console.log(e.message);
       }
     },
-    problemSave: async (_, { documentId, rawdata }, req ) => {
+    problemSave: async (_, { problemId, rawData }, req ) => {
+      console.log('problem save')
       try {
-        const data = JSON.parse(rawdata)
+        const data = JSON.parse(rawData)
+        console.log(data)
         return await AhpProblem.findOneAndUpdate(
-          { _id: documentId },
-          { $set: { criteria: data.criteria ,
+          { _id: problemId },
+          { $set: { goal: data.goal,
+                    criteria: data.criteria ,
                     rootMatrix: data.rootMatrix,
                     alternatives: data.alternatives,
                      } },
@@ -142,6 +145,40 @@ const resolvers = {
 
       } catch (e) {
         console.log(e.message);
+      }
+    },
+    problemNew: async (_, {name},req) => {
+      try{
+        const problem = await new AhpProblem({
+          name: name,
+          goal: 'Objetive',
+          rootMatrix: [[1,1],[1,1]],
+          alternatives:  ['Alternative A','Alternative B'],
+          priorityMethod: [0],
+          consistencyMethod: [0],
+          errorMeasure: [0],
+          criteria: [
+            {name: 'Criteria 1',
+             matrix: [[1,1],[1,1]],
+             subcriteria: []
+            },
+            {name: 'Criteria 2',
+             matrix: [[1,1],[1,1]],
+             subcriteria: []
+            }
+          ],
+          owner: req.user
+          
+        }).save()
+        return await AhpProblem.findOne({_id: problem.id})
+                .populate('owner')
+                .exec(function(err, result) {
+                    if (err) return handleError(err);
+                        console.log(result);
+                });
+      }
+      catch(e){
+        console.log(e.message)
       }
     }
   }

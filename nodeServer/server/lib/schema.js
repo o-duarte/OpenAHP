@@ -79,6 +79,7 @@ const types = `
     errorMeasure: [Int]
     criteria: [Criteria]
     owner: User
+    updatedAt: String
   }
 `;
 
@@ -107,7 +108,8 @@ const mutations = `
     logout: User
     documentNew: Document
     documentSaveContent(documentId: ID!, title: String!, description: String!, html: String!, raw: String!): DocumentContent
-    problemSave(documentId: ID!, rawData: String!): ahpProblem 
+    problemSave(problemId: String!, rawData: String!): ahpProblem 
+    problemNew(name: String!): ahpProblem
   }
 `;
 

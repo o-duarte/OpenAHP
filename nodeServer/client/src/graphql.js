@@ -149,6 +149,7 @@ export const CURRENT_USER_PROBLEMS = gql`
       id
       name
       goal
+      updatedAt
       owner {
         fullname
       }
@@ -157,10 +158,17 @@ export const CURRENT_USER_PROBLEMS = gql`
 `;
 
 export const PROBLEM_SAVE  = gql`
-  mutation ProblemSave($documentId: ID!, $rawData: String!) {
-    problemSave(documentId: $documentId, rawData: $rawData) {
+  mutation ProblemSave($problemId: String!, $rawData: String!) {
+    problemSave(problemId: $problemId, rawData: $rawData) {
       id
     }
   }
 `;
 
+export const PROBLEM_NEW  = gql`
+  mutation ProblemNew($name: String!) {
+    problemNew(name: $name) {
+      id
+    }
+  }
+`;

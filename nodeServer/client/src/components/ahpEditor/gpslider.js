@@ -103,7 +103,7 @@ class GPSlider extends React.Component {
 
         return(criteria.matrix[x][y])
     }
-}
+  }
 
   handleChangea = (event, value) => {
     this.setState({valuea: value, valueb: - value});
