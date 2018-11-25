@@ -12,7 +12,7 @@ function addChildren(subcriteria, parent){
         var children = {};
         children.name = subcriteria[x].name;
         children.matrix = subcriteria[x].matrix
-        children.showChildren = false;
+        children.showChildren = true;
         children.editMode = false;
         children.id = parent.id.concat([parseInt(x)])
         if(subcriteria[x].subCriteria.length>0){
@@ -40,7 +40,7 @@ export function problemToTree(problem){
         var children = {};
         children.name = problem.criteria[criteria].name;
         children.matrix = problem.criteria[criteria].matrix
-        children.showChildren = false;
+        children.showChildren = true;
         children.editMode = false;
         children.id = tree.id.concat([parseInt(criteria)])
         children.children = addChildren(problem.criteria[criteria].subCriteria, children);

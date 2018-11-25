@@ -10,9 +10,17 @@ const strings = {
     pairwise: 'Por pares',
     gPairwise: 'Grafica por pares',
     verval: 'Verval',
-    linear: 'Lineal',
+    linear: 'Fundamental',
     balanced: 'Balanceada',
     scale: 'Escala',
+    newAlternative: 'Añadir Alternativa',
+    //List
+    problem: 'Problema',
+    objetive: 'Objetivo',
+    autor: 'Autor',
+    lastEdition: 'Ultima edicion',
+    lastResolution: 'Ultima resolucion',
+    noResults: 'Sin Resultados',
     //criteria tree
     edit: 'Editar',
     delete: 'Eliminar',

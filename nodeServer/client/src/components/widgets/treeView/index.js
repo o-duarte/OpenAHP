@@ -6,6 +6,10 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 
+import immutable from 'object-path-immutable'
+import objectPath from 'object-path'
+
+
 const styles = theme => ({
   whiteText: {
     paddingTop: '3px',
@@ -28,10 +32,15 @@ class Treeview extends Component {
     }
   }
 
+  updateTree(){
+    console.log(this.state.data)
+    this.props.onChangedTree(this.state.data)
+    
+  }
   addRoot = () => {
     let root = {
-      name: '',
-      exportValue: '',
+      name: 'nuevo',
+      matrix: [],
       showChildren: true,
       editMode: true,
       children: []
@@ -47,9 +56,38 @@ class Treeview extends Component {
     this.setState({ value });
   }
 
-  deleteNode = (parent, index) => {
+  deleteNode = (parent, index, grand) => {
+    console.log(grand)
     parent.splice(index, 1);
     this.setState({ parent });
+    //todo modularize this
+    if(grand.rootMatrix === undefined){
+      var path = ""
+      grand.id.forEach(i => {
+          path = path + "children."+String(i)+"."
+      }); 
+      var newTree = this.state.data
+      const length = objectPath.get(this.state.data, path + "matrix."+String(index)).length
+      for(var i=0; i<length; i++){
+        newTree = immutable.del(newTree, path+'matrix.'+String(i)+'.'+String(index))
+      }
+      path = path + "matrix."+String(index)
+      newTree = immutable.del(newTree, path)
+      console.log(newTree)
+      this.setState({data: newTree})
+      this.props.onChangedTree(newTree)
+    }
+    else{
+      var newTree = this.state.data
+      const length = objectPath.get(this.state.data, "rootMatrix."+String(index)).length
+      for(var i=0; i<length; i++){
+        newTree = immutable.del(newTree, 'rootMatrix.'+String(i)+'.'+String(index))
+      }
+      newTree = immutable.del(newTree, 'rootMatrix.'+String(index))
+      this.setState({data: newTree})
+      this.props.onChangedTree(newTree)
+    }
+
   }
 
   makeEditable = (value) => {
@@ -64,17 +102,19 @@ class Treeview extends Component {
       value.exportValue = this.state.editableNode.exportValue;
       value.editMode = false;
       this.setState({ value });
+      this.updateTree()
     }
     else {
-      console.log(index);
       parent.splice(index, 1);
       this.setState({ parent });
+      this.updateTree()
     }
   }
 
   doneEdit = (value) => {
     value.editMode = false;
     this.setState({ value });
+    this.updateTree()
   }
 
   toggleView = (ob) => {
@@ -83,25 +123,31 @@ class Treeview extends Component {
   }
 
   addMember = (parent) => {
+    console.log(parent)
     let newChild = {
-      name: '',
+      name: 'member',
       showChildren: false,
       editMode: true,
-      children: []
+      children: [],
+      matrix: Array(3).fill(null).map(() => Array(3).fill(0)),
     }
     parent.push(newChild);
     this.setState({ parent });
+    this.updateTree()
   }
 
   addChild = (node) => {
     node.showChildren = true;
     node.children.push({
-      name: '',
+      name: 'child',
       showChildren: false,
       editMode: true,
-      children: []
+      children: [],
+      matrix: [],
+
     });
     this.setState({ node });
+    this.updateTree()
   }
   onNodeClick = (node,index) =>{
     if(index==-1){
@@ -115,7 +161,7 @@ class Treeview extends Component {
   nodeEditForm = (value, parent, index) => {
     return (
       <div className="node node_edit" onClick={(e) => { e.stopPropagation() }}>
-        <form className="node_edit_form">
+        <form className="node_edit_form" >
           <div className="field name">
             <input value={value.name}
               type="text"
@@ -133,7 +179,7 @@ class Treeview extends Component {
     )
   }
 
-  makeChildren = (node) => {
+  makeChildren = (node,parent) => {
     const {classes} = this.props;
     if (typeof node === 'undefined' || node.length === 0) return null;
     
@@ -144,14 +190,14 @@ class Treeview extends Component {
 
       // A node has children and want to show her children
       if (value.children.length > 0 && value.showChildren) {
-        let babies = this.makeChildren(value.children);
+        let babies = this.makeChildren(value.children,value);
         let normalMode = (
           <div className="node">
             <i className="fa fa-minus-square-o"></i>
             <Typography className={classes.text} gutterBottom>{value.name}</Typography>
             <span className="actions">
               <Tooltip title={strings.delete} placement="top"><i className="fa fa-close" 
-                       onClick={(e)=> { e.stopPropagation(); this.deleteNode(node, index) }}></i></Tooltip>
+                       onClick={(e)=> { e.stopPropagation() ;this.deleteNode(node, index, parent) }}></i></Tooltip>
               <Tooltip title={strings.edit} placement="top"><i className="fa fa-pencil" 
                        onClick={(e)=> { e.stopPropagation(); this.makeEditable(value) }}></i></Tooltip>
             </span>
@@ -186,7 +232,7 @@ class Treeview extends Component {
               <Tooltip title={strings.edit} placement="top"><i className="fa fa-pencil" 
                        onClick={(e)=> { e.stopPropagation(); this.makeEditable(value) }}></i></Tooltip>
               <Tooltip title={strings.delete} placement="top"><i className="fa fa-close" 
-                       onClick={(e)=> { e.stopPropagation(); this.deleteNode(node, index) }}></i></Tooltip>
+                       onClick={(e)=> { e.stopPropagation(); this.deleteNode(node, index, parent) }}></i></Tooltip>
             </span>
           </div>
         );
@@ -216,7 +262,7 @@ class Treeview extends Component {
   getNodes = () => {
     const {classes} = this.props;
     if (typeof this.state.data.name === 'undefined') return null;
-    let children = this.makeChildren(this.state.data.children);
+    let children = this.makeChildren(this.state.data.children, this.state.data);
     let root = (
       <span className="root">
         <Typography className={classes.whiteText} gutterBottom 

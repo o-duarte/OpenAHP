@@ -10,7 +10,8 @@ const styles = theme => ({
       flexGrow: 1,
       padding: '12px',
       overflow: 'auto',
-      minWidth: '600px'
+      minWidth: '600px',
+      marginTop: 20
     },
     paper: {
       minWidth: '300px',

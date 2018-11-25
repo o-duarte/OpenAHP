@@ -13,6 +13,9 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import Divider from '@material-ui/core/Divider';
+
+
 //
 import strings from '../../strings'
 import GPSlider from './gpslider'
@@ -21,6 +24,7 @@ import VSlider from './vslider';
 import Alternatives from './alternatives'
 import { Loading, Centered} from '../widgets/layouts';
 import immutable from 'object-path-immutable'
+
 
 import {
     CURRENT_USER_SINGLE_PROBLEM,
@@ -52,13 +56,15 @@ const styles = theme => ({
         overflow: 'auto',
       },
     form: {
-        display: 'flex',
-        flexWrap: 'wrap',
+        marginBottom: 10,
       },
     formControl: {
         margin: theme.spacing.unit,
         minWidth: 120,
       },
+    inputSelect:{
+        height: 40,
+    }
   });
 
 class Editor extends Component{
@@ -68,6 +74,8 @@ class Editor extends Component{
         this.onSelectedCriteria = this.onSelectedCriteria.bind(this);
         this.onSelectedMatrixItem = this.onSelectedMatrixItem.bind(this);
         this.onChangedMatrixValue = this.onChangedMatrixValue.bind(this);
+        this.onDeletedAlternative = this.onDeletedAlternative.bind(this);
+        this.onChangedTree = this.onChangedTree.bind(this);
         this.state = {
           initialLoad: true,
           tree: '',
@@ -82,10 +90,20 @@ class Editor extends Component{
         this.setState({selectedCriteria: nodeid, selectedMatrixItem: [0,1]})
         this.slider.onMatrixChange(this.state.tree, nodeid, [0,1]);
     }
+    onChangedTree(tree){
+        const updatedTree = problemToTree(treeToProblem(tree))
+        console.log(updatedTree)
+        this.setState({tree: updatedTree, selectedCriteria: -1,selectedMatrixItem: [0,1] })
+        this.treeView.setState({data: updatedTree})
+        this.matrix.setState({data: updatedTree})
+    }
     onSelectedMatrixItem(x,y){
         this.setState({selectedMatrixItem: [x,y]});
         this.slider.onMatrixChange(this.state.tree, this.state.selectedCriteria, [x,y]);
 
+    }
+    onDeletedAlternative(index){
+        console.log(index)
     }
     makeMutations = () =>{
         this.props.mutate({
@@ -120,7 +138,7 @@ class Editor extends Component{
             path = path + "matrix."+String(x)+'.'+String(y)
             const newTree = immutable.set(tree, path, value)
             this.setState({tree: newTree})
-            this.forceUpdate
+            this.forceUpdate()
         }
     };
     handleChange = event => {
@@ -155,13 +173,15 @@ class Editor extends Component{
                                 </Typography>
                                 <TreeView tree={this.state.tree} 
                                           onSelectedCriteria={this.onSelectedCriteria}
-                                          onChangedtree={''}
+                                          onChangedTree={this.onChangedTree}
+                                          innerRef={(item) => { this.treeView = item; }}
+
                                           />
                             </Paper>
                         </Grid>
                         <Grid item xs={8}>
                             <Paper className={classes.paper}>
-                                <form autoComplete="off"> 
+                                <form autoComplete="off" className={classes.form}> 
                                     <FormControl variant="outlined" className={classes.formControl}>
                                         <InputLabel
                                             htmlFor="outlined-age-simple"
@@ -171,6 +191,7 @@ class Editor extends Component{
                                         <Select
                                             value={this.state.comparison}
                                             onChange={this.handleChange}
+                                            className={classes.inputSelect}
                                             input={
                                             <OutlinedInput
                                                 labelWidth={this.state.labelWidth}
@@ -193,6 +214,7 @@ class Editor extends Component{
                                         </InputLabel>
                                         <Select
                                             value={this.state.verval}
+                                            className={classes.inputSelect}
                                             onChange={this.handleChangeVerval}
                                             input={
                                             <OutlinedInput
@@ -207,6 +229,7 @@ class Editor extends Component{
                                         </Select>
                                     </FormControl>): (<div/>) }
                                 </form>
+                                <Divider />
                                 {this.state.comparison == strings.gPairwise?  (<Centered>
                                     <GPSlider data={this.state.tree}
                                             selectedCriteria={this.state.selectedCriteria}
@@ -229,16 +252,19 @@ class Editor extends Component{
                                             selectedMatrixItem={this.state.selectedMatrixItem}
                                             onChangedMatrixValue={this.onChangedMatrixValue}
                                             innerRef={(item) => { this.slider = item; }}
+                                            scale={this.state.verval}
                                             />): (<div/>) }
                                 <Matrix data={this.state.tree} 
                                         selectedCriteria={this.state.selectedCriteria}
                                         selectedMatrixItem={this.state.selectedMatrixItem}
                                         onSelectedMatrixItem={this.onSelectedMatrixItem}
+                                        innerRef={(item) => { this.matrix = item; }}
                                         />
                             </Paper>
                         </Grid>
                         <Grid item xs={2}>
-                            <Alternatives data={this.state.tree}/>
+                            <Alternatives data={this.state.tree}
+                                        onDeletedAlternative={this.onDeletedAlternative}/>
                         </Grid>
                     </Grid>
                     </Centered>

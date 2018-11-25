@@ -14,6 +14,9 @@ const styles = {
     alignItems: 'center',
     margin: '0 auto'
   },
+  body: {
+    marginTop: 15,
+  },
   slider: {
     padding: '8px 0px',
     overflow: 'hidden',
@@ -142,7 +145,7 @@ class PSlider extends React.Component {
       this.state.initialLoad = false
     } 
     return (
-      <div>
+      <div className={classes.body}>
         <Typography variant='subtitle1'>{this.state.sliderText} {this.state.criteria}</Typography>
         <Grid container spacing={8}>
                     <Grid item xs={3}>

@@ -10,6 +10,10 @@ const styles = {
   root: {
     maxWidth: 300,
     minWidth: 300,
+    marginTop: 15,
+  },
+  body: {
+    
   },
   slider: {
     padding: '12px 0px',

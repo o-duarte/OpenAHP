@@ -4,30 +4,23 @@ function addChildren(children){
         return []
     }
     var subtree = []
-    subtree.subcriteria = [];
     delete children.editMode
     delete children.showChildren
     var x;
     for (x in children){
         if(x=='children'){
-
+                
         }
         else{
             var subcriteria = {};
             subcriteria.name = children[x].name;
             subcriteria.matrix = children[x].matrix
-            if(children[x].children.length>0){
-                subcriteria.subCriteria = addChildren(children[x].children);
-            }
-            else{
-                subcriteria.subCriteria = []
-            }
+            subcriteria.subCriteria = addChildren(children[x].children);
             subtree.push(subcriteria)
         }    
     }
     return subtree
 }
-
 export function treeToProblem(tree){
     var problem = {};
     problem.goal = tree.name;

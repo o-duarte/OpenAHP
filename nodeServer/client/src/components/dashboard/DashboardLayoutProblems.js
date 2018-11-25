@@ -66,17 +66,13 @@ const CustomTableCell = withStyles(theme => ({
 class TabContentComponent extends React.Component {
     constructor() {
         super();
-
     };
-
     componentDidMount(){
         const { refetch } = this.props.data;
         refetch();
     };
-
     render(){
         const { classes } = this.props;
-        console.log(classes)
         const { currentUserProblems, loading, error } = this.props.data;
         if (loading) {
             return (
@@ -85,7 +81,6 @@ class TabContentComponent extends React.Component {
         } else if (error) {
             return <h1>Error</h1>;
         } else {
-            console.log(currentUserProblems);
             if (currentUserProblems.length > 0) {
                 return (
                     <div className={classes.root}>
@@ -93,11 +88,11 @@ class TabContentComponent extends React.Component {
                             
                             <TableHead>
                                 <TableRow>
-                                    <TableCell padding="dense"><Typography variant='h6'>Problema</Typography></TableCell>
-                                    <TableCell padding="dense"><Typography variant='h6'>Objetivo</Typography></TableCell>
-                                    <TableCell padding="dense"><Typography variant='h6'>Autor</Typography></TableCell>
-                                    <TableCell padding="dense"><Typography variant='h6'>Ultima edicion</Typography></TableCell>
-                                    <TableCell padding="dense"><Typography variant='h6'>Ultima resolucion</Typography></TableCell>
+                                    <TableCell padding="dense"><Typography variant='h6'>{strings.problem}</Typography></TableCell>
+                                    <TableCell padding="dense"><Typography variant='h6'>{strings.objetive}</Typography></TableCell>
+                                    <TableCell padding="dense"><Typography variant='h6'>{strings.autor}</Typography></TableCell>
+                                    <TableCell padding="dense"><Typography variant='h6'>{strings.lastEdition}</Typography></TableCell>
+                                    <TableCell padding="dense"><Typography variant='h6'>{strings.lastResolution}</Typography></TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
