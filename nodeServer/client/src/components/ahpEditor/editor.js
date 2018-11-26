@@ -33,6 +33,7 @@ import {
 
 import { problemToTree } from '../../utils/problemAdapter';
 import { treeToProblem } from '../../utils/treeAdapter';
+import { deleteAlternative } from '../../utils/deleteAlternative';
 
 const styles = theme => ({
     root: {
@@ -104,6 +105,7 @@ class Editor extends Component{
     }
     onDeletedAlternative(index){
         console.log(index)
+        deleteAlternative(this.state.tree, index);
     }
     makeMutations = () =>{
         this.props.mutate({
@@ -264,7 +266,9 @@ class Editor extends Component{
                         </Grid>
                         <Grid item xs={2}>
                             <Alternatives data={this.state.tree}
-                                        onDeletedAlternative={this.onDeletedAlternative}/>
+                                        onDeletedAlternative={this.onDeletedAlternative}
+                                        onChangedTree={this.onChangedTree}
+                                        />
                         </Grid>
                     </Grid>
                     </Centered>

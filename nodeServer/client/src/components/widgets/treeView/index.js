@@ -259,8 +259,8 @@ class Treeview extends Component {
       // A node has children but don't want to showing her children
       else if (value.children.length > 0 && !value.showChildren) {
         item = (
-          <li key={index} onClick={(e)=> { e.stopPropagation(); this.toggleView(value) ; this.onNodeClick(node, index)}}>
-            <div className="node"><i className="fa fa-plus-square-o"></i><Typography className={classes.text} gutterBottom>{value.name}</Typography></div>
+          <li key={index} onClick={(e)=> { e.stopPropagation(); ; this.onNodeClick(node, index)}}>
+            <div className="node"><i className="fa fa-plus-square-o"  onClick={(e)=> { this.toggleView(value) ; }}   ></i><Typography className={classes.text} gutterBottom>{value.name}</Typography></div>
           </li>
         );
       }
