@@ -14,6 +14,7 @@ const strings = {
     balanced: 'Balanceada',
     scale: 'Escala',
     newAlternative: 'Añadir Alternativa',
+    newCriteria: 'Nuevo criterio',
     //List
     problem: 'Problema',
     objetive: 'Objetivo',
