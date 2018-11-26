@@ -29,6 +29,7 @@ const strings = {
     acept: 'Aceptar',
     cancel: 'Cancelar',
     criteria: 'Criterios',
+    subCriteria: 'Subcriterio',
     addCriteria: 'Añadir criterio',
     addSubcriteria: 'Añadir Subcriterio',
     // verval pairwise

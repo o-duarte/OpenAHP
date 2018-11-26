@@ -56,10 +56,9 @@ class Treeview extends Component {
     this.setState({ value });
   }
   deleteNode = (parent, index, grand) => {
-    console.log(grand)
-    console.log(this.state.data)
     parent.splice(index, 1);
     this.setState({ parent });
+    var lastChild = false;
     //todo modularize this
     if(grand.rootMatrix === undefined){
       var path = ""
@@ -68,6 +67,7 @@ class Treeview extends Component {
       }); 
       var newTree = this.state.data
       const length = objectPath.get(newTree, path + "matrix."+String(index)).length
+      if(length==1){lastChild=true;}
       for(var i=0; i<length; i++){
         newTree = immutable.del(newTree, path+'matrix.'+String(i)+'.'+String(index))
       }
@@ -79,10 +79,24 @@ class Treeview extends Component {
     else{
       var newTree = this.state.data
       const length = objectPath.get(this.state.data, "rootMatrix."+String(index)).length
+      if(length==1){lastChild=true;}
       for(var i=0; i<length; i++){
         newTree = immutable.del(newTree, 'rootMatrix.'+String(i)+'.'+String(index))
       }
       newTree = immutable.del(newTree, 'rootMatrix.'+String(index))
+      this.setState({data: newTree})
+      this.props.onChangedTree(newTree)
+    }
+    //if is the last child of a node
+    if(lastChild){
+      var path = ""
+      grand.id.forEach(i => {
+          path = path + "children."+String(i)+"."
+      });
+      console.log(path) 
+      var newTree = this.state.data
+      newTree = immutable.set(newTree, path+'matrix',
+        Array(this.state.data.alternatives.length).fill(null).map(() => Array(this.state.data.alternatives.length).fill(1)))
       this.setState({data: newTree})
       this.props.onChangedTree(newTree)
     }
@@ -152,23 +166,33 @@ class Treeview extends Component {
       newTree = immutable.push(newTree, 'rootMatrix',Array(length+1).fill(1))
       this.setState({data: newTree})
       this.props.onChangedTree(newTree)
-    }
-
-
-    
+    } 
   }
-  addChild = (node) => {
+  addChild = (node, grand) => {
     node.showChildren = true;
     node.children.push({
-      name: 'child',
+      name: strings.subCriteria,
       showChildren: false,
       editMode: true,
       children: [],
-      matrix: [],
-
+      matrix: Array(this.state.data.alternatives.length).fill(null).map(() => Array(this.state.data.alternatives.length).fill(1)),
     });
     this.setState({ node });
-    this.props.onChangedTree(this.state.data)
+    //update parent matrix 
+    if(grand.rootMatrix === undefined){
+      var path = ""
+      node.id.forEach(i => {
+          path = path + "children."+String(i)+"."
+      });
+      console.log(path) 
+      var newTree = this.state.data
+      newTree = immutable.set(newTree, path+'matrix',[[1]])
+      this.setState({data: newTree})
+      this.props.onChangedTree(newTree)
+    }
+    else{
+      //this never happens
+    } 
   }
   onNodeClick = (node,index) =>{
     if(index==-1){
@@ -249,7 +273,7 @@ class Treeview extends Component {
             <Typography className={classes.text} gutterBottom>{value.name}</Typography>
             <span className="actions">
               <Tooltip title={strings.addSubcriteria} placement="top"><i className="fa fa-plus" 
-                       onClick={(e)=> { e.stopPropagation(); this.addChild(value) }}> </i></Tooltip>
+                       onClick={(e)=> { e.stopPropagation(); this.addChild(value, parent) }}> </i></Tooltip>
               <Tooltip title={strings.edit} placement="top"><i className="fa fa-pencil" 
                        onClick={(e)=> { e.stopPropagation(); this.makeEditable(value) }}></i></Tooltip>
               <Tooltip title={strings.delete} placement="top"><i className="fa fa-close" 
