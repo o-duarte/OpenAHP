@@ -78,6 +78,10 @@ class Alternatives extends Component{
     handleDelete = (index) => {
         this.props.onDeletedAlternative(index); 
     };
+    handleAdd = (index) => {
+        this.props.onAddAlternative(this.state.name); 
+        this.setState({name: ''})
+    };
     handleChange = name => event => {
         this.setState({
         [name]: event.target.value,
@@ -179,7 +183,7 @@ class Alternatives extends Component{
                     />  
                     <Centered>
                         <IconButton aria-label="add">
-                            <AddIcon onClick={() =>this.handleDelete(3)}
+                            <AddIcon onClick={() =>this.handleAdd()}
                                         //className={classes.icon}
                                         />
                         </IconButton>
