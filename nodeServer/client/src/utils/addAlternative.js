@@ -3,8 +3,7 @@ import objectPath from 'object-path'
 
 var ids=[]
 
-export function deleteAlternative(tree, index){
-    ids = []
+export function addAlternative(tree, alternative){
     recursiveSearch(tree)
     var newTree = tree
     ids.forEach(id => {
@@ -12,13 +11,13 @@ export function deleteAlternative(tree, index){
         id.forEach(i => {
             path = path + "children."+String(i)+"."
         }); 
-        const length = objectPath.get(newTree, path + "matrix."+String(index)).length
+        const length = objectPath.get(newTree, path + "matrix").length
         for(var i=0; i<length; i++){
-            newTree = immutable.del(newTree, path+'matrix.'+String(i)+'.'+String(index))
+            newTree = immutable.push(newTree, path+'matrix.'+String(i),1)
           }
-          newTree = immutable.del(newTree, path + "matrix."+String(index))
+          newTree = immutable.push(newTree, path + "matrix", Array(length+1).fill(1))
     })
-    newTree = immutable.del(newTree, "alternatives." + String(index))
+    newTree = immutable.push(newTree, "alternatives", alternative)
     return newTree
 }
 

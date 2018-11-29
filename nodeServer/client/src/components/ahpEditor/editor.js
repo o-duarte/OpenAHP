@@ -15,7 +15,6 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Divider from '@material-ui/core/Divider';
 
-
 //
 import strings from '../../strings'
 import GPSlider from './gpslider'
@@ -34,6 +33,7 @@ import {
 import { problemToTree } from '../../utils/problemAdapter';
 import { treeToProblem } from '../../utils/treeAdapter';
 import { deleteAlternative } from '../../utils/deleteAlternative';
+import { addAlternative } from '../../utils/addAlternative';
 
 const styles = theme => ({
     root: {
@@ -76,6 +76,7 @@ class Editor extends Component{
         this.onSelectedMatrixItem = this.onSelectedMatrixItem.bind(this);
         this.onChangedMatrixValue = this.onChangedMatrixValue.bind(this);
         this.onDeletedAlternative = this.onDeletedAlternative.bind(this);
+        this.onAddAlternative = this.onAddAlternative.bind(this)
         this.onChangedTree = this.onChangedTree.bind(this);
         this.state = {
           initialLoad: true,
@@ -101,11 +102,21 @@ class Editor extends Component{
     onSelectedMatrixItem(x,y){
         this.setState({selectedMatrixItem: [x,y]});
         this.slider.onMatrixChange(this.state.tree, this.state.selectedCriteria, [x,y]);
-
+        
     }
     onDeletedAlternative(index){
-        console.log(index)
-        deleteAlternative(this.state.tree, index);
+        const updatedTree = deleteAlternative(this.state.tree, index);
+        this.setState({tree: updatedTree, selectedCriteria: -1,selectedMatrixItem: [0,1] })
+        this.treeView.setState({data: updatedTree})
+        this.matrix.setState({data: updatedTree})
+        this.Alternatives.setState({data: updatedTree})
+    }
+    onAddAlternative(alternative){
+        const updatedTree = addAlternative(this.state.tree, alternative);
+        this.setState({tree: updatedTree, selectedCriteria: -1,selectedMatrixItem: [0,1] })
+        this.treeView.setState({data: updatedTree})
+        this.matrix.setState({data: updatedTree})
+
     }
     makeMutations = () =>{
         this.props.mutate({
@@ -276,7 +287,9 @@ class Editor extends Component{
                         <Grid item xs={2}>
                             <Alternatives data={this.state.tree}
                                         onDeletedAlternative={this.onDeletedAlternative}
+                                        onAddAlternative={this.onAddAlternative}
                                         onChangedTree={this.onChangedTree}
+                                        innerRef={(item) => { this.Alternatives = item; }}
                                         />
                         </Grid>
                     </Grid>
