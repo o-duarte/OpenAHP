@@ -143,6 +143,15 @@ class Editor extends Component{
             this.forceUpdate()
         }
     };
+    componentDidMount() {
+        fetch('http://localhost:3001/ahpsolver/'+this.props.problemId)
+        .then((response) => {
+            return response.json()
+        })
+        .then((recurso) => {
+            console.log(recurso)
+        })
+      }
     handleChange = event => {
         this.setState({ [event.target.name]: event.target.value });
         };

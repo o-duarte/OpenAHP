@@ -19,8 +19,9 @@ import { makeExecutableSchema } from 'graphql-tools';
 import { MONGO_URI } from './lib/config';
 import schemas from './lib/schema';
 import resolvers from './lib/resolvers';
-import mockData from './db/mockdata';
-import {CLIENT_URL} from './lib/config'
+import {CLIENT_URL, SOLVER_URL} from './lib/config'
+
+import request from 'request';
 
 const app = express();
 const router = express.Router();
@@ -29,6 +30,12 @@ const router = express.Router();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(router);
+
+ app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 /*
  * Mongoose setup.
@@ -98,7 +105,6 @@ app.get(
   '/auth/google',
   passport.authenticate('google', { scope: ['profile', 'email'] })
 );
-//todo this redirects to 3001 no to 3000
 app.get(
   '/auth/google/callback',
   passport.authenticate('google', {
@@ -106,6 +112,17 @@ app.get(
     failureRedirect: CLIENT_URL + '/login'
   })
 );
+
+app.get('/ahpsolver/:id', function(req,res) {
+
+  var path = SOLVER_URL + '/ahp/' + req.params.id
+
+  request.get(path, function (error, response, body) {
+    console.log('error:', error); 
+    console.log('statusCode:', response && response.statusCode); 
+    res.send(JSON.parse(body))
+  })
+})
 
 /*
  * Static File server setup.
@@ -125,5 +142,3 @@ app.listen(app.get('port'), () => {
   console.log(`OpenChoice app running on ${app.get('port')}`);
 });
 
-// mocking some data.
-// mockData();
