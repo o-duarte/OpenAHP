@@ -16,6 +16,7 @@ import Publish from '@material-ui/icons/Publish'
 import Paper from '@material-ui/core/Paper'
 import Editor from './editor'
 import Centered from '../widgets/layouts/Centered'
+import Results from '../results'
 
 const styles = theme => ({
   root: {
@@ -54,9 +55,10 @@ export class GetStepContent extends React.Component {
           return <Editor innerRef={(step) => { this.editor = step; }}
                          problemId={this.props.problemId}/>; 
         case 1:
-          return 'What is an ad group anyways?';
+          return 'in this part i put the params';
         case 2:
-          return 'This is the bit I really care about!';
+          return <Results innerRef={(step) => { this.editor = step; }}
+          problemId={this.props.problemId}/>;
         default:
           return 'Unknown step';
       }

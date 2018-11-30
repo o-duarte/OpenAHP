@@ -1,8 +1,11 @@
 package ahpServer.models;
 
+import java.util.Date;
 import java.util.ArrayList;
 
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,7 +13,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class AhpProblem {
   @Id
   public ObjectId _id;
-
   public ObjectId owner;
   public String name;
   public String goal;
@@ -20,6 +22,14 @@ public class AhpProblem {
   public Integer consistencyMethod;
   public Integer errorMeasure;
   public ArrayList<problemCriteria> criteria;
+  public ObjectId result;
+
+  @CreatedDate
+  public Date createdAt;
+  @LastModifiedDate
+  public Date updatedAt;
+  @LastModifiedDate
+  public Date lastResolutionAt;
   
   // Constructors
   public AhpProblem() {
@@ -33,7 +43,8 @@ public class AhpProblem {
                     Integer priorityMethod,
                     Integer errorMeasure,
                     Integer consistencyMethod,
-                    ArrayList<problemCriteria> criteria) {
+                    ArrayList<problemCriteria> criteria,
+                    ObjectId result) {
     this._id = _id;
     this.name = name;
     this.goal = goal;
@@ -41,6 +52,7 @@ public class AhpProblem {
     this.priorityMethod = priorityMethod;
     this.errorMeasure = errorMeasure;
     this.criteria = criteria;
+    this.result = result;
   }
  
   // ObjectId needs to be converted to string

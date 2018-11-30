@@ -39,6 +39,7 @@
     "react": "^16.5.2",
     "react-apollo": "^2.0.4",
     "react-autosuggest": "^9.3.2",
+    "react-chartjs": "^1.2.0",
     "react-dom": "^16.5.2",
     "react-popper": "^0.7.5",
     "react-router-dom": "^4.2.2",

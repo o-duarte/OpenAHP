@@ -21,7 +21,7 @@ import GPSlider from './gpslider'
 import PSlider from './pslider'
 import VSlider from './vslider';
 import Alternatives from './alternatives'
-import { Loading, Centered} from '../widgets/layouts';
+import { Loading, Centered } from '../widgets/layouts';
 import immutable from 'object-path-immutable'
 
 
@@ -163,6 +163,8 @@ class Editor extends Component{
             console.log(recurso)
         })
       }
+
+    
     handleChange = event => {
         this.setState({ [event.target.name]: event.target.value });
         };

@@ -78,7 +78,7 @@ public class AhpProblemController {
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-  public AhpProblem getProblemById(@PathVariable("id") ObjectId id) {
+  public Result getProblemById(@PathVariable("id") ObjectId id) {
     AhpProblem problem = repository.findBy_id(id);
     DecisionProblem decisionProblem =  new DecisionProblem(problem.name);
     DecisionProblemSolver decisionSolver = new DecisionProblemSolver();
@@ -144,32 +144,21 @@ public class AhpProblemController {
     for(int i=0;i<criterias.size();i++){
       result.criteria.add(getSubResults(criterias.get(i))); 
     }
-
+    if(repository.findBy_id(problem._id).result != null  ){
+      resultRepository.delete(resultRepository.findBy_id(repository.findBy_id(problem._id).result));
+    }
+    problem.result = result._id;
+    repository.save(problem);
     resultRepository.save(result);
-
-    System.out.println(decisionProblem.getRoot().getSubcriteria());
-    
-
-
-
-
-
-
 
     for(int i = 0; i < rank.size(); i++){
         System.out.println("weight----"+ rank.get(i).getWeight());
         System.out.println("a1----"+ rank.get(i).getAlternative1());
         System.out.println("a2----"+ rank.get(i).getAlternative2());
     }
-    System.out.println("---------------------NORMALISED_COLUMN_SUM");
-    System.out.println(decisionProblem.getRanking(FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM));
-    System.out.println("---------------------EIGENVECTOR");
-    System.out.println(decisionProblem.getRanking(FactoryPriorityMethod.PriorityMethodEnum.EIGENVECTOR));
-    System.out.println("---------------------GEOMETRIC_MEAN");
-    System.out.println(decisionProblem.getRanking(FactoryPriorityMethod.PriorityMethodEnum.GEOMETRIC_MEAN));
-    System.out.println("---------------------REVISED_GEOMETRIC_MEAN");
-    System.out.println(decisionProblem.getRanking(FactoryPriorityMethod.PriorityMethodEnum.REVISED_GEOMETRIC_MEAN));
-    return repository.findBy_id(id);
+
+
+    return result;
   }
  
   @RequestMapping(value = "/new1", method= RequestMethod.GET)
