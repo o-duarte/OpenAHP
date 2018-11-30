@@ -74,9 +74,9 @@ const types = `
     goal: String
     rootMatrix: [[Float]]
     alternatives: [String]
-    priorityMethod: [Int]
-    consistencyMethod: [Int]
-    errorMeasure: [Int]
+    priorityMethod: Int
+    consistencyMethod: Int
+    errorMeasure: Int
     criteria: [Criteria]
     owner: User
     updatedAt: String

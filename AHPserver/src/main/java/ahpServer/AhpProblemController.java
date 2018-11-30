@@ -7,7 +7,11 @@ import javax.validation.Valid;
 
 import ahpServer.models.AhpProblem;
 import ahpServer.models.problemCriteria;
+import ahpServer.models.Result;
+import ahpServer.models.ResultCriteria;
 import ahpServer.repositories.AhpProblemRepository;
+import ahpServer.repositories.ResultRepository;
+
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +39,8 @@ public class AhpProblemController {
   
   @Autowired
   private AhpProblemRepository repository;
+  @Autowired
+  private ResultRepository resultRepository;
 
   @RequestMapping(value = "/", method = RequestMethod.GET)
   public List<AhpProblem> getAllPets() {
@@ -57,6 +63,18 @@ public class AhpProblemController {
       element.addSubCriterion(toDecisionElement(criteria.subCriteria.get(i)));
     }
     return element;
+  }
+
+  private ResultCriteria getSubResults(DecisionElement subresult){
+    ResultCriteria result = new ResultCriteria();
+    result.name = subresult.getName();
+    result.ranking = subresult.getRanking(FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM);
+    result.subCriteria = new ArrayList<ResultCriteria>();
+    for(int i=0;i<subresult.getSubcriteria().size();i++){
+      result.subCriteria.add(getSubResults(subresult.getSubcriteria().get(i)));
+    }
+    return result;
+
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -83,10 +101,13 @@ public class AhpProblemController {
     }
     decisionElement.setComparisonMatrix(comparisonMatrix);
     decisionProblem.setRootNode(decisionElement);
+
     /* Criteria */
     for(int i=0;i<problem.criteria.size();i++){
+      System.out.println(toDecisionElement(problem.criteria.get(i)).getRanking(FactoryPriorityMethod.PriorityMethodEnum.REVISED_GEOMETRIC_MEAN));
       decisionProblem.addSubCriterion(toDecisionElement(problem.criteria.get(i)));
     }
+
     /* Solver */
     for(FactoryPriorityMethod.PriorityMethodEnum enume:
                 FactoryPriorityMethod.PriorityMethodEnum.values()){
@@ -102,13 +123,38 @@ public class AhpProblemController {
     }
 
     decisionSolver.computeResults(decisionProblem, false);
-    
+    ///sensitivity Analisis
     NumercialSensitivityMethod sensitivityMethod = new NumercialSensitivityMethod(
                                             decisionProblem,
                                             FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM);
     ArrayList<RankReversal> rank = sensitivityMethod.getRankReversals(decisionProblem.getRoot(), 2);
     
-    //double delta = 1e-2;
+    Result result = new Result();
+    result.set_id(ObjectId.get());
+    result.name = problem.name;
+    result.goal = problem.goal;
+    result.alternatives = problem.alternatives;
+    result.priorityMethod = problem.priorityMethod ;
+    result.consistencyMethod = problem.consistencyMethod;
+    result.errorMeasure = problem.errorMeasure;
+    result.criteria = new ArrayList<ResultCriteria>();
+    /////////////////CHANGE NEXT LINE
+    result.ranking = decisionProblem.getRanking(FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM);
+    ArrayList<DecisionElement> criterias = decisionProblem.getRoot().getSubcriteria();
+    for(int i=0;i<criterias.size();i++){
+      result.criteria.add(getSubResults(criterias.get(i))); 
+    }
+
+    resultRepository.save(result);
+
+    System.out.println(decisionProblem.getRoot().getSubcriteria());
+    
+
+
+
+
+
+
 
     for(int i = 0; i < rank.size(); i++){
         System.out.println("weight----"+ rank.get(i).getWeight());
@@ -126,24 +172,6 @@ public class AhpProblemController {
     return repository.findBy_id(id);
   }
  
-  @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-  public void modifyPetById(@PathVariable("id") ObjectId id, @Valid @RequestBody AhpProblem pets) {
-    pets.set_id(id);
-    repository.save(pets);
-  }
- 
-  @RequestMapping(value = "/", method = RequestMethod.POST)
-  public AhpProblem createPet(@Valid @RequestBody AhpProblem pets) {
-    pets.set_id(ObjectId.get());
-    repository.save(pets);
-    return pets;
-  }
- 
-  @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-  public void deletePet(@PathVariable ObjectId id) {
-    repository.delete(repository.findBy_id(id));
-  }
-
   @RequestMapping(value = "/new1", method= RequestMethod.GET)
   public void newtest1(){
     TestCreators test = new TestCreators();

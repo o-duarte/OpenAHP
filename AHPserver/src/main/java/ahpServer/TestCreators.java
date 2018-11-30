@@ -18,9 +18,9 @@ public class TestCreators {
         //alternatives
         problem.alternatives = new ArrayList<String>(Arrays.asList("london","madrid","santiago"));
         //methods
-        problem.consistencyMethod = new ArrayList<Integer>(Arrays.asList(0));
-        problem.errorMeasure = new ArrayList<Integer>(Arrays.asList(0));
-        problem.priorityMethod = new ArrayList<Integer>(Arrays.asList(0));
+        problem.consistencyMethod = 0;
+        problem.errorMeasure = 0;
+        problem.priorityMethod = 0;
         //base matrix
         ArrayList<Double> a = new ArrayList<Double>(Arrays.asList(1d,0.5d,0.25d));
         ArrayList<Double> b = new ArrayList<Double>(Arrays.asList(0d,1d,0.5d));
@@ -70,9 +70,9 @@ public class TestCreators {
         //alternatives
         problem.alternatives = new ArrayList<String>(Arrays.asList("grand am","nissan","mercedes","volvo","thunder"));
         //methods
-        problem.consistencyMethod = new ArrayList<Integer>(Arrays.asList(0));
-        problem.errorMeasure = new ArrayList<Integer>(Arrays.asList(0));
-        problem.priorityMethod = new ArrayList<Integer>(Arrays.asList(0));
+        problem.consistencyMethod = 0;
+        problem.errorMeasure = 0;
+        problem.priorityMethod = 0;
         //base matrix
         ArrayList<Double> a = new ArrayList<Double>(Arrays.asList(1d,1/3d,2d,1/4d));
         ArrayList<Double> b = new ArrayList<Double>(Arrays.asList(0d,1d,3d,0.5d));

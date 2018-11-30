@@ -10,5 +10,4 @@ public class problemCriteria {
   public ArrayList<problemCriteria> subCriteria;
   public ArrayList<ArrayList<Double>> matrix;
   
-
 }

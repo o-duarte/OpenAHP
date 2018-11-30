@@ -9,7 +9,7 @@ const strings = {
     alternatives: 'Alternativas',
     pairwise: 'Por pares',
     gPairwise: 'Grafica por pares',
-    verval: 'Verval',
+    verval: 'Verbal',
     linear: 'Fundamental',
     balanced: 'Balanceada',
     scale: 'Escala',
@@ -35,8 +35,8 @@ const strings = {
     // verval pairwise
     equal:'Igual',
     moderate: 'Moderada',
-    strong: 'Esecial',
-    vStrong: 'Mucha',
+    strong: 'Mucha',
+    vStrong: 'Demasiada',
     extreme: 'Extrema',
     //sliders
     sliderTextImp: 'Comparar la relativa importancia respeto a:',

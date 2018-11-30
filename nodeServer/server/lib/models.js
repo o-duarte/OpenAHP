@@ -283,13 +283,13 @@ const AhpProblemSchema = new Schema(
       type: [String],
     },
     priorityMethod: {
-      type: [Number],
+      type: Number,
     },
     consistencyMethod: {
-      type: [Number],
+      type: Number,
     },
     errorMeasure: {
-      type: [Number],
+      type: Number,
     },
     criteria: {
       type: [Criteria],
