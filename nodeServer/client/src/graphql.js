@@ -111,6 +111,9 @@ export const CURRENT_USER_SINGLE_PROBLEM= gql`
       priorityMethod
       consistencyMethod
       errorMeasure
+      result {
+        id
+      }
       criteria {
         name
         matrix
@@ -169,6 +172,13 @@ export const PROBLEM_NEW  = gql`
   mutation ProblemNew($name: String!) {
     problemNew(name: $name) {
       id
+    }
+  }
+`;
+export const RESULT  = gql`
+  query result($resultId: String!) {
+    result(resultId: $resultId) {
+      raw
     }
   }
 `;

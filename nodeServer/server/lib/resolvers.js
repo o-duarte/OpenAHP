@@ -7,6 +7,7 @@ const Tag = mongoose.model('Tag');
 const Document = mongoose.model('Document');
 const DocumentContent = mongoose.model('DocumentContent');
 const AhpProblem = mongoose.model('AhpProblem');
+const Result = mongoose.model('Result');
 
 const resolvers = {
   Query: {
@@ -57,9 +58,19 @@ const resolvers = {
         .exec();
     },
     currentUserSingleProblem: async (_, { problemId }, req) => {
-      console.log(problemId)
       try {
         return await AhpProblem.findOne({ _id: problemId })
+          .populate('owner')
+          .populate('result')
+          .exec()
+
+      } catch (e) {
+        console.log(e.message);
+      }
+    },
+    result: async (_, { resultId }, req) => {
+      try {
+        return await Result.findOne({ _id: resultId })
           .exec();
       } catch (e) {
         console.log(e.message);

@@ -12,12 +12,9 @@ import TreeView from './treeView'
 import strings from '../../strings'
 
 import { Loading, Centered } from '../widgets/layouts';
-import immutable from 'object-path-immutable'
-
 
 import {
-    CURRENT_USER_SINGLE_PROBLEM,
-    PROBLEM_SAVE
+    RESULT,
   } from '../../graphql';
 
 import { problemToTree } from '../../utils/problemAdapter';
@@ -75,44 +72,14 @@ class Results extends Component{
         //this.slider.onMatrixChange(this.state.tree, nodeid, [0,1]);
     }
 
-    makeMutations = () =>{
-        this.props.mutate({
-            variables: {
-                problemId: this.props.problemId,
-                rawData: JSON.stringify(treeToProblem(this.state.tree))
 
-            }
-        })
-            .then(({ data }) => {
-                console.log('got data', data);
-                const { refetch } = this.props.data;
-                refetch();
-            }).catch((error) => {
-            console.log('there was an error sending the query', error);
-        });
-    };
-
-    componentDidMount() {
-        fetch('http://localhost:3001/ahpsolver/'+this.props.problemId)
-        .then((response) => {
-            return response.json()
-        })
-        .then((recurso) => {
-            console.log(recurso)
-        })
-      }
-
-    
     handleChange = event => {
         this.setState({ [event.target.name]: event.target.value });
         };
-    handleChangeVerval = event => {
-        this.setState({ verval: event.target.value });
-        };
+
     render() {
         const { classes } = this.props;
-        const { currentUserSingleProblem, loading, error } = this.props.data;
-        
+        const { result, loading, error } = this.props.data;
         if (loading) {
             return (
                 <Loading/>
@@ -121,8 +88,10 @@ class Results extends Component{
             return <h1>Error</h1>;
         } else {
             if (this.state.initialLoad) {
-                this.state.tree = problemToTree(currentUserSingleProblem);
+                const json = JSON.parse(result.raw);
+                this.state.tree = problemToTree(json);
                 this.state.initialLoad = false;
+
             }
             return(
             <div className={classes.root}>
@@ -157,10 +126,9 @@ class Results extends Component{
 }
 
 export default compose(
-    graphql(CURRENT_USER_SINGLE_PROBLEM, {
-        options: ({ problemId }) => ({
-            variables: { problemId }
+    graphql(RESULT, {
+        options: ({ resultId }) => ({
+            variables: { resultId }
         })
     }),
-    //graphql(PROBLEM_SAVE)
 )(withStyles(styles)(Results));

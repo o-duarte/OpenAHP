@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import { withStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-
+import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import SkipNext from '@material-ui/icons/SkipNext'
@@ -14,9 +15,12 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 import Save from '@material-ui/icons/Save'
 import Publish from '@material-ui/icons/Publish'
 import Paper from '@material-ui/core/Paper'
+import Play from'@material-ui/icons/PlayCircleOutline'
+
 import Editor from './editor'
 import Centered from '../widgets/layouts/Centered'
 import Results from '../results'
+import strings from '../../strings'
 
 const styles = theme => ({
   root: {
@@ -36,7 +40,7 @@ const styles = theme => ({
 });
 
 function getSteps() {
-  return ['Datos del Problema', 'Variables de Resolucion', 'Resultados', 'Analisis de Sensibilidad'];
+  return [strings.data, strings.params, strings.results, strings.analisis];
 }
 
 
@@ -53,12 +57,15 @@ export class GetStepContent extends React.Component {
       switch (step) {
         case 0:
           return <Editor innerRef={(step) => { this.editor = step; }}
-                         problemId={this.props.problemId}/>; 
+                         problemId={this.props.problemId}
+                         setResultId={this.props.setResultId}/>; 
         case 1:
           return 'in this part i put the params';
         case 2:
           return <Results innerRef={(step) => { this.editor = step; }}
-          problemId={this.props.problemId}/>;
+                          resultId={this.props.resultId}
+                          
+                          />;
         default:
           return 'Unknown step';
       }
@@ -69,11 +76,17 @@ export class GetStepContent extends React.Component {
 class ProblemStepper extends React.Component {
   constructor(props) {
     super(props);
+    this.setResultId = this.setResultId.bind(this);
+    this.state = {
+      activeStep: 0,
+      skipped: new Set(),
+      resultId: undefined,
+    };
   }
-  state = {
-    activeStep: 0,
-    skipped: new Set(),
-  };
+  setResultId(id){
+    console.log(id)
+    this.setState({resultId: id});
+  }
 
   isStepOptional = step => {
     return false;
@@ -123,12 +136,21 @@ class ProblemStepper extends React.Component {
   handleMutation = () => {
     this.stepContent.editor.makeMutations()
   }
+  runSolver = () => {
+    fetch('http://localhost:3001/ahpsolver/'+this.props.problemId)
+        .then((response) => {
+            return response.json()
+        })
+        .then((recurso) => {
+            console.log(recurso)
+        })
+  }
 
   render() {
     const { classes } = this.props;
     const steps = getSteps();
     const { activeStep } = this.state;
-    console.log(this)
+
     return (
       <Centered>
         <div className={classes.root}>
@@ -163,11 +185,22 @@ class ProblemStepper extends React.Component {
                       </IconButton>
                   )}
                   {activeStep === 0 && (
-                      <IconButton
-                        onClick={() => this.handleMutation()}
-                        >
-                        <Save />
-                      </IconButton>
+                      <Tooltip title={strings.save} placement="top">
+                        <IconButton
+                          onClick={() => this.handleMutation()}
+                          >
+                          <Save />
+                        </IconButton>
+                      </Tooltip>
+                  )}
+                  {activeStep === 1 && (
+                      <Tooltip title={strings.solve} placement="top">
+                        <IconButton
+                          onClick={() => this.runSolver()}
+                          >
+                          <Play />
+                        </IconButton>
+                      </Tooltip>
                   )}
 
                   <IconButton
@@ -193,7 +226,9 @@ class ProblemStepper extends React.Component {
                 <GetStepContent ref={(step) => { this.stepContent = step; }}
                                             step={activeStep}
                                             classes={classes}
+                                            setResultId={this.setResultId}
                                             problemId={this.props.problemId}
+                                            resultId={this.state.resultId}
                                             />
                                                                                                                         
               </div>

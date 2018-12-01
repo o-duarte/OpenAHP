@@ -85,7 +85,7 @@ class Editor extends Component{
           selectedMatrixItem: [0,1],
           comparison: strings.pairwise,
           labelWidth: 100,
-          verval: strings.linear,
+          verbal: strings.linear,
         };
       }
     onSelectedCriteria(nodeid){
@@ -154,26 +154,19 @@ class Editor extends Component{
             this.forceUpdate()
         }
     };
-    componentDidMount() {
-        fetch('http://localhost:3001/ahpsolver/'+this.props.problemId)
-        .then((response) => {
-            return response.json()
-        })
-        .then((recurso) => {
-            console.log(recurso)
-        })
-      }
+    
 
     
     handleChange = event => {
         this.setState({ [event.target.name]: event.target.value });
         };
     handleChangeVerval = event => {
-        this.setState({ verval: event.target.value });
+        this.setState({ verbal: event.target.value });
         };
     render() {
         const { classes } = this.props;
         const { currentUserSingleProblem, loading, error } = this.props.data;
+        console.log(currentUserSingleProblem)
         
         if (loading) {
             return (
@@ -185,6 +178,7 @@ class Editor extends Component{
             if (this.state.initialLoad) {
                 this.state.tree = problemToTree(currentUserSingleProblem);
                 this.state.initialLoad = false;
+                this.props.setResultId(currentUserSingleProblem.result.id)
             }
             return(
             <div className={classes.root}>
@@ -226,10 +220,10 @@ class Editor extends Component{
                                         >   
                                             <MenuItem value={strings.pairwise}>{strings.pairwise}</MenuItem>
                                             <MenuItem value={strings.gPairwise}>{strings.gPairwise}</MenuItem>
-                                            <MenuItem value={strings.verval}>{strings.verval}</MenuItem>
+                                            <MenuItem value={strings.verbal}>{strings.verbal}</MenuItem>
                                         </Select>
                                     </FormControl>
-                                    {this.state.comparison == strings.verval?  (
+                                    {this.state.comparison == strings.verbal?  (
                                     <FormControl variant="outlined" className={classes.formControl}>
                                         <InputLabel
                                             htmlFor="outlined-age-simple"
@@ -237,7 +231,7 @@ class Editor extends Component{
                                             {strings.scale}
                                         </InputLabel>
                                         <Select
-                                            value={this.state.verval}
+                                            value={this.state.verbal}
                                             className={classes.inputSelect}
                                             onChange={this.handleChangeVerval}
                                             input={
@@ -270,13 +264,13 @@ class Editor extends Component{
                                             onChangedMatrixValue={this.onChangedMatrixValue}
                                             innerRef={(item) => { this.slider = item; }}
                                             />): (<div/>) }
-                                {this.state.comparison == strings.verval?  (
+                                {this.state.comparison == strings.verbal?  (
                                     <VSlider data={this.state.tree}
                                             selectedCriteria={this.state.selectedCriteria}
                                             selectedMatrixItem={this.state.selectedMatrixItem}
                                             onChangedMatrixValue={this.onChangedMatrixValue}
                                             innerRef={(item) => { this.slider = item; }}
-                                            scale={this.state.verval}
+                                            scale={this.state.verbal}
                                             />): (<div/>) }
                                 <Matrix data={this.state.tree} 
                                         selectedCriteria={this.state.selectedCriteria}

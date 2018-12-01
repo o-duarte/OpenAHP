@@ -18,6 +18,7 @@ public class Result {
   public Integer errorMeasure;
   public ArrayList<Double> ranking;
   public ArrayList<ResultCriteria> criteria;
+  public String raw;
   
   // Constructors
   public Result() {

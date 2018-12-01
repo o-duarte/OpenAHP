@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import clc.ComparisonMatrix;
 import clc.DecisionElement;
@@ -147,6 +149,15 @@ public class AhpProblemController {
     if(repository.findBy_id(problem._id).result != null  ){
       resultRepository.delete(resultRepository.findBy_id(repository.findBy_id(problem._id).result));
     }
+    result.raw= "";
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        String json = mapper.writeValueAsString(result);
+        result.raw = json;
+    } catch (JsonProcessingException e) {
+        e.printStackTrace();
+    }
+
     problem.result = result._id;
     repository.save(problem);
     resultRepository.save(result);

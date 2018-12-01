@@ -294,6 +294,10 @@ const AhpProblemSchema = new Schema(
     criteria: {
       type: [Criteria],
     },
+    result: {
+      type: Schema.Types.ObjectId,
+      ref: 'Result',
+    },
     owner: {
       type: Schema.Types.ObjectId,
       ref: 'User',
@@ -308,8 +312,55 @@ const AhpProblemSchema = new Schema(
 const AhpProblemModel = mongoose.model('AhpProblem', AhpProblemSchema);
 
 /*
- * Document Content schema.
+ * Result schema.
  */
+
+const ResultCriteria = new Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  subCriteria: {
+    type: [],
+    default: [] 
+  },
+  ranking:{
+    type: [],
+  },
+});
+
+
+const ResultSchema = new Schema(
+  {
+    name: {
+      type: String,
+      default: null
+    },
+    goal: {
+      type: String,
+      default: null
+    },
+    ranking: {
+      type: [],
+    },
+    alternatives: {
+      type: [String],
+    },
+    criteria: {
+      type: [ResultCriteria],
+    },
+    
+    raw:{
+      type: String,
+    }
+  },
+  {
+    timestamps: true
+  }
+);
+
+const ResultModel = mongoose.model('Result', ResultSchema);
+
 
 /*
  * Module exports.
@@ -330,4 +381,6 @@ export {
   TagSchema,
   AhpProblemModel,
   AhpProblemSchema,
+  ResultModel,
+  ResultSchema,
 };

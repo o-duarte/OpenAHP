@@ -79,7 +79,26 @@ const types = `
     errorMeasure: Int
     criteria: [Criteria]
     owner: User
+    result: Result
     updatedAt: String
+    createdAt: String
+  }
+
+  type ResultCriteria{
+    name: String
+    ranking: [[Float]]
+    subCriteria: [ResultCriteria]
+  }
+
+  type Result {
+    id: ID
+    name: String
+    goal: String
+    ranking: [Float]    
+    alternatives: [String]
+    criteria: [ResultCriteria]
+    raw: String
+    
   }
 `;
 
@@ -94,6 +113,7 @@ const queries = `
     currentUserSingleDocument(documentId: ID!): Document
     currentUserProblems(statusList:[String]): [ahpProblem]!
     currentUserSingleProblem(problemId: String): ahpProblem
+    result(resultId: String): Result
   }
 `;
 
