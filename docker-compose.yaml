@@ -1,0 +1,70 @@
+version: '2'
+services:
+  nginx:
+   container_name: some-nginx
+   image: nginx:1.13
+   restart: always
+   ports:
+    - 80:80
+    - 443:443
+   volumes:
+    - ./nginx/conf.d:/etc/nginx/conf.d
+   links:
+    - react
+
+  mongodb:
+    image: mongo
+    expose:
+      - "27017"
+    volumes:
+      - mongodata:/data/db
+
+  maven:
+    restart: always
+    build: 
+      context: ./AHPserver
+    working_dir: /AHPserver
+    volumes:
+      - ./AHPserver:/AHPserver
+      - ~/.m2:/root/.m2
+    expose:
+      - "8080"
+    ports:
+      - 8080:8080
+    command: mvn clean spring-boot:run
+    depends_on:
+      - mongodb
+  
+  express:
+    build:
+      context: ./nodeServer/server
+    command: npm start
+    volumes:
+      - ./nodeServer/server/:/usr/app
+      - /usr/app/node_modules
+    depends_on:
+      - mongodb
+      - maven
+    links:
+      - maven
+    expose:
+      - "3001"
+    ports:
+      - 3001:3001
+
+  react:
+    build:
+      context: ./nodeServer/client
+    command: npm start
+    volumes:
+      - ./nodeServer/client/:/usr/app
+      - /usr/app/node_modules
+    depends_on:
+      - express
+    links:
+      - express
+    expose:
+      - "3000"
+
+volumes:
+   mongodata:

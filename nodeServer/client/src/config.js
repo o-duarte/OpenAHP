@@ -6,9 +6,12 @@ const CLIENT_URL = 'http://localhost:3000';
 const SOLVER_URL = 'http://localhost:8080';
 //use in docker
 /*
-const SERVER_URL = 'maven:3001';
-const CLIENT_URL = 'react:3000';
-const SOLVER_URL = 'express:8080';
+
+const MACHINE_URL = 'http://localhost'
+const SERVER_URL = MACHINE_URL + ':3001';
+const CLIENT_URL = MACHINE_URL + ':3000';
+const SOLVER_URL = 'maven:8080';
+
 */
 
 export { MONGO_URI, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, SERVER_URL, CLIENT_URL, SOLVER_URL };
