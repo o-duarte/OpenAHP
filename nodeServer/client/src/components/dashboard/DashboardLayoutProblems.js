@@ -14,6 +14,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
 import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/DeleteOutline';
 
 //
 import {CURRENT_USER as query, CURRENT_USER_PROBLEMS, PROBLEM_NEW} from '../../graphql';
@@ -71,6 +73,9 @@ class TabContentComponent extends React.Component {
         const { refetch } = this.props.data;
         refetch();
     };
+    handleDelete(id){
+        console.log(id);
+    }
     render(){
         const { classes } = this.props;
         const { currentUserProblems, loading, error } = this.props.data;

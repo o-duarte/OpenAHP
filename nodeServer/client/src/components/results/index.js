@@ -7,7 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography'
 import TreeView from './treeView'
-
+import {Bar} from 'react-chartjs'
 //
 import strings from '../../strings'
 
@@ -17,8 +17,8 @@ import {
     RESULT,
   } from '../../graphql';
 
-import { problemToTree } from '../../utils/problemAdapter';
-import { treeToProblem } from '../../utils/treeAdapter';
+import { problemToTree } from '../../utils/problemAdapterResult';
+
 
 
 const styles = theme => ({
@@ -27,7 +27,7 @@ const styles = theme => ({
       padding: '12px',
       //overflow: 'auto',
       width: '95%',
-      minWidth: '600px'
+      minWidth: '1100px'
     },
     paper: {
       minWidth: '300px',
@@ -64,19 +64,52 @@ class Results extends Component{
           initialLoad: true,
           tree: '',
           selectedCriteria: -1,
+          graphData: undefined
         };
       }
-
-    onSelectedCriteria(nodeid){
-        //this.setState({selectedCriteria: nodeid, selectedMatrixItem: [0,1]})
-        //this.slider.onMatrixChange(this.state.tree, nodeid, [0,1]);
+    
+    data(nodeid){
+        return {
+            labels: this.state.tree.alternatives,
+            datasets: [
+                {
+                    label: "My Second dataset",
+                    fillColor: "rgba(30,136,229,0.5)",
+                    strokeColor: "rgba(30,136,229,0.9)",
+                    highlightFill: "rgba(151,187,205,0.75)",
+                    highlightStroke: "rgba(151,187,205,1)",
+                    data: this.rankData(this.state.tree, nodeid)
+                }
+            ]
+        }
     }
 
+    onSelectedCriteria(nodeid){
+        this.setState({graphData: this.data(nodeid), selectedCriteria: nodeid })
+    }
+
+    rankData(data, index) {
+        console.log(data)
+        if(index==-1){
+            return(
+                data.ranking
+            )
+        }
+        else{
+            var criteria
+            criteria = data
+            index.forEach(i => {
+              criteria = criteria.children[i]  
+            });
+
+            return(criteria.ranking)
+        }
+    }
 
     handleChange = event => {
         this.setState({ [event.target.name]: event.target.value });
         };
-
+    
     render() {
         const { classes } = this.props;
         const { result, loading, error } = this.props.data;
@@ -85,14 +118,19 @@ class Results extends Component{
                 <Loading/>
             );
         } else if (error) {
-            return <h1>Error</h1>;
-        } else {
+            return (
+                <Centered>
+                    <Typography variant='h4'>{strings.noResults}</Typography>
+                </Centered>);
+        }
+        else {
             if (this.state.initialLoad) {
                 const json = JSON.parse(result.raw);
                 this.state.tree = problemToTree(json);
                 this.state.initialLoad = false;
-
+                this.state.graphData = this.data(-1);
             }
+            console.log(this.state.graphData)
             return(
             <div className={classes.root}>
                 <Centered>
@@ -109,13 +147,10 @@ class Results extends Component{
                                           />
                             </Paper>
                         </Grid>
-                        <Grid item xs={8}>
+                        <Grid item xs={10}>
                             <Paper className={classes.paper}>
-                                
+                                <Bar data={this.state.graphData}  width="600" height="250"/>
                             </Paper>
-                        </Grid>
-                        <Grid item xs={2}>
-                            
                         </Grid>
                     </Grid>
                     </Centered>

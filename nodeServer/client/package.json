@@ -16,6 +16,7 @@
     "@material-ui/lab": "^3.0.0-alpha.22",
     "apollo-client-preset": "^1.0.6",
     "autosuggest-highlight": "^3.1.1",
+    "chart.js": "^1.1.1",
     "classnames": "^2.2.5",
     "css-loader": "^0.28.8",
     "downshift": "^1.25.0",

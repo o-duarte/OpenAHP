@@ -7,6 +7,7 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Modal from '@material-ui/core/Modal';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
@@ -21,6 +22,7 @@ import Editor from './editor'
 import Centered from '../widgets/layouts/Centered'
 import Results from '../results'
 import strings from '../../strings'
+import { Loading } from '../widgets/layouts';
 
 const styles = theme => ({
   root: {
@@ -81,10 +83,10 @@ class ProblemStepper extends React.Component {
       activeStep: 0,
       skipped: new Set(),
       resultId: undefined,
+      open: false,
     };
   }
   setResultId(id){
-    console.log(id)
     this.setState({resultId: id});
   }
 
@@ -136,15 +138,24 @@ class ProblemStepper extends React.Component {
   handleMutation = () => {
     this.stepContent.editor.makeMutations()
   }
+
+  handleOpen = () => {
+    this.setState({ open: true });
+  };
   runSolver = () => {
     fetch('http://localhost:3001/ahpsolver/'+this.props.problemId)
         .then((response) => {
             return response.json()
         })
         .then((recurso) => {
-            console.log(recurso)
+            this.setResultId(recurso._id)
+            this.setState({ open: false });
+            this.handleNext()
         })
+    
   }
+
+
 
   render() {
     const { classes } = this.props;
@@ -196,7 +207,7 @@ class ProblemStepper extends React.Component {
                   {activeStep === 1 && (
                       <Tooltip title={strings.solve} placement="top">
                         <IconButton
-                          onClick={() => this.runSolver()}
+                          onClick={() =>  {this.handleOpen(); this.runSolver()}}
                           >
                           <Play />
                         </IconButton>
@@ -205,11 +216,12 @@ class ProblemStepper extends React.Component {
 
                   <IconButton
                       onClick={this.handleNext}
-                      disabled={activeStep > steps.length - 1}
+                      disabled={activeStep === 1 && this.state.resultId==undefined}
                   >
                       {activeStep === steps.length - 1 ? <Publish/> : <KeyboardArrowRight/>}
                   </IconButton>
               </Paper>
+              
           </Stepper>
           <div>
             {activeStep === steps.length ? (
@@ -223,6 +235,10 @@ class ProblemStepper extends React.Component {
               </div>
             ) : (
               <div>
+                <Modal aria-labelledby="simple-modal-title"
+                  aria-describedby="simple-modal-description"
+                  open={this.state.open}>
+                <Loading/></Modal>
                 <GetStepContent ref={(step) => { this.stepContent = step; }}
                                             step={activeStep}
                                             classes={classes}

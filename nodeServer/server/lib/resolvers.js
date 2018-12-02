@@ -165,9 +165,9 @@ const resolvers = {
           goal: 'Objetive',
           rootMatrix: [[1,1],[1,1]],
           alternatives:  ['Alternative A','Alternative B'],
-          priorityMethod: [0],
-          consistencyMethod: [0],
-          errorMeasure: [0],
+          priorityMethod: 0,
+          consistencyMethod: 0,
+          errorMeasure: 0,
           criteria: [
             {name: 'Criteria 1',
              matrix: [[1,1],[1,1]],

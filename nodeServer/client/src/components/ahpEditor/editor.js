@@ -41,7 +41,7 @@ const styles = theme => ({
       padding: '12px',
       //overflow: 'auto',
       width: '95%',
-      minWidth: '600px'
+      minWidth: '1100px'
     },
     paper: {
       minWidth: '300px',
@@ -178,7 +178,9 @@ class Editor extends Component{
             if (this.state.initialLoad) {
                 this.state.tree = problemToTree(currentUserSingleProblem);
                 this.state.initialLoad = false;
-                this.props.setResultId(currentUserSingleProblem.result.id)
+                if(currentUserSingleProblem.result!=null){
+                    this.props.setResultId(currentUserSingleProblem.result.id)
+                }
             }
             return(
             <div className={classes.root}>
