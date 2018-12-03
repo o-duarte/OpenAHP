@@ -1,7 +1,6 @@
 package ahpServer.models;
 
 import java.util.ArrayList;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 public class ResultCriteria {
 

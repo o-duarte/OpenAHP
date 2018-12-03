@@ -29,6 +29,7 @@ const styles = {
   },
   track: {
     backgroundColor: '#9c9a9a',
+    opacity: 0.24,
   },
 
   noPadding:{
@@ -219,7 +220,7 @@ class VSlider extends React.Component {
                     <Grid item xs={3}>
                         <div className ={classes.criteria}> 
                           <Typography variant="h6" align='right' gutterBottom>
-                          {this.state.alternatives[0]}
+                          {this.state.alternatives[1]}
                           </Typography>
                         </div>
                     </Grid>
@@ -241,7 +242,9 @@ class VSlider extends React.Component {
                         <Slider
                             classes={{ 
                               container: classes.slider,
-                              thumb: classes.thumb
+                              thumb: classes.thumb,
+                              trackAfter: classes.track,
+                              trackBefore: classes.track
                             }}
                             value={value}
                             min={-8}
@@ -254,7 +257,7 @@ class VSlider extends React.Component {
                     <Grid item xs={3}>
                         <div className ={classes.criteria}> 
                           <Typography variant="h6" align='left' gutterBottom>
-                          {this.state.alternatives[1]}
+                          {this.state.alternatives[0]}
                           </Typography>
                         </div>
                     </Grid>

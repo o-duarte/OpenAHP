@@ -30,6 +30,7 @@ const styles = {
   },
   track: {
     backgroundColor: '#9c9a9a',
+    opacity: 0.24,
   },
 
   noPadding:{
@@ -150,7 +151,7 @@ class PSlider extends React.Component {
         <Grid container spacing={8}>
                     <Grid item xs={3}>
                         <Typography variant="h6" align='right' gutterBottom>
-                          {this.state.alternatives[0]}
+                          {this.state.alternatives[1]}
                         </Typography>
                     </Grid>
                     <Grid item xs={6}>
@@ -162,7 +163,9 @@ class PSlider extends React.Component {
                             aria-labelledby="psl"
                             classes={{ 
                               container: classes.slider,
-                              thumb: classes.thumb
+                              thumb: classes.thumb,
+                              trackBefore: classes.track,
+                              trackAfter: classes.track,
                             }}
                             value={value}
                             min={-9}
@@ -174,7 +177,7 @@ class PSlider extends React.Component {
                     </Grid>
                     <Grid item xs={3}>
                         <Typography variant="h6" align='left' gutterBottom>
-                        {this.state.alternatives[1]}
+                        {this.state.alternatives[0]}
                         </Typography>
                     </Grid>
         </Grid>

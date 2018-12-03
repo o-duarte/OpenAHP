@@ -9,8 +9,11 @@ import ahpServer.models.AhpProblem;
 import ahpServer.models.problemCriteria;
 import ahpServer.models.Result;
 import ahpServer.models.ResultCriteria;
+import ahpServer.models.Sensivity;
+import ahpServer.models.SensivityCriteria;
 import ahpServer.repositories.AhpProblemRepository;
 import ahpServer.repositories.ResultRepository;
+import ahpServer.repositories.SensivityRepository;
 
 
 import org.bson.types.ObjectId;
@@ -43,6 +46,8 @@ public class AhpProblemController {
   private AhpProblemRepository repository;
   @Autowired
   private ResultRepository resultRepository;
+  @Autowired
+  private SensivityRepository sensivityRepository;
 
   @RequestMapping(value = "/", method = RequestMethod.GET)
   public List<AhpProblem> getAllPets() {
@@ -67,13 +72,50 @@ public class AhpProblemController {
     return element;
   }
 
+  private ArrayList<ArrayList<Double>> matrix(Integer a){
+    ArrayList<ArrayList<Double>> matrix = new ArrayList<ArrayList<Double>>();
+    for(int i=0; i<a;i++){
+      ArrayList<Double> row = new ArrayList<Double>();
+      for(int j=0; j<a;j++){
+        row.add(0d);
+      }
+      matrix.add(row);
+    }
+    return matrix;
+  }
+
   private ResultCriteria getSubResults(DecisionElement subresult){
     ResultCriteria result = new ResultCriteria();
     result.name = subresult.getName();
+    /////CHANGE NEXT LINE
     result.ranking = subresult.getRanking(FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM);
     result.subCriteria = new ArrayList<ResultCriteria>();
     for(int i=0;i<subresult.getSubcriteria().size();i++){
       result.subCriteria.add(getSubResults(subresult.getSubcriteria().get(i)));
+    }
+    return result;
+
+  }
+
+  private SensivityCriteria getSubSensivity(DecisionProblem decisionProblem, DecisionElement subSensivity, Integer alt){
+    SensivityCriteria result = new SensivityCriteria();
+    result.name = subSensivity.getName();
+    /////CHANGE NEXT LINE
+    result.weigths = subSensivity.getPriorityVector(FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM);
+    result.subCriteria = new ArrayList<SensivityCriteria>();
+    NumercialSensitivityMethod sensitivityMethod = new NumercialSensitivityMethod(decisionProblem, FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM);
+    
+    ArrayList<RankReversal> rank = sensitivityMethod.getRankReversals(decisionProblem.getRoot(), i);
+    ArrayList<ArrayList<Double>> matrix = matrix(decisionProblem.getAlternativesCount());
+    for(int j = 0; j < rank.size(); j++ ){
+      x = rank.get(j);
+      matrix.get(x.getAlternative1()).set(x.getAlternative2(),x.getWeight());
+    }
+    sensivityCriteria.subCriteria.add(getSubSensivity(decisionProblem.getRoot().getSubcriteria().get(i), decisionProblem.getAlternativesCount() ));
+    sensivityCriteria.rankReversal = matrix;
+    
+    for(int i=0;i<subSensivity.getSubcriteria().size();i++){
+      result.subCriteria.add(getSubSensivity(decisionProblem, subSensivity.getSubcriteria().get(i),alt));
     }
     return result;
 
@@ -106,7 +148,7 @@ public class AhpProblemController {
 
     /* Criteria */
     for(int i=0;i<problem.criteria.size();i++){
-      System.out.println(toDecisionElement(problem.criteria.get(i)).getRanking(FactoryPriorityMethod.PriorityMethodEnum.REVISED_GEOMETRIC_MEAN));
+      //System.out.println(toDecisionElement(problem.criteria.get(i)).getRanking(FactoryPriorityMethod.PriorityMethodEnum.REVISED_GEOMETRIC_MEAN));
       decisionProblem.addSubCriterion(toDecisionElement(problem.criteria.get(i)));
     }
 
@@ -125,11 +167,6 @@ public class AhpProblemController {
     }
 
     decisionSolver.computeResults(decisionProblem, false);
-    ///sensitivity Analisis
-    NumercialSensitivityMethod sensitivityMethod = new NumercialSensitivityMethod(
-                                            decisionProblem,
-                                            FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM);
-    ArrayList<RankReversal> rank = sensitivityMethod.getRankReversals(decisionProblem.getRoot(), 2);
     
     Result result = new Result();
     result.set_id(ObjectId.get());
@@ -162,11 +199,46 @@ public class AhpProblemController {
     repository.save(problem);
     resultRepository.save(result);
 
-    for(int i = 0; i < rank.size(); i++){
-        System.out.println("weight----"+ rank.get(i).getWeight());
-        System.out.println("a1----"+ rank.get(i).getAlternative1());
-        System.out.println("a2----"+ rank.get(i).getAlternative2());
+    ///sensitivity Analisis
+    NumercialSensitivityMethod sensitivityMethod = new NumercialSensitivityMethod(
+                                            decisionProblem,
+                                            FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM);
+
+
+    //ArrayList<RankReversal> rank = sensitivityMethod.getRankReversals(decisionProblem.getRoot(), 2);
+    RankReversal x;
+    ArrayList<RankReversal> allrank = sensitivityMethod.getAllRankReversals();
+    //System.out.println(allrank);
+    System.out.println(allrank.size());
+    System.out.println(decisionProblem.getRoot().getPriorityVector(FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM));
+    
+    Sensivity sensivity = new Sensivity();
+    sensivity.name = problem.name;
+    sensivity.goal = problem.goal;
+    sensivity.alternatives = problem.alternatives;
+    sensivity.criteria = new ArrayList<SensivityCriteria>();
+
+    ArrayList<Double> parentWeight = decisionProblem.getRoot().getPriorityVector(FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM);
+    decisionProblem.getAlternativesCount();
+
+    for(int i = 0; i < decisionProblem.getRoot().getSubCriteriaCount() ; i++ ){
+      SensivityCriteria sensivityCriteria = new SensivityCriteria();
+      sensivityCriteria.name = decisionProblem.getRoot().getSubcriteria().get(i).getName();
+      sensivityCriteria.weigths = parentWeight;
+      sensivityCriteria.subCriteria = new ArrayList<SensivityCriteria>();
+      //System.out.println(decisionProblem.getRoot().getSubcriteria().get(i).getPrioritiesVectors());
+      ArrayList<RankReversal> rank = sensitivityMethod.getRankReversals(decisionProblem.getRoot(), i);
+      ArrayList<ArrayList<Double>> matrix = matrix(decisionProblem.getAlternativesCount());
+      for(int j = 0; j < rank.size(); j++ ){
+        x = rank.get(j);
+        matrix.get(x.getAlternative1()).set(x.getAlternative2(),x.getWeight());
+      }
+      sensivityCriteria.subCriteria.add(getSubSensivity(decisionProblem, decisionProblem.getRoot().getSubcriteria().get(i), decisionProblem.getAlternativesCount() ));
+      //System.out.println(matrix);
+      sensivityCriteria.rankReversal = matrix;
+      sensivity.criteria.add(sensivityCriteria);
     }
+    sensivityRepository.save(sensivity);  
 
 
     return result;

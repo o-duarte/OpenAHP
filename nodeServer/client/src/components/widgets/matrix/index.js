@@ -21,6 +21,7 @@ const styles = theme => ({
     },
     col: {
         display: 'inline-block',
+        margin: '5px'
     },
     yheader:{
         width: '80px',
