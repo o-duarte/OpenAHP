@@ -23,6 +23,8 @@ public class AhpProblem {
   public Integer errorMeasure;
   public ArrayList<problemCriteria> criteria;
   public ObjectId result;
+  public ObjectId sensitivity;
+
 
   @CreatedDate
   public Date createdAt;
@@ -59,7 +61,9 @@ public class AhpProblem {
   public String get_id() { return _id.toHexString(); }
   public void set_id(ObjectId _id) { this._id = _id; }
 
-  public String get_owner() { return owner.toHexString(); }
+  public String getowner() { return owner.toHexString(); }
+  public String getresult() { return result.toHexString(); }
+  public String getsensitivity() { return sensitivity.toHexString(); }
   public void set_owner(ObjectId owner) { this.owner = owner; }
  
   public String getName() { return name; }

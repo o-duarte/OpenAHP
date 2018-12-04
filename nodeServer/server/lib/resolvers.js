@@ -8,6 +8,8 @@ const Document = mongoose.model('Document');
 const DocumentContent = mongoose.model('DocumentContent');
 const AhpProblem = mongoose.model('AhpProblem');
 const Result = mongoose.model('Result');
+const Sensitivity = mongoose.model('Sensitivity');
+
 
 const resolvers = {
   Query: {
@@ -62,6 +64,7 @@ const resolvers = {
         return await AhpProblem.findOne({ _id: problemId })
           .populate('owner')
           .populate('result')
+          .populate('sensitivity')
           .exec()
 
       } catch (e) {
@@ -75,7 +78,15 @@ const resolvers = {
       } catch (e) {
         console.log(e.message);
       }
-    }
+    },
+    sensitivity: async (_, { sensitivityId }, req) => {
+      try {
+        return await Sensitivity.findOne({ _id: sensitivityId })
+          .exec();
+      } catch (e) {
+        console.log(e.message);
+      }
+    },
   },
 
   Mutation: {

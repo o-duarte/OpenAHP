@@ -9,11 +9,11 @@ import ahpServer.models.AhpProblem;
 import ahpServer.models.problemCriteria;
 import ahpServer.models.Result;
 import ahpServer.models.ResultCriteria;
-import ahpServer.models.Sensivity;
-import ahpServer.models.SensivityCriteria;
+import ahpServer.models.Sensitivity;
+import ahpServer.models.SensitivityCriteria;
 import ahpServer.repositories.AhpProblemRepository;
 import ahpServer.repositories.ResultRepository;
-import ahpServer.repositories.SensivityRepository;
+import ahpServer.repositories.SensitivityRepository;
 
 
 import org.bson.types.ObjectId;
@@ -47,7 +47,9 @@ public class AhpProblemController {
   @Autowired
   private ResultRepository resultRepository;
   @Autowired
-  private SensivityRepository sensivityRepository;
+  private SensitivityRepository sensitivityRepository;
+
+  private DecisionProblem parentProblem;
 
   @RequestMapping(value = "/", method = RequestMethod.GET)
   public List<AhpProblem> getAllPets() {
@@ -97,32 +99,41 @@ public class AhpProblemController {
 
   }
 
-  private SensivityCriteria getSubSensivity(DecisionProblem decisionProblem, DecisionElement subSensivity, Integer alt){
-    SensivityCriteria result = new SensivityCriteria();
-    result.name = subSensivity.getName();
-    /////CHANGE NEXT LINE
-    result.weigths = subSensivity.getPriorityVector(FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM);
-    result.subCriteria = new ArrayList<SensivityCriteria>();
-    NumercialSensitivityMethod sensitivityMethod = new NumercialSensitivityMethod(decisionProblem, FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM);
-    
-    ArrayList<RankReversal> rank = sensitivityMethod.getRankReversals(decisionProblem.getRoot(), i);
-    ArrayList<ArrayList<Double>> matrix = matrix(decisionProblem.getAlternativesCount());
-    for(int j = 0; j < rank.size(); j++ ){
-      x = rank.get(j);
-      matrix.get(x.getAlternative1()).set(x.getAlternative2(),x.getWeight());
+  private SensitivityCriteria getSubSensitivity(DecisionElement parent, 
+                                            DecisionElement subSensitivity, 
+                                            Integer alt,
+                                            ArrayList<Double> parentWeight){
+    SensitivityCriteria result = new SensitivityCriteria();
+    result.name = subSensitivity.getName();
+    result.weigths = parentWeight;
+    result.subCriteria = new ArrayList<SensitivityCriteria>();
+    NumercialSensitivityMethod sensitivityMethod = new NumercialSensitivityMethod(parentProblem, FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM);
+    Boolean isLeaf = true;
+    RankReversal x;
+    //if(subSensitivity.getSubCriteriaCount() > 0){isLeaf = false;}
+    for(int i = 0; i < parent.getSubCriteriaCount() ; i++ ){
+      ArrayList<RankReversal> rank = sensitivityMethod.getRankReversals(parent, i);
+      ArrayList<ArrayList<Double>> matrix = matrix(alt);
+      for(int j = 0; j < rank.size(); j++ ){
+        x = rank.get(j);
+        matrix.get(x.getAlternative1()).set(x.getAlternative2(),x.getWeight());
+      } 
+      result.rankReversal = matrix;
     }
-    sensivityCriteria.subCriteria.add(getSubSensivity(decisionProblem.getRoot().getSubcriteria().get(i), decisionProblem.getAlternativesCount() ));
-    sensivityCriteria.rankReversal = matrix;
-    
-    for(int i=0;i<subSensivity.getSubcriteria().size();i++){
-      result.subCriteria.add(getSubSensivity(decisionProblem, subSensivity.getSubcriteria().get(i),alt));
+    for(int i = 0; i < subSensitivity.getSubCriteriaCount() ; i++ ){
+      ArrayList<Double> subParentWeight = subSensitivity.getPriorityVector(FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM);
+      result.subCriteria.add(getSubSensitivity(
+                                          subSensitivity,
+                                          subSensitivity.getSubcriteria().get(i),
+                                          alt,
+                                          subParentWeight ));
     }
     return result;
 
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-  public Result getProblemById(@PathVariable("id") ObjectId id) {
+  public AhpProblem getProblemById(@PathVariable("id") ObjectId id) {
     AhpProblem problem = repository.findBy_id(id);
     DecisionProblem decisionProblem =  new DecisionProblem(problem.name);
     DecisionProblemSolver decisionSolver = new DecisionProblemSolver();
@@ -167,6 +178,7 @@ public class AhpProblemController {
     }
 
     decisionSolver.computeResults(decisionProblem, false);
+    parentProblem = decisionProblem;
     
     Result result = new Result();
     result.set_id(ObjectId.get());
@@ -196,8 +208,7 @@ public class AhpProblemController {
     }
 
     problem.result = result._id;
-    repository.save(problem);
-    resultRepository.save(result);
+    
 
     ///sensitivity Analisis
     NumercialSensitivityMethod sensitivityMethod = new NumercialSensitivityMethod(
@@ -212,20 +223,22 @@ public class AhpProblemController {
     System.out.println(allrank.size());
     System.out.println(decisionProblem.getRoot().getPriorityVector(FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM));
     
-    Sensivity sensivity = new Sensivity();
-    sensivity.name = problem.name;
-    sensivity.goal = problem.goal;
-    sensivity.alternatives = problem.alternatives;
-    sensivity.criteria = new ArrayList<SensivityCriteria>();
+    Sensitivity sensitivity = new Sensitivity();
+    sensitivity.set_id(ObjectId.get());
+    sensitivity.name = problem.name;
+    sensitivity.goal = problem.goal;
+    sensitivity.alternatives = problem.alternatives;
+    sensitivity.criteria = new ArrayList<SensitivityCriteria>();
 
     ArrayList<Double> parentWeight = decisionProblem.getRoot().getPriorityVector(FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM);
     decisionProblem.getAlternativesCount();
 
     for(int i = 0; i < decisionProblem.getRoot().getSubCriteriaCount() ; i++ ){
-      SensivityCriteria sensivityCriteria = new SensivityCriteria();
-      sensivityCriteria.name = decisionProblem.getRoot().getSubcriteria().get(i).getName();
-      sensivityCriteria.weigths = parentWeight;
-      sensivityCriteria.subCriteria = new ArrayList<SensivityCriteria>();
+      /*
+      SensitivityCriteria sensitivityCriteria = new SensitivityCriteria();
+      sensitivityCriteria.name = decisionProblem.getRoot().getSubcriteria().get(i).getName();
+      sensitivityCriteria.weigths = parentWeight;
+      sensitivityCriteria.subCriteria = new ArrayList<SensitivityCriteria>();
       //System.out.println(decisionProblem.getRoot().getSubcriteria().get(i).getPrioritiesVectors());
       ArrayList<RankReversal> rank = sensitivityMethod.getRankReversals(decisionProblem.getRoot(), i);
       ArrayList<ArrayList<Double>> matrix = matrix(decisionProblem.getAlternativesCount());
@@ -233,15 +246,31 @@ public class AhpProblemController {
         x = rank.get(j);
         matrix.get(x.getAlternative1()).set(x.getAlternative2(),x.getWeight());
       }
-      sensivityCriteria.subCriteria.add(getSubSensivity(decisionProblem, decisionProblem.getRoot().getSubcriteria().get(i), decisionProblem.getAlternativesCount() ));
+      */
+      sensitivity.criteria.add(getSubSensitivity(
+                                          decisionProblem.getRoot(),
+                                          decisionProblem.getRoot().getSubcriteria().get(i),
+                                          decisionProblem.getAlternativesCount(),
+                                          parentWeight ));
       //System.out.println(matrix);
-      sensivityCriteria.rankReversal = matrix;
-      sensivity.criteria.add(sensivityCriteria);
+      //sensitivityCriteria.rankReversal = matrix;
+      //sensitivity.criteria.add(sensitivityCriteria);
     }
-    sensivityRepository.save(sensivity);  
-
-
-    return result;
+    if(repository.findBy_id(problem._id).sensitivity != null  ){
+      sensitivityRepository.delete(sensitivityRepository.findBy_id(repository.findBy_id(problem._id).sensitivity));
+    }
+    sensitivity.raw= "";
+    try {
+        String json = mapper.writeValueAsString(sensitivity);
+        sensitivity.raw = json;
+    } catch (JsonProcessingException e) {
+        e.printStackTrace();
+    }
+    problem.sensitivity = sensitivity._id;
+    sensitivityRepository.save(sensitivity);
+    repository.save(problem);
+    resultRepository.save(result);  
+    return problem;
   }
  
   @RequestMapping(value = "/new1", method= RequestMethod.GET)

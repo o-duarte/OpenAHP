@@ -21,6 +21,7 @@ import Play from'@material-ui/icons/PlayCircleOutline'
 import Editor from './editor'
 import Centered from '../widgets/layouts/Centered'
 import Results from '../results'
+import Sensitivity from '../sensitivity'
 import strings from '../../strings'
 import { Loading } from '../widgets/layouts';
 
@@ -60,13 +61,17 @@ export class GetStepContent extends React.Component {
         case 0:
           return <Editor innerRef={(step) => { this.editor = step; }}
                          problemId={this.props.problemId}
-                         setResultId={this.props.setResultId}/>; 
+                         setResultId={this.props.setResultId}
+                         />; 
         case 1:
           return 'in this part i put the params';
         case 2:
           return <Results innerRef={(step) => { this.editor = step; }}
                           resultId={this.props.resultId}
-                          
+                          />;
+        case 3:
+          return <Sensitivity innerRef={(step) => { this.editor = step; }}
+                              sensitivityId={this.props.sensitivityId}
                           />;
         default:
           return 'Unknown step';
@@ -83,11 +88,12 @@ class ProblemStepper extends React.Component {
       activeStep: 0,
       skipped: new Set(),
       resultId: undefined,
+      sensitivityId: undefined,
       open: false,
     };
   }
-  setResultId(id){
-    this.setState({resultId: id});
+  setResultId(result_id, sensitivity_id){
+    this.setState({resultId: result_id, sensitivityId: sensitivity_id});
   }
 
   isStepOptional = step => {
@@ -148,7 +154,8 @@ class ProblemStepper extends React.Component {
             return response.json()
         })
         .then((recurso) => {
-            this.setResultId(recurso._id)
+            console.log(recurso)
+            this.setResultId(recurso.result,recurso.sensitivity)
             this.setState({ open: false });
             this.handleNext()
         })
@@ -245,6 +252,7 @@ class ProblemStepper extends React.Component {
                                             setResultId={this.setResultId}
                                             problemId={this.props.problemId}
                                             resultId={this.state.resultId}
+                                            sensitivityId= {this.state.sensitivityId}
                                             />
                                                                                                                         
               </div>

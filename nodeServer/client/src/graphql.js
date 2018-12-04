@@ -114,6 +114,9 @@ export const CURRENT_USER_SINGLE_PROBLEM= gql`
       result {
         id
       }
+      sensitivity {
+        id
+      }
       criteria {
         name
         matrix
@@ -178,6 +181,13 @@ export const PROBLEM_NEW  = gql`
 export const RESULT  = gql`
   query result($resultId: String!) {
     result(resultId: $resultId) {
+      raw
+    }
+  }
+`;
+export const SENSITIVITY  = gql`
+  query sensitivity($sensitivityId: String!) {
+    sensitivity(sensitivityId: $sensitivityId) {
       raw
     }
   }

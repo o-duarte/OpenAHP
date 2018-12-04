@@ -179,7 +179,9 @@ class Editor extends Component{
                 this.state.tree = problemToTree(currentUserSingleProblem);
                 this.state.initialLoad = false;
                 if(currentUserSingleProblem.result!=null){
-                    this.props.setResultId(currentUserSingleProblem.result.id)
+                    this.props.setResultId(currentUserSingleProblem.result.id,
+                                            currentUserSingleProblem.sensitivity.id,)
+                    
                 }
             }
             return(

@@ -298,6 +298,10 @@ const AhpProblemSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Result',
     },
+    sensitivity: {
+      type: Schema.Types.ObjectId,
+      ref: 'Sensitivity',
+    },
     owner: {
       type: Schema.Types.ObjectId,
       ref: 'User',
@@ -363,9 +367,65 @@ const ResultModel = mongoose.model('Result', ResultSchema);
 
 
 /*
+ * Sensitivity schema.
+ */
+
+const SensitivityCriteria = new Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  subCriteria: {
+    type: [],
+    default: [] 
+  },
+  weigths:{
+    type: [],
+  },
+  rankReversal:{
+    type: [[]],
+  }
+
+
+});
+
+
+const SensitivitySchema = new Schema(
+  {
+    name: {
+      type: String,
+      default: null
+    },
+    goal: {
+      type: String,
+      default: null
+    },
+    alternatives: {
+      type: [String],
+    },
+    criteria: {
+      type: [SensitivityCriteria],
+    },
+    
+    raw:{
+      type: String,
+    }
+  },
+  {
+    timestamps: true
+  }
+);
+
+const SensitivityModel = mongoose.model('Sensitivity', SensitivitySchema, 'sensitivities');
+
+
+/*
  * Module exports.
  */
 
+
+
+ 
 export {
   UserModel,
   UserSchema,
@@ -383,4 +443,6 @@ export {
   AhpProblemSchema,
   ResultModel,
   ResultSchema,
+  SensitivityModel,
+  SensitivitySchema
 };

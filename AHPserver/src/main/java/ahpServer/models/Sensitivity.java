@@ -6,26 +6,26 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "sensivities")
-public class Sensivity {
+@Document(collection = "sensitivities")
+public class Sensitivity {
   @Id
   public ObjectId _id;
   public String name;
   public String goal;
   public ArrayList<String> alternatives;
-  public ArrayList<SensivityCriteria> criteria;
+  public ArrayList<SensitivityCriteria> criteria;
   public String raw;
   
   // Constructors
-  public Sensivity() {
+  public Sensitivity() {
 
   }
  
-  public Sensivity(ObjectId _id, 
+  public Sensitivity(ObjectId _id, 
                     String name, 
                     String goal, 
                     ArrayList<String> alternatives,
-                    ArrayList<SensivityCriteria> criteria) {
+                    ArrayList<SensitivityCriteria> criteria) {
     this._id = _id;
     this.name = name;
     this.goal = goal;

@@ -80,6 +80,7 @@ const types = `
     criteria: [Criteria]
     owner: User
     result: Result
+    sensitivity: Sensitivity
     updatedAt: String
     createdAt: String
   }
@@ -100,6 +101,23 @@ const types = `
     raw: String
     
   }
+
+  type SensitivityCriteria{
+    name: String
+    rankReversal: [[Float]]
+    subCriteria: [SensitivityCriteria]
+    weigths: [Float]
+  }
+
+  type Sensitivity {
+    id: ID
+    name: String
+    goal: String  
+    alternatives: [String]
+    criteria: [SensitivityCriteria]
+    raw: String
+    
+  }
 `;
 
 /*
@@ -114,6 +132,7 @@ const queries = `
     currentUserProblems(statusList:[String]): [ahpProblem]!
     currentUserSingleProblem(problemId: String): ahpProblem
     result(resultId: String): Result
+    sensitivity(sensitivityId: String): Sensitivity
   }
 `;
 
