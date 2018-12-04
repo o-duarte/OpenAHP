@@ -115,9 +115,6 @@ class Alternatives extends Component{
         
         return(
             <Paper className={classes.root}>
-                 <Typography variant="h6" gutterBottom >
-                    {strings.alternatives}
-                </Typography>
                 <List dense={true}>
                 {alternatives.map((alternative, index) =>{
                     return(

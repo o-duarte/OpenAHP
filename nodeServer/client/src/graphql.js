@@ -192,3 +192,12 @@ export const SENSITIVITY  = gql`
     }
   }
 `;
+export const PARAMS  = gql`
+  query currentUserSingleProblem($problemId: String!) {
+    currentUserSingleProblem(problemId: $problemId) {
+      priorityMethod
+      consistencyMethod
+      errorMeasure
+    }
+  }
+`;

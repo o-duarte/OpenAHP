@@ -4,6 +4,7 @@ import objectPath from 'object-path'
 var ids=[]
 
 export function addAlternative(tree, alternative){
+    ids = []
     recursiveSearch(tree)
     var newTree = tree
     ids.forEach(id => {

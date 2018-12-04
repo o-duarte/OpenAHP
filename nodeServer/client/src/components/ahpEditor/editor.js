@@ -178,7 +178,7 @@ class Editor extends Component{
             if (this.state.initialLoad) {
                 this.state.tree = problemToTree(currentUserSingleProblem);
                 this.state.initialLoad = false;
-                if(currentUserSingleProblem.result!=null){
+                if(currentUserSingleProblem.result!=null && currentUserSingleProblem.sensitivity!=null){
                     this.props.setResultId(currentUserSingleProblem.result.id,
                                             currentUserSingleProblem.sensitivity.id,)
                     
@@ -189,10 +189,8 @@ class Editor extends Component{
                 <Centered>
                     <Grid container spacing={16}>
                         <Grid item xs={2}>
+                            <Typography variant="h6" gutterBottom>{strings.criteria}</Typography>
                             <Paper className={classes.treeView}>
-                                <Typography variant="h6" gutterBottom>
-                                    {strings.criteria}
-                                </Typography>
                                 <TreeView tree={this.state.tree} 
                                           onSelectedCriteria={this.onSelectedCriteria}
                                           onChangedTree={this.onChangedTree}
@@ -284,7 +282,9 @@ class Editor extends Component{
                                         />
                             </Paper>
                         </Grid>
+
                         <Grid item xs={2}>
+                            <Typography variant="h6" gutterBottom>{strings.alternatives}</Typography>
                             <Alternatives data={this.state.tree}
                                         onDeletedAlternative={this.onDeletedAlternative}
                                         onAddAlternative={this.onAddAlternative}

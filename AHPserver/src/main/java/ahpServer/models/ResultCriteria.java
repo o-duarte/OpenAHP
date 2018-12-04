@@ -7,5 +7,7 @@ public class ResultCriteria {
   public String name;
   public ArrayList<ResultCriteria> subCriteria;
   public ArrayList<Double> ranking;
+  public Double consistency;
+  public Double error;
 
 }

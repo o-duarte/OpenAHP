@@ -18,6 +18,10 @@ public class Result {
   public Integer errorMeasure;
   public ArrayList<Double> ranking;
   public ArrayList<ResultCriteria> criteria;
+  public Double consistency;
+  public Double error;
+
+  
   public String raw;
   
   // Constructors

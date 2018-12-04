@@ -29,11 +29,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import clc.ComparisonMatrix;
 import clc.DecisionElement;
 import mss.consistency.FactoryConsistencyMethod;
+import mss.consistency.FactoryConsistencyMethod.ConsistencyMethodEnum;
 import mss.errorMeasure.FactoryErrorMethod;
+import mss.errorMeasure.FactoryErrorMethod.ErrorMethodEnum;
+import mtd.priority.FactoryPriorityMethod.PriorityMethodEnum;
 import mtd.priority.FactoryPriorityMethod;
+
 import problem.DecisionProblem;
 import problem.DecisionProblemSolver;
 import sty.NumercialSensitivityMethod;
+import sty.ProbabilisticSensitivityMethod;
+import sty.AbstracSensitivityMethod;
 import sty.RankReversal;
 
 import ahpServer.TestCreators;
@@ -86,14 +92,18 @@ public class AhpProblemController {
     return matrix;
   }
 
-  private ResultCriteria getSubResults(DecisionElement subresult){
+  private ResultCriteria getSubResults(DecisionElement subresult,
+                                       ErrorMethodEnum errorMethod, 
+                                       PriorityMethodEnum priorityMethod,
+                                       ConsistencyMethodEnum consistencyMethod ){
     ResultCriteria result = new ResultCriteria();
     result.name = subresult.getName();
-    /////CHANGE NEXT LINE
-    result.ranking = subresult.getRanking(FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM);
+    result.ranking = subresult.getRanking(priorityMethod);
+    result.consistency = subresult.getConsistency(consistencyMethod, priorityMethod);
+    result.error = subresult.getErrorMeasure(errorMethod, priorityMethod);
     result.subCriteria = new ArrayList<ResultCriteria>();
     for(int i=0;i<subresult.getSubcriteria().size();i++){
-      result.subCriteria.add(getSubResults(subresult.getSubcriteria().get(i)));
+      result.subCriteria.add(getSubResults(subresult.getSubcriteria().get(i), errorMethod, priorityMethod, consistencyMethod));
     }
     return result;
 
@@ -102,32 +112,36 @@ public class AhpProblemController {
   private SensitivityCriteria getSubSensitivity(DecisionElement parent, 
                                             DecisionElement subSensitivity, 
                                             Integer alt,
-                                            ArrayList<Double> parentWeight){
+                                            ArrayList<Double> parentWeight,
+                                            PriorityMethodEnum priorityMethod,
+                                            Integer method ){
     SensitivityCriteria result = new SensitivityCriteria();
     result.name = subSensitivity.getName();
     result.weigths = parentWeight;
     result.subCriteria = new ArrayList<SensitivityCriteria>();
-    NumercialSensitivityMethod sensitivityMethod = new NumercialSensitivityMethod(parentProblem, FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM);
-    Boolean isLeaf = true;
+    NumercialSensitivityMethod sensitivityMethod = new NumercialSensitivityMethod(parentProblem, priorityMethod);
     RankReversal x;
-    //if(subSensitivity.getSubCriteriaCount() > 0){isLeaf = false;}
     for(int i = 0; i < parent.getSubCriteriaCount() ; i++ ){
-      ArrayList<RankReversal> rank = sensitivityMethod.getRankReversals(parent, i);
-      ArrayList<ArrayList<Double>> matrix = matrix(alt);
-      for(int j = 0; j < rank.size(); j++ ){
-        x = rank.get(j);
-        matrix.get(x.getAlternative1()).set(x.getAlternative2(),x.getWeight());
-      } 
+    ArrayList<RankReversal> rank = sensitivityMethod.getRankReversals(parent, i);
+    ArrayList<ArrayList<Double>> matrix = matrix(alt);
+    for(int j = 0; j < rank.size(); j++ ){
+      x = rank.get(j);
+      matrix.get(x.getAlternative1()).set(x.getAlternative2(),x.getWeight());
+    } 
       result.rankReversal = matrix;
     }
     for(int i = 0; i < subSensitivity.getSubCriteriaCount() ; i++ ){
-      ArrayList<Double> subParentWeight = subSensitivity.getPriorityVector(FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM);
+      ArrayList<Double> subParentWeight = subSensitivity.getPriorityVector(priorityMethod);
       result.subCriteria.add(getSubSensitivity(
                                           subSensitivity,
                                           subSensitivity.getSubcriteria().get(i),
                                           alt,
-                                          subParentWeight ));
-    }
+                                          subParentWeight,
+                                          priorityMethod,
+                                          method ));
+  }
+  
+  
     return result;
 
   }
@@ -159,7 +173,6 @@ public class AhpProblemController {
 
     /* Criteria */
     for(int i=0;i<problem.criteria.size();i++){
-      //System.out.println(toDecisionElement(problem.criteria.get(i)).getRanking(FactoryPriorityMethod.PriorityMethodEnum.REVISED_GEOMETRIC_MEAN));
       decisionProblem.addSubCriterion(toDecisionElement(problem.criteria.get(i)));
     }
 
@@ -179,6 +192,37 @@ public class AhpProblemController {
 
     decisionSolver.computeResults(decisionProblem, false);
     parentProblem = decisionProblem;
+
+    PriorityMethodEnum priorityMethod = FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM;
+    switch(problem.priorityMethod){
+      case 0:
+        priorityMethod = FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM;
+      case 1:
+        priorityMethod = FactoryPriorityMethod.PriorityMethodEnum.EIGENVECTOR;
+      case 2:
+        priorityMethod = FactoryPriorityMethod.PriorityMethodEnum.GEOMETRIC_MEAN;
+      case 3:
+        priorityMethod = FactoryPriorityMethod.PriorityMethodEnum.REVISED_GEOMETRIC_MEAN;
+    }
+    ErrorMethodEnum errorMethod = FactoryErrorMethod.ErrorMethodEnum.PRIORITY_VIOLATION;
+    switch(problem.priorityMethod){
+      case 0:
+        errorMethod = FactoryErrorMethod.ErrorMethodEnum.PRIORITY_VIOLATION;
+      case 1:
+        errorMethod = FactoryErrorMethod.ErrorMethodEnum.QUADRATIC_DEVIATION;
+    }
+    ConsistencyMethodEnum consistencyMethod = FactoryConsistencyMethod.ConsistencyMethodEnum.CONSISTENCY_INDEX;
+    switch(problem.priorityMethod){
+      case 0:
+        consistencyMethod = FactoryConsistencyMethod.ConsistencyMethodEnum.CONSISTENCY_INDEX;
+      case 1:
+        consistencyMethod = FactoryConsistencyMethod.ConsistencyMethodEnum.CONSISTENCY_RATIO;
+      case 2:
+        consistencyMethod = FactoryConsistencyMethod.ConsistencyMethodEnum.DETERMINANT_INDEX;
+      case 3:
+        consistencyMethod = FactoryConsistencyMethod.ConsistencyMethodEnum.GEOMETRIC_INDEX;
+    }
+
     
     Result result = new Result();
     result.set_id(ObjectId.get());
@@ -189,11 +233,12 @@ public class AhpProblemController {
     result.consistencyMethod = problem.consistencyMethod;
     result.errorMeasure = problem.errorMeasure;
     result.criteria = new ArrayList<ResultCriteria>();
-    /////////////////CHANGE NEXT LINE
-    result.ranking = decisionProblem.getRanking(FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM);
+    result.ranking = decisionProblem.getRanking(priorityMethod);
+    result.consistency = decisionProblem.getRoot().getConsistency(consistencyMethod, priorityMethod);
+    result.error = decisionProblem.getRoot().getErrorMeasure(errorMethod, priorityMethod);
     ArrayList<DecisionElement> criterias = decisionProblem.getRoot().getSubcriteria();
     for(int i=0;i<criterias.size();i++){
-      result.criteria.add(getSubResults(criterias.get(i))); 
+      result.criteria.add(getSubResults(criterias.get(i), errorMethod, priorityMethod, consistencyMethod)); 
     }
     if(repository.findBy_id(problem._id).result != null  ){
       resultRepository.delete(resultRepository.findBy_id(repository.findBy_id(problem._id).result));
@@ -211,18 +256,6 @@ public class AhpProblemController {
     
 
     ///sensitivity Analisis
-    NumercialSensitivityMethod sensitivityMethod = new NumercialSensitivityMethod(
-                                            decisionProblem,
-                                            FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM);
-
-
-    //ArrayList<RankReversal> rank = sensitivityMethod.getRankReversals(decisionProblem.getRoot(), 2);
-    RankReversal x;
-    ArrayList<RankReversal> allrank = sensitivityMethod.getAllRankReversals();
-    //System.out.println(allrank);
-    System.out.println(allrank.size());
-    System.out.println(decisionProblem.getRoot().getPriorityVector(FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM));
-    
     Sensitivity sensitivity = new Sensitivity();
     sensitivity.set_id(ObjectId.get());
     sensitivity.name = problem.name;
@@ -230,31 +263,17 @@ public class AhpProblemController {
     sensitivity.alternatives = problem.alternatives;
     sensitivity.criteria = new ArrayList<SensitivityCriteria>();
 
-    ArrayList<Double> parentWeight = decisionProblem.getRoot().getPriorityVector(FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM);
+    ArrayList<Double> parentWeight = decisionProblem.getRoot().getPriorityVector(priorityMethod);
     decisionProblem.getAlternativesCount();
 
     for(int i = 0; i < decisionProblem.getRoot().getSubCriteriaCount() ; i++ ){
-      /*
-      SensitivityCriteria sensitivityCriteria = new SensitivityCriteria();
-      sensitivityCriteria.name = decisionProblem.getRoot().getSubcriteria().get(i).getName();
-      sensitivityCriteria.weigths = parentWeight;
-      sensitivityCriteria.subCriteria = new ArrayList<SensitivityCriteria>();
-      //System.out.println(decisionProblem.getRoot().getSubcriteria().get(i).getPrioritiesVectors());
-      ArrayList<RankReversal> rank = sensitivityMethod.getRankReversals(decisionProblem.getRoot(), i);
-      ArrayList<ArrayList<Double>> matrix = matrix(decisionProblem.getAlternativesCount());
-      for(int j = 0; j < rank.size(); j++ ){
-        x = rank.get(j);
-        matrix.get(x.getAlternative1()).set(x.getAlternative2(),x.getWeight());
-      }
-      */
       sensitivity.criteria.add(getSubSensitivity(
                                           decisionProblem.getRoot(),
                                           decisionProblem.getRoot().getSubcriteria().get(i),
                                           decisionProblem.getAlternativesCount(),
-                                          parentWeight ));
-      //System.out.println(matrix);
-      //sensitivityCriteria.rankReversal = matrix;
-      //sensitivity.criteria.add(sensitivityCriteria);
+                                          parentWeight,
+                                          priorityMethod,
+                                          problem.sensitivityMethod ));
     }
     if(repository.findBy_id(problem._id).sensitivity != null  ){
       sensitivityRepository.delete(sensitivityRepository.findBy_id(repository.findBy_id(problem._id).sensitivity));
@@ -266,6 +285,8 @@ public class AhpProblemController {
     } catch (JsonProcessingException e) {
         e.printStackTrace();
     }
+
+    
     problem.sensitivity = sensitivity._id;
     sensitivityRepository.save(sensitivity);
     repository.save(problem);

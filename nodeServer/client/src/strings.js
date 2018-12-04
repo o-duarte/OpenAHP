@@ -47,7 +47,23 @@ const strings = {
     extreme: 'Extrema',
     //sliders
     sliderTextImp: 'Comparar la relativa importancia respeto a:',
-    sliderTextPref: 'Comparar la relativa preferencia respeto a:'
+    sliderTextPref: 'Comparar la relativa preferencia respeto a:',
+    //params
+    consistency: 'Consistencia',
+    error: 'Error',
+    priority: 'Prioridad',
+    cIndex: 'Índice de consistencia',
+    cRatio: 'Razón de consistencia',
+    cDet: 'Índice de determinantes',
+    cIndexG: 'Índice de consistencia geometrico',
+    errDes: 'Desviación cuadratica' ,
+    errPri: 'Violaciones de prioridades',
+    priVec: 'Vector propio',
+    priMean: 'Media Geometrica',
+    pricol: 'Columna normalizada',
+    methods: 'Metodos'
+
+
 
 }
 export default strings

@@ -21,9 +21,11 @@ public class AhpProblem {
   public Integer priorityMethod;
   public Integer consistencyMethod;
   public Integer errorMeasure;
+  public Integer sensitivityMethod;
   public ArrayList<problemCriteria> criteria;
   public ObjectId result;
   public ObjectId sensitivity;
+  
 
 
   @CreatedDate
