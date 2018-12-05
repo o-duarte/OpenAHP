@@ -14,6 +14,10 @@ import Select from '@material-ui/core/Select';
 //
 import strings from '../../strings'
 
+import {
+    UPDATE_METHODS
+  } from '../../graphql';
+
 import { Loading, Centered } from '../widgets/layouts';
 import { Typography } from '@material-ui/core';
 
@@ -59,17 +63,18 @@ const styles = theme => ({
   });
 
 class Params extends Component{
-    constructor() {
-        super();
+    constructor(props) {
+        console.log(props)
+        super(props);
         this.state = {
           initialLoad: true,
           tree: '',
           selectedCriteria: -1,
           graphData: undefined,
           labelWidth: 50,
-          consistency: 0,
-          error: 0,
-          priority: 0 ,
+          consistency: props.consistency,
+          error: props.error,
+          priority: props.priority,
         };
       }
 
@@ -79,7 +84,26 @@ class Params extends Component{
     handleChange = event => {
         this.setState({ [event.target.name]: event.target.value });
         };
-    
+
+    makeMutations = () =>{
+        this.props.setMethods(this.state.priority, this.state.consistency, this.state.error)
+        this.props.mutate({
+            variables: {
+                problemId: this.props.problemId,
+                priority: this.state.priority,
+                consistency: this.state.consistency,
+                error: this.state.error,
+            }
+        })
+            .then(({ data }) => {
+                
+            }).catch((error) => {
+            console.log('there was an error sending the query', error);
+        });
+        
+    };
+
+
     render() {
         const { classes } = this.props;
             return(
@@ -167,4 +191,4 @@ class Params extends Component{
     }
 }
 
-export default withStyles(styles)(Params);
+export default  graphql(UPDATE_METHODS)(withStyles(styles)(Params));

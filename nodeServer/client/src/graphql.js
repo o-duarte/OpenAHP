@@ -201,3 +201,12 @@ export const PARAMS  = gql`
     }
   }
 `;
+export const UPDATE_METHODS  = gql`
+  mutation updateMethods($problemId: String!, $consistency: Int, $error: Int, $priority: Int) {
+    updateMethods(problemId: $problemId, consistency:$consistency, error:$error, priority:$priority) {
+      priorityMethod
+      consistencyMethod
+      errorMeasure
+    }
+  }
+`;

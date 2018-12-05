@@ -151,16 +151,31 @@ const resolvers = {
       }
     },
     problemSave: async (_, { problemId, rawData }, req ) => {
-      console.log('problem save')
       try {
         const data = JSON.parse(rawData)
-        console.log(data)
         return await AhpProblem.findOneAndUpdate(
           { _id: problemId },
           { $set: { goal: data.goal,
                     criteria: data.criteria ,
                     rootMatrix: data.rootMatrix,
                     alternatives: data.alternatives,
+                     } },
+          { new: true }
+        ).exec();
+
+      } catch (e) {
+        console.log(e.message);
+      }
+    },
+    updateMethods: async (_, { problemId ,consistency, error, priority }, req ) => {
+      console.log('update',consistency, error, priority)
+      try {
+        return await AhpProblem.findOneAndUpdate(
+          { _id: problemId },
+          { $set: { 
+                    priorityMethod: priority,
+                    consistencyMethod: consistency,
+                    errorMeasure: error,
                      } },
           { new: true }
         ).exec();

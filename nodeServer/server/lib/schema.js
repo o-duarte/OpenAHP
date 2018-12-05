@@ -149,6 +149,7 @@ const mutations = `
     documentSaveContent(documentId: ID!, title: String!, description: String!, html: String!, raw: String!): DocumentContent
     problemSave(problemId: String!, rawData: String!): ahpProblem 
     problemNew(name: String!): ahpProblem
+    updateMethods(problemId: String! ,consistency: Int, error: Int, priority: Int): ahpProblem
   }
 `;
 

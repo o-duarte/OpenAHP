@@ -63,17 +63,22 @@ export class GetStepContent extends React.Component {
           return <Editor innerRef={(step) => { this.editor = step; }}
                          problemId={this.props.problemId}
                          setResultId={this.props.setResultId}
+                         setMethods={this.props.setMethods}
                          />; 
         case 1:
-          return <Params innerRef={(step) => { this.editor = step; }}
+          return <Params innerRef={(step) => { this.params = step; }}
                          problemId={this.props.problemId}
-                         setMethods={this.props.setMethods}/>;
+                         setMethods={this.props.setMethods}
+                         error = {this.props.error}
+                         priority = {this.props.priority}
+                         consistency = {this.props.consistency}/>;
         case 2:
-          return <Results innerRef={(step) => { this.editor = step; }}
+          return <Results innerRef={(step) => { this.results = step; }}
                           resultId={this.props.resultId}
+                          
                           />;
         case 3:
-          return <Sensitivity innerRef={(step) => { this.editor = step; }}
+          return <Sensitivity innerRef={(step) => { this.sensitivity = step; }}
                               sensitivityId={this.props.sensitivityId}
                           />;
         default:
@@ -156,6 +161,9 @@ class ProblemStepper extends React.Component {
   handleMutation = () => {
     this.stepContent.editor.makeMutations()
   }
+  saveMethods = () => {
+    this.stepContent.params.makeMutations()
+  }
 
   handleOpen = () => {
     this.setState({ open: true });
@@ -224,6 +232,14 @@ class ProblemStepper extends React.Component {
                       </Tooltip>
                   )}
                   {activeStep === 1 && (
+                    <div>
+                      <Tooltip title={strings.save} placement="top">
+                        <IconButton
+                          onClick={() =>  {this.saveMethods()}}
+                          >
+                          <Save />
+                        </IconButton>
+                      </Tooltip>
                       <Tooltip title={strings.solve} placement="top">
                         <IconButton
                           onClick={() =>  {this.handleOpen(); this.runSolver()}}
@@ -231,6 +247,7 @@ class ProblemStepper extends React.Component {
                           <Play />
                         </IconButton>
                       </Tooltip>
+                    </div>
                   )}
 
                   <IconButton
@@ -265,7 +282,11 @@ class ProblemStepper extends React.Component {
                                             problemId={this.props.problemId}
                                             resultId={this.state.resultId}
                                             sensitivityId= {this.state.sensitivityId}
-                                            setMethods = {this.state.setMethods}
+                                            setMethods = {this.setMethods}
+                                            error = {this.state.errorMeasure}
+                                            consistency = {this.state.consistencyMethod}
+                                            priority = {this.state.priorityMethod}
+
                                             />
                                                                                                                         
               </div>

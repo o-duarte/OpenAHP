@@ -64,11 +64,14 @@ class Results extends Component{
           initialLoad: true,
           tree: '',
           selectedCriteria: -1,
-          graphData: undefined
+          graphData: undefined,
+          error: undefined,
+          consistency: undefined      
         };
       }
     
     data(nodeid){
+        
         return {
             labels: this.state.tree.alternatives,
             datasets: [
@@ -85,8 +88,32 @@ class Results extends Component{
     }
 
     onSelectedCriteria(nodeid){
+        console.log(this.eycData(this.state.tree, nodeid)[1]);
         this.setState({graphData: this.data(nodeid), selectedCriteria: nodeid })
+        this.setState({consistency: this.eycData(this.state.tree, nodeid)[0],
+                       error: this.eycData(this.state.tree, nodeid)[1]
+                      
+        })
     }
+
+    eycData(data, index) {
+        console.log(data)
+        if(index==-1){
+            return(
+                [data.consistency, data.error]
+            )
+        }
+        else{
+            var criteria
+            criteria = data
+            index.forEach(i => {
+              criteria = criteria.children[i]  
+            });
+
+            return([criteria.consistency, criteria.error])
+        }
+    }
+
 
     rankData(data, index) {
         console.log(data)
@@ -129,7 +156,9 @@ class Results extends Component{
                 this.state.tree = problemToTree(json);
                 this.state.initialLoad = false;
                 this.state.graphData = this.data(-1);
-            }
+                this.state.consistency = this.eycData(this.state.tree, -1)[0];
+                this.state.error = this.eycData(this.state.tree, -1)[1]
+            }  
             console.log(this.state.graphData)
             return(
             <div className={classes.root}>
@@ -150,6 +179,13 @@ class Results extends Component{
                         <Grid item xs={10}>
                             <Paper className={classes.paper}>
                                 <Bar data={this.state.graphData}  width="600" height="250"/>
+                                <Typography align="rigth">
+                                    {strings.error} : <b>{String(this.state.error).slice(0,4)}</b> %
+                                </Typography>
+                                <Typography align="rigth">
+                                    {strings.inconsistency} : <b>{String(this.state.consistency).slice(0,4)}</b> 
+                                </Typography>
+                                
                             </Paper>
                         </Grid>
                     </Grid>

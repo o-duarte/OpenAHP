@@ -61,7 +61,8 @@ const strings = {
     priVec: 'Vector propio',
     priMean: 'Media Geometrica',
     pricol: 'Columna normalizada',
-    methods: 'Metodos'
+    methods: 'Metodos',
+    inconsistency: 'Inconsistencia'
 
 
 
