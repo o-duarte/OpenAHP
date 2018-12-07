@@ -57,7 +57,7 @@ const styles = theme => ({
         overflow: 'auto',
       },
     form: {
-        marginBottom: 10,
+        marginTop: 10,
       },
     formControl: {
         margin: theme.spacing.unit,
@@ -203,6 +203,38 @@ class Editor extends Component{
                         </Grid>
                         <Grid item xs={8}>
                             <Paper className={classes.paper}>
+                                
+                                {this.state.comparison == strings.gPairwise?  (<Centered>
+                                    <GPSlider data={this.state.tree}
+                                            selectedCriteria={this.state.selectedCriteria}
+                                            selectedMatrixItem={this.state.selectedMatrixItem}
+                                            onChangedMatrixValue={this.onChangedMatrixValue}
+                                            innerRef={(item) => { this.slider = item; }}
+                                            />
+                                 
+                                </Centered>  ): (<div/>) }
+                                {this.state.comparison == strings.pairwise?  (
+                                    <PSlider data={this.state.tree}
+                                            selectedCriteria={this.state.selectedCriteria}
+                                            selectedMatrixItem={this.state.selectedMatrixItem}
+                                            onChangedMatrixValue={this.onChangedMatrixValue}
+                                            innerRef={(item) => { this.slider = item; }}
+                                            />): (<div/>) }
+                                {this.state.comparison == strings.verbal?  (
+                                    <VSlider data={this.state.tree}
+                                            selectedCriteria={this.state.selectedCriteria}
+                                            selectedMatrixItem={this.state.selectedMatrixItem}
+                                            onChangedMatrixValue={this.onChangedMatrixValue}
+                                            innerRef={(item) => { this.slider = item; }}
+                                            scale={this.state.verbal}
+                                            />): (<div/>) }
+                                <Matrix data={this.state.tree} 
+                                        selectedCriteria={this.state.selectedCriteria}
+                                        selectedMatrixItem={this.state.selectedMatrixItem}
+                                        onSelectedMatrixItem={this.onSelectedMatrixItem}
+                                        innerRef={(item) => { this.matrix = item; }}
+                                        />
+                                <Divider></Divider>
                                 <form autoComplete="off" className={classes.form}> 
                                     <FormControl variant="outlined" className={classes.formControl}>
                                         <InputLabel
@@ -251,37 +283,7 @@ class Editor extends Component{
                                         </Select>
                                     </FormControl>): (<div/>) }
                                 </form>
-                                <Divider />
-                                {this.state.comparison == strings.gPairwise?  (<Centered>
-                                    <GPSlider data={this.state.tree}
-                                            selectedCriteria={this.state.selectedCriteria}
-                                            selectedMatrixItem={this.state.selectedMatrixItem}
-                                            onChangedMatrixValue={this.onChangedMatrixValue}
-                                            innerRef={(item) => { this.slider = item; }}
-                                            />
-                                 
-                                </Centered>  ): (<div/>) }
-                                {this.state.comparison == strings.pairwise?  (
-                                    <PSlider data={this.state.tree}
-                                            selectedCriteria={this.state.selectedCriteria}
-                                            selectedMatrixItem={this.state.selectedMatrixItem}
-                                            onChangedMatrixValue={this.onChangedMatrixValue}
-                                            innerRef={(item) => { this.slider = item; }}
-                                            />): (<div/>) }
-                                {this.state.comparison == strings.verbal?  (
-                                    <VSlider data={this.state.tree}
-                                            selectedCriteria={this.state.selectedCriteria}
-                                            selectedMatrixItem={this.state.selectedMatrixItem}
-                                            onChangedMatrixValue={this.onChangedMatrixValue}
-                                            innerRef={(item) => { this.slider = item; }}
-                                            scale={this.state.verbal}
-                                            />): (<div/>) }
-                                <Matrix data={this.state.tree} 
-                                        selectedCriteria={this.state.selectedCriteria}
-                                        selectedMatrixItem={this.state.selectedMatrixItem}
-                                        onSelectedMatrixItem={this.onSelectedMatrixItem}
-                                        innerRef={(item) => { this.matrix = item; }}
-                                        />
+                                
                             </Paper>
                         </Grid>
 

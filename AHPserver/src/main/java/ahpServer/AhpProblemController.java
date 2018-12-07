@@ -114,31 +114,31 @@ public class AhpProblemController {
                                             Integer alt,
                                             ArrayList<Double> parentWeight,
                                             PriorityMethodEnum priorityMethod,
-                                            Integer method ){
+                                            Integer method,
+                                            Integer index ){
     SensitivityCriteria result = new SensitivityCriteria();
     result.name = subSensitivity.getName();
     result.weigths = parentWeight;
     result.subCriteria = new ArrayList<SensitivityCriteria>();
     NumercialSensitivityMethod sensitivityMethod = new NumercialSensitivityMethod(parentProblem, priorityMethod);
     RankReversal x;
-    for(int i = 0; i < parent.getSubCriteriaCount() ; i++ ){
-    ArrayList<RankReversal> rank = sensitivityMethod.getRankReversals(parent, i);
+    ArrayList<RankReversal> rank = sensitivityMethod.getRankReversals(parent, index);
     ArrayList<ArrayList<Double>> matrix = matrix(alt);
     for(int j = 0; j < rank.size(); j++ ){
       x = rank.get(j);
       matrix.get(x.getAlternative1()).set(x.getAlternative2(),x.getWeight());
-    } 
-      result.rankReversal = matrix;
     }
+    result.rankReversal = matrix; 
+    ArrayList<Double> subParentWeight = subSensitivity.getPriorityVector(priorityMethod);
     for(int i = 0; i < subSensitivity.getSubCriteriaCount() ; i++ ){
-      ArrayList<Double> subParentWeight = subSensitivity.getPriorityVector(priorityMethod);
+     
       result.subCriteria.add(getSubSensitivity(
                                           subSensitivity,
                                           subSensitivity.getSubcriteria().get(i),
                                           alt,
                                           subParentWeight,
                                           priorityMethod,
-                                          method ));
+                                          method, i));
   }
   
   
@@ -148,6 +148,7 @@ public class AhpProblemController {
 
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
   public AhpProblem getProblemById(@PathVariable("id") ObjectId id) {
+    
     AhpProblem problem = repository.findBy_id(id);
     DecisionProblem decisionProblem =  new DecisionProblem(problem.name);
     DecisionProblemSolver decisionSolver = new DecisionProblemSolver();
@@ -273,7 +274,7 @@ public class AhpProblemController {
                                           decisionProblem.getAlternativesCount(),
                                           parentWeight,
                                           priorityMethod,
-                                          problem.sensitivityMethod ));
+                                          problem.sensitivityMethod, i ));
     }
     if(repository.findBy_id(problem._id).sensitivity != null  ){
       sensitivityRepository.delete(sensitivityRepository.findBy_id(repository.findBy_id(problem._id).sensitivity));

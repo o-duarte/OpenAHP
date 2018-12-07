@@ -62,7 +62,10 @@ const strings = {
     priMean: 'Media Geometrica',
     pricol: 'Columna normalizada',
     methods: 'Metodos',
-    inconsistency: 'Inconsistencia'
+    inconsistency: 'Inconsistencia',
+    rank: 'Rankings',
+    weights: 'Pesos',
+    rankReversal: 'Rank Reversals'
 
 
 

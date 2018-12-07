@@ -11,7 +11,7 @@ function addChildren(subcriteria, parent){
     for (x in subcriteria){
         var children = {};
         children.name = subcriteria[x].name;
-        children.weigths = subcriteria[x].weigths
+        children.weights = subcriteria[x].weigths
         children.rankReversal = subcriteria[x].rankReversal
         children.showChildren = true;
         children.editMode = false;
@@ -39,7 +39,7 @@ export function problemToTree(problem){
     for (criteria in problem.criteria){
         var children = {};
         children.name = problem.criteria[criteria].name;
-        children.weigths = problem.criteria[criteria].weigths 
+        children.weights = problem.criteria[criteria].weigths 
         children.rankReversal = problem.criteria[criteria].rankReversal
         children.showChildren = true;
         children.editMode = false;

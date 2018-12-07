@@ -8,6 +8,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography'
 import TreeView from './treeView'
 import {Bar} from 'react-chartjs'
+import Divider from '@material-ui/core/Divider';
+
 //
 import strings from '../../strings'
 
@@ -88,7 +90,7 @@ class Results extends Component{
     }
 
     onSelectedCriteria(nodeid){
-        console.log(this.eycData(this.state.tree, nodeid)[1]);
+        //console.log(this.eycData(this.state.tree, nodeid)[1]);
         this.setState({graphData: this.data(nodeid), selectedCriteria: nodeid })
         this.setState({consistency: this.eycData(this.state.tree, nodeid)[0],
                        error: this.eycData(this.state.tree, nodeid)[1]
@@ -178,12 +180,16 @@ class Results extends Component{
                         </Grid>
                         <Grid item xs={10}>
                             <Paper className={classes.paper}>
+                            <Typography align="left" variant='h5' gutterBottom>
+                                    {strings.rank}
+                                </Typography>   
+                                <Divider></Divider>
                                 <Bar data={this.state.graphData}  width="600" height="250"/>
-                                <Typography align="rigth">
-                                    {strings.error} : <b>{String(this.state.error).slice(0,4)}</b> %
+                                <Typography align="right">
+                                    {strings.error} : <b>{Number(this.state.error).toFixed(2)}</b> %
                                 </Typography>
-                                <Typography align="rigth">
-                                    {strings.inconsistency} : <b>{String(this.state.consistency).slice(0,4)}</b> 
+                                <Typography align="right">
+                                    {strings.inconsistency} : <b>{Number(this.state.consistency).toFixed(2)}</b> 
                                 </Typography>
                                 
                             </Paper>

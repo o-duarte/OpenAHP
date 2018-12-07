@@ -7,6 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography'
 import TreeView from './treeView'
+import Matrix from './matrix'
 import {Bar} from 'react-chartjs'
 //
 import strings from '../../strings'
@@ -64,17 +65,20 @@ class Sensitivity extends Component{
           initialLoad: true,
           tree: '',
           selectedCriteria: [0],
-          graphData: undefined
+          graphData: undefined,
+
+
         };
       }
     
 
     onSelectedCriteria(nodeid){
-        console.log(this.rankData(this.state.tree, nodeid))
-        //this.setState({graphData: this.data(nodeid), selectedCriteria: nodeid })
+        //console.log(this.rankData(this.state.tree, nodeid))
+        this.setState({selectedCriteria: nodeid })
     }
 
     rankData(data, index) {
+        console.log(index)
         if(index==-1){
             return null
         }
@@ -95,7 +99,6 @@ class Sensitivity extends Component{
     
     render() {
         const { classes } = this.props;
-        console.log(this.props)
         const { sensitivity, loading, error } = this.props.data;
         if (loading) {
             return (
@@ -112,9 +115,9 @@ class Sensitivity extends Component{
                 const json = JSON.parse(sensitivity.raw);
                 this.state.tree = problemToTree(json);
                 this.state.initialLoad = false;
+                console.log(this.state.tree)
                 //this.state.graphData = this.data(-1);
             }
-            console.log(this.state.graphData)
             return(
             <div className={classes.root}>
                 <Centered>
@@ -133,7 +136,10 @@ class Sensitivity extends Component{
                         </Grid>
                         <Grid item xs={10}>
                             <Paper className={classes.paper}>
-
+                                <Matrix data={this.state.tree} 
+                                              selectedCriteria={this.state.selectedCriteria}
+                                              innerRef={(item) => { this.matrix = item; }}
+                                            />
                             </Paper>
                         </Grid>
                     </Grid>
