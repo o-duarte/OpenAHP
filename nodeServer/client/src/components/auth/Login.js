@@ -75,6 +75,7 @@ class LoginForm extends Component {
 
           <FormControl fullWidth margin="normal">
             <Button type="submit">Iniciar Sesión</Button>
+            <Button href="/signin">Registrar</Button>
             <Button href="/auth/google">Iniciar con Google</Button>
           </FormControl>
         </form>

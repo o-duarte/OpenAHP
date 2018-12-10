@@ -20,6 +20,15 @@ export const LOGOUT = gql`
   }
 `;
 
+export const SIGNIN = gql`
+  mutation signIn($email: String!, $password: String!, $fullname: String!){
+    signIn(email: $email, password: $password, fullname: $fullname) {
+      id
+    }
+  }
+`;
+
+
 export const DOCUMENT_SAVE_CONTENT = gql`
   mutation saveContent(
     $documentId: ID!

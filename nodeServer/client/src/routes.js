@@ -10,7 +10,7 @@ import {
   DashboardProblem
 } from './components/dashboard';
 import { EditorLayout } from './components/editor';
-import { Login } from './components/auth';
+import { Login, SignIn } from './components/auth';
 import { CURRENT_USER } from './graphql';
 import AhpEditor from './components/ahpEditor'
 
@@ -61,6 +61,7 @@ const RootRoute = () => {
     <BrowserRouter>
       <Switch>
         <Route exact path="/login" component={Login} />
+        <Route exact path="/SignIn" component={SignIn} />
         <Route path="/dashboard" component={requireAuth(Dashboard)} />
         <Route
           path={'/editor/:documentId'}
