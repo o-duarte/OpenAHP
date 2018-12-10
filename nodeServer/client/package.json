@@ -8,6 +8,9 @@
     },
     "/graphql": {
       "target": "http://localhost:3001"
+    },
+    "/ahpsolver": {
+      "target": "http://localhost:3001"
     }
   },
   "dependencies": {

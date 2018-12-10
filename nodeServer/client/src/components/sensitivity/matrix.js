@@ -17,7 +17,7 @@ const styles = theme => ({
       padding: '12px',
       overflow: 'auto',
       minWidth: '600px',
-      marginTop: 20
+      //marginTop: 20
     },
     paper: {
       minWidth: '300px',

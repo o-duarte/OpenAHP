@@ -25,6 +25,7 @@ import Sensitivity from '../sensitivity'
 import Params from '../params'
 import strings from '../../strings'
 import { Loading } from '../widgets/layouts';
+import {MACHINE_URL} from '../../config'
 
 const styles = theme => ({
   root: {
@@ -169,7 +170,7 @@ class ProblemStepper extends React.Component {
     this.setState({ open: true });
   };
   runSolver = () => {
-    fetch('http://localhost:3001/ahpsolver/'+this.props.problemId)
+    fetch(MACHINE_URL+'/ahpsolver/'+this.props.problemId)
         .then((response) => {
             return response.json()
         })

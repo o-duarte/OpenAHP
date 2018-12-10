@@ -10,6 +10,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import Divider from '@material-ui/core/Divider';
+
 
 //
 import strings from '../../strings'
@@ -49,6 +51,7 @@ const styles = theme => ({
     formControl: {
         margin: theme.spacing.unit,
         minWidth: 120,
+        marginTop: 10,
       },
     inputSelect:{
         height: 40,
@@ -60,6 +63,9 @@ const styles = theme => ({
     selectEmpty: {
         marginTop: theme.spacing.unit * 2,
     },
+    divider:{
+        marginBottom: 10,
+    }
   });
 
 class Params extends Component{
@@ -112,8 +118,9 @@ class Params extends Component{
                 <Centered>
                     <Grid container spacing={16}>
                         <Grid item xs={8}>
-                            <Typography variant='h5' gutterBottom>{strings.methods} </Typography>
                             <Paper className={classes.paper}>
+                                <Typography variant='h6' gutterBottom align='left'>{strings.methods} </Typography>
+                                <Divider className={classes.divider}></Divider>
                                 <FormControl variant="outlined" className={classes.formControl}>
                                     <InputLabel
                                         htmlFor="outlined-age-simple"

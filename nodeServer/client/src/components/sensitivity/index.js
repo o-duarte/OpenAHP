@@ -112,6 +112,7 @@ class Sensitivity extends Component{
         }
         else {
             if (this.state.initialLoad) {
+                if(sensitivity==null){ return (<Centered><Typography variant='h4'>{strings.noResults}</Typography></Centered>)}
                 const json = JSON.parse(sensitivity.raw);
                 this.state.tree = problemToTree(json);
                 this.state.initialLoad = false;

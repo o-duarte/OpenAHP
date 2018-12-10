@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/lab/Slider';
 import Grid from '@material-ui/core/Grid';
-import { Hidden } from '@material-ui/core';
+import { Hidden, Divider } from '@material-ui/core';
 import strings from '../../strings';
 
 const styles = {
@@ -36,6 +36,9 @@ const styles = {
   noPadding:{
     padding: 0,
     margin: 0,
+  },
+  divider:{
+    marginBottom: 15,
   }
 };
 
@@ -147,7 +150,8 @@ class PSlider extends React.Component {
     } 
     return (
       <div className={classes.body}>
-        <Typography variant='subtitle1'>{this.state.sliderText} {this.state.criteria}</Typography>
+        <Typography variant='h6' gutterBottom>{this.state.sliderText} {this.state.criteria}</Typography>
+        <Divider className={classes.divider}></Divider>
         <Grid container spacing={8}>
                     <Grid item xs={3}>
                         <Typography variant="h6" align='right' gutterBottom>

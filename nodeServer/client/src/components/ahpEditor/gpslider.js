@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/lab/Slider';
 import strings from '../../strings';
+import { Hidden, Divider } from '@material-ui/core';
 
 
 const styles = {
@@ -156,7 +157,8 @@ class GPSlider extends React.Component {
 
     return (
       <div className={classes.root}>
-        <Typography variant='subtitle1'>{this.state.sliderText} {this.state.criteria}</Typography>
+        <Typography variant='h6' gutterBottom>{this.state.sliderText} {this.state.criteria}</Typography>
+        <Divider className={classes.divider}></Divider>
         <Typography id="slider-image">{this.state.alternatives[0]}</Typography>
         <Slider
           classes={{ container: classes.slider }}

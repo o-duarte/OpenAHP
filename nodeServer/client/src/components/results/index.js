@@ -154,6 +154,7 @@ class Results extends Component{
         }
         else {
             if (this.state.initialLoad) {
+                if(result==null){ return (<Centered><Typography variant='h4'>{strings.noResults}</Typography></Centered>)}
                 const json = JSON.parse(result.raw);
                 this.state.tree = problemToTree(json);
                 this.state.initialLoad = false;

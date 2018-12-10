@@ -11,7 +11,9 @@ function addChildren(subcriteria, parent){
     for (x in subcriteria){
         var children = {};
         children.name = subcriteria[x].name;
-        children.ranking = subcriteria[x].ranking
+        children.ranking = subcriteria[x].ranking.map(function(each_element){
+            return Number(each_element.toFixed(3));
+        });
         children.consistency = subcriteria[x].consistency
         children.error = subcriteria[x].error
         children.showChildren = true;
@@ -33,7 +35,9 @@ export function problemToTree(problem){
     tree.name = problem.goal;
     tree.alternatives = problem.alternatives
     tree.showChildren = true;
-    tree.ranking = problem.ranking
+    tree.ranking = problem.ranking.map(function(each_element){
+        return Number(each_element.toFixed(3));
+    });
     tree.error = problem.error
     tree.consistency = problem.consistency
     tree.editMode =  false;
@@ -43,7 +47,9 @@ export function problemToTree(problem){
     for (criteria in problem.criteria){
         var children = {};
         children.name = problem.criteria[criteria].name;
-        children.ranking = problem.criteria[criteria].ranking
+        children.ranking = problem.criteria[criteria].ranking.map(function(each_element){
+            return Number(each_element.toFixed(3));
+        });
         children.error = problem.criteria[criteria].error
         children.consistency = problem.criteria[criteria].consistency
         children.showChildren = true;
