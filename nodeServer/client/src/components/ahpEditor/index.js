@@ -170,7 +170,7 @@ class ProblemStepper extends React.Component {
     this.setState({ open: true });
   };
   runSolver = () => {
-    fetch(MACHINE_URL+'/ahpsolver/'+this.props.problemId)
+    fetch( MACHINE_URL+'/ahpsolver/'+this.props.problemId)
         .then((response) => {
             return response.json()
         })

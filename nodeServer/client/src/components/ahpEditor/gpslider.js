@@ -29,6 +29,9 @@ const styles = {
   },
   track: {
     backgroundColor: '#9c9a9a',
+  },
+  divider:{
+    marginBottom: 15,
   }
 };
 

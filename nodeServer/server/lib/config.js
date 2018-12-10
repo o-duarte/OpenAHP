@@ -11,7 +11,7 @@ const MONGO_URI = 'mongodb://mongodb:27017/OpenChoice';
 const MACHINE_URL = 'http://localhost'
 const SERVER_URL = 'express:3001';
 const CLIENT_URL = 'react:3000';
-const SOLVER_URL = 'maven:8080';
+const SOLVER_URL = 'http://maven:8080';
 
 */
 

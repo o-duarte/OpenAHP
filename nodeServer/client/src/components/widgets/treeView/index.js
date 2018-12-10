@@ -273,7 +273,7 @@ class Treeview extends Component {
             <Typography className={classes.text} gutterBottom>{value.name}</Typography>
             <span className="actions">
               <Tooltip title={strings.addSubcriteria} placement="top"><i className="fa fa-plus" 
-                       onClick={(e)=> { e.stopPropagation(); this.addChild(value, parent) }}> </i></Tooltip>
+                       onClick={(e)=> { e.stopPropagation(); this.addChild(value, node) }}> </i></Tooltip>
               <Tooltip title={strings.edit} placement="top"><i className="fa fa-pencil" 
                        onClick={(e)=> { e.stopPropagation(); this.makeEditable(value) }}></i></Tooltip>
               <Tooltip title={strings.delete} placement="top"><i className="fa fa-close" 
