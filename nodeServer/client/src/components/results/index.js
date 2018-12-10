@@ -68,7 +68,8 @@ class Results extends Component{
           selectedCriteria: -1,
           graphData: undefined,
           error: undefined,
-          consistency: undefined      
+          consistency: undefined,
+          name: undefined,      
         };
       }
     
@@ -93,7 +94,8 @@ class Results extends Component{
         //console.log(this.eycData(this.state.tree, nodeid)[1]);
         this.setState({graphData: this.data(nodeid), selectedCriteria: nodeid })
         this.setState({consistency: this.eycData(this.state.tree, nodeid)[0],
-                       error: this.eycData(this.state.tree, nodeid)[1]
+                       error: this.eycData(this.state.tree, nodeid)[1],
+                       name: this.eycData(this.state.tree, nodeid)[2],
                       
         })
     }
@@ -102,7 +104,7 @@ class Results extends Component{
         console.log(data)
         if(index==-1){
             return(
-                [data.consistency, data.error]
+                [data.consistency, data.error, data.name]
             )
         }
         else{
@@ -112,7 +114,7 @@ class Results extends Component{
               criteria = criteria.children[i]  
             });
 
-            return([criteria.consistency, criteria.error])
+            return([criteria.consistency, criteria.error, criteria.name])
         }
     }
 
@@ -161,6 +163,7 @@ class Results extends Component{
                 this.state.graphData = this.data(-1);
                 this.state.consistency = this.eycData(this.state.tree, -1)[0];
                 this.state.error = this.eycData(this.state.tree, -1)[1]
+                this.state.name = this.eycData(this.state.tree, -1)[2]
             }  
             console.log(this.state.graphData)
             return(
@@ -182,7 +185,7 @@ class Results extends Component{
                         <Grid item xs={10}>
                             <Paper className={classes.paper}>
                             <Typography align="left" variant='h5' gutterBottom>
-                                    {strings.rank}
+                                    {strings.rank}: {this.state.name}
                                 </Typography>   
                                 <Divider></Divider>
                                 <Bar data={this.state.graphData}  width="600" height="250"/>
