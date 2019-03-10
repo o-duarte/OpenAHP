@@ -3,15 +3,19 @@ import { withStyles } from '@material-ui/core/styles';
 import {compose, graphql} from "react-apollo/index";
 import ReactDOM from 'react-dom';
 //
+import Tooltip from '@material-ui/core/Tooltip';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography'
 import TreeView from './treeView'
 import {Bar} from 'react-chartjs'
 import Divider from '@material-ui/core/Divider';
+import Cloud from '@material-ui/icons/CloudDownloadOutlined'
+import IconButton from '@material-ui/core/IconButton';
 
 //
 import strings from '../../strings'
+import ReactExport from "react-data-export";
 
 import { Loading, Centered } from '../widgets/layouts';
 
@@ -20,8 +24,12 @@ import {
   } from '../../graphql';
 
 import { problemToTree } from '../../utils/problemAdapterResult';
+import { resultToRows } from '../../utils/resultToRows';
 
 
+const ExcelFile = ReactExport.ExcelFile;
+const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
+const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
 
 const styles = theme => ({
     root: {
@@ -53,9 +61,31 @@ const styles = theme => ({
       },
     inputSelect:{
         height: 40,
-    }
+    },
+    download:{
+        display: 'flex',
+        alignItems: 'baseline',
+    },
   });
 
+  class Download extends React.Component {
+    render() {
+        const {Rows ,cols} = this.props.data
+        const columns = Array.from(Array(cols+1).keys())
+        return (
+            <ExcelFile element={<Tooltip title={strings.downloadResults} placement="top"><IconButton><Cloud/></IconButton></Tooltip>}>
+                  <ExcelSheet data={Rows} name="rankings">
+                    {columns.map((column) =>
+                        <ExcelColumn  label="criteria" value={(column+1).toString()}/>
+                    )}
+                    <ExcelColumn label="Alternative" value="alternative"/>
+                    <ExcelColumn label="Ranking" value="rank"/>
+                    
+                </ExcelSheet>
+             </ExcelFile>
+        );
+    }
+}
 class Results extends Component{
     constructor() {
         super();
@@ -90,6 +120,8 @@ class Results extends Component{
         }
     }
 
+
+
     onSelectedCriteria(nodeid){
         //console.log(this.eycData(this.state.tree, nodeid)[1]);
         this.setState({graphData: this.data(nodeid), selectedCriteria: nodeid })
@@ -101,7 +133,6 @@ class Results extends Component{
     }
 
     eycData(data, index) {
-        console.log(data)
         if(index==-1){
             return(
                 [data.consistency, data.error, data.name]
@@ -120,7 +151,6 @@ class Results extends Component{
 
 
     rankData(data, index) {
-        console.log(data)
         if(index==-1){
             return(
                 data.ranking
@@ -135,6 +165,22 @@ class Results extends Component{
 
             return(criteria.ranking)
         }
+    }
+
+    generateReport(data,cols){
+        const columns = Array.from(Array(cols).keys())
+        return(
+        <ExcelFile>
+            <ExcelSheet data={data} name="rankings">
+                {columns.map((column) =>
+                    <ExcelColumn  value={column.toString()}/>
+                )}
+                <ExcelColumn label="Alternative" value="alternative"/>
+                <ExcelColumn label="Ranking" value="ranking"/>
+                
+            </ExcelSheet>
+        </ExcelFile>
+        )
     }
 
     handleChange = event => {
@@ -165,9 +211,9 @@ class Results extends Component{
                 this.state.error = this.eycData(this.state.tree, -1)[1]
                 this.state.name = this.eycData(this.state.tree, -1)[2]
             }  
-            console.log(this.state.graphData)
             return(
             <div className={classes.root}>
+                
                 <Centered>
                     <Grid container spacing={16}>
                         <Grid item xs={2}>
@@ -184,17 +230,23 @@ class Results extends Component{
                         </Grid>
                         <Grid item xs={10}>
                             <Paper className={classes.paper}>
-                            <Typography align="left" variant='h5' gutterBottom>
-                                    {strings.rank}: {this.state.name}
-                                </Typography>   
-                                <Divider></Divider>
-                                <Bar data={this.state.graphData}  width="600" height="250"/>
-                                <Typography align="right">
-                                    {strings.error} : <b>{Number(this.state.error).toFixed(2)}</b> %
+                            <div className={classes.download}>
+                                <Typography align="left" variant='h5' gutterBottom>
+                                        {strings.rank}: {this.state.name}
                                 </Typography>
-                                <Typography align="right">
-                                    {strings.inconsistency} : <b>{Number(this.state.consistency).toFixed(2)}</b> 
-                                </Typography>
+                                
+                                <Download data={resultToRows(JSON.parse(result.raw))} ></Download>
+                                
+                            </div>
+                            
+                            <Divider></Divider>
+                            <Bar data={this.state.graphData}  width="600" height="250"/>
+                            <Typography align="right">
+                                {strings.error} : <b>{Number(this.state.error).toFixed(2)}</b> %
+                            </Typography>
+                            <Typography align="right">
+                                {strings.inconsistency} : <b>{Number(this.state.consistency).toFixed(2)}</b> 
+                            </Typography>
                                 
                             </Paper>
                         </Grid>

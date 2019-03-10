@@ -11,10 +11,12 @@ import ahpServer.models.Result;
 import ahpServer.models.ResultCriteria;
 import ahpServer.models.Sensitivity;
 import ahpServer.models.SensitivityCriteria;
+import ahpServer.models.Probabilistic;
+import ahpServer.models.ProbabilisticAlternative;
 import ahpServer.repositories.AhpProblemRepository;
 import ahpServer.repositories.ResultRepository;
 import ahpServer.repositories.SensitivityRepository;
-
+import ahpServer.repositories.ProbabilisticRepository;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,7 @@ import problem.DecisionProblem;
 import problem.DecisionProblemSolver;
 import sty.NumercialSensitivityMethod;
 import sty.ProbabilisticSensitivityMethod;
+import sty.ProbabilisticSensitivityMethod.Statistics;
 import sty.AbstracSensitivityMethod;
 import sty.RankReversal;
 
@@ -54,13 +57,10 @@ public class AhpProblemController {
   private ResultRepository resultRepository;
   @Autowired
   private SensitivityRepository sensitivityRepository;
+  @Autowired
+  private ProbabilisticRepository probRepo;
 
   private DecisionProblem parentProblem;
-
-  @RequestMapping(value = "/", method = RequestMethod.GET)
-  public List<AhpProblem> getAllPets() {
-    return repository.findAll();
-  }
 
   private DecisionElement toDecisionElement(problemCriteria criteria){
     DecisionElement element = new DecisionElement(criteria.name);
@@ -122,6 +122,7 @@ public class AhpProblemController {
     result.subCriteria = new ArrayList<SensitivityCriteria>();
     NumercialSensitivityMethod sensitivityMethod = new NumercialSensitivityMethod(parentProblem, priorityMethod);
     RankReversal x;
+    
     ArrayList<RankReversal> rank = sensitivityMethod.getRankReversals(parent, index);
     ArrayList<ArrayList<Double>> matrix = matrix(alt);
     for(int j = 0; j < rank.size(); j++ ){
@@ -129,6 +130,34 @@ public class AhpProblemController {
       matrix.get(x.getAlternative1()).set(x.getAlternative2(),x.getWeight());
     }
     result.rankReversal = matrix; 
+    
+    /* test new method
+    sensitivityMethod.setCriterion(subSensitivity, 0);
+    rank = sensitivityMethod.getRankReversals(parent, index);
+    ///
+    sensitivityMethod.setCriterion(subSensitivity, 0);
+    ArrayList<RankReversal> allrank1 = sensitivityMethod.getRankReversals(parent, index);
+    ArrayList<RankReversal> allrank2 = sensitivityMethod.getAllRankReversals();
+    ArrayList<RankReversal> allrank3 = sensitivityMethod.getRankReversals();
+    
+    for(int j = 0; j < allrank2.size(); j++ ){
+      x = allrank2.get(j);
+      System.out.println( x.getDecisionElement().getName() );
+      System.out.println(x.getAlternative1());
+      System.out.println(x.getAlternative2());
+      System.out.println(x.getWeight());
+    }
+
+
+    System.out.println("1----------------");
+    System.out.println(rank.size());
+    System.out.println("2----------------");
+    System.out.println(allrank1.size());
+    System.out.println("3----------------");
+    System.out.println(allrank2.size());
+    System.out.println("4----------------");
+    System.out.println(allrank2.size());
+    */
     ArrayList<Double> subParentWeight = subSensitivity.getPriorityVector(priorityMethod);
     for(int i = 0; i < subSensitivity.getSubCriteriaCount() ; i++ ){
      
@@ -174,7 +203,7 @@ public class AhpProblemController {
 
     /* Criteria */
     for(int i=0;i<problem.criteria.size();i++){
-      decisionProblem.addSubCriterion(toDecisionElement(problem.criteria.get(i)));
+      decisionProblem.addSubCriterion(toDecisionElement(problem.criteria.get(i)),false);
     }
 
     /* Solver */
@@ -254,9 +283,9 @@ public class AhpProblemController {
     }
 
     problem.result = result._id;
-    
+    resultRepository.save(result);    
 
-    ///sensitivity Analisis
+    ///sensitivity Analisis Rank Reversals
     Sensitivity sensitivity = new Sensitivity();
     sensitivity.set_id(ObjectId.get());
     sensitivity.name = problem.name;
@@ -290,8 +319,40 @@ public class AhpProblemController {
     
     problem.sensitivity = sensitivity._id;
     sensitivityRepository.save(sensitivity);
+   
+    
+
+    ///sensitivity Analisis Probabilities
+
+    Probabilistic probResult = new Probabilistic();
+    probResult.set_id(ObjectId.get());
+    probResult.alternatives = new ArrayList<ProbabilisticAlternative>();
+
+    ProbabilisticSensitivityMethod prob = new ProbabilisticSensitivityMethod(decisionProblem, FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM);
+    prob.setPreserveRankOrder(true);
+    prob.addAllSimulationNodes(false);
+    ArrayList<Double> testse = prob.getRanking();
+    ArrayList<Statistics> simulation = prob.simulate();
+    for(int i=0; i<simulation.size();i++){
+        probResult.alternatives.add(new ProbabilisticAlternative(
+            simulation.get(i).getMean(),
+            simulation.get(i).getMedian(),
+            simulation.get(i).getQuartile1(),
+            simulation.get(i).getQuartile2(),
+            simulation.get(i).getQuartile3(),
+            simulation.get(i).getMin(),
+            simulation.get(i).getMax(),
+            problem.alternatives.get(i)
+        ));
+    }
+    if(repository.findBy_id(problem._id).probabilistic != null  ){
+      probRepo.delete(probRepo.findBy_id(repository.findBy_id(problem._id).probabilistic));
+    }
+    probRepo.save(probResult);
+    problem.probabilistic = probResult._id;
+    
     repository.save(problem);
-    resultRepository.save(result);  
+
     return problem;
   }
  

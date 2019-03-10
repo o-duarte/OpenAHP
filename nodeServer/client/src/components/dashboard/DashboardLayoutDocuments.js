@@ -9,7 +9,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 
 import { CURRENT_USER_DOCUMENTS, DOCUMENT_NEW } from '../../graphql';
-import { problemsTabItems } from './config.js';
+import { documentsTabItems } from './config.js';
 import { LayoutWithTabs } from '../widgets/layouts';
 
 /*
@@ -110,7 +110,7 @@ class newDocumentButtonComponent extends Component {
       .mutate()
       .then(({ data }) => {
         // console.log(data.documentNew.id);
-        this.props.history.push(`/dashboard/docs/edit/${data.documentNew.id}`);
+        this.props.history.push(`/editor/${data.documentNew.id}`);
       })
       .catch(res => {
         const errors = res.graphQLErrors.map(error => error.message);
@@ -166,7 +166,7 @@ class DashboardLayoutDocuments extends Component {
     return (
       <div>
         <LayoutWithTabs
-          tabItems={problemsTabItems}
+          tabItems={documentsTabItems}
           onChangeCallback={this.onTabChange}
           initialTab={this.state.activeTabValue}
         >

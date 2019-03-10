@@ -41,8 +41,7 @@ class DashboardHeaderComponent extends Component {
       <div className={classes.root}>
         <Logo />
         <div className={classes.leftSide}>
-          <Icon className={classes.icon}>bookmark</Icon>
-          <Icon className={classes.icon}>notifications</Icon>
+          
           <MenuListWithButton
             component={<Avatar className={classes.avatar}>
                       { this.props.currentUser? this.props.currentUser.fullname.charAt(0): 'A'}           

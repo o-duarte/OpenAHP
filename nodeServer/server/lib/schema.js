@@ -78,11 +78,29 @@ const types = `
     consistencyMethod: Int
     errorMeasure: Int
     criteria: [Criteria]
+    rawCriteria : String
     owner: User
     result: Result
     sensitivity: Sensitivity
+    probabilistic: Probabilistic
     updatedAt: String
     createdAt: String
+  }
+
+  type Probabilistic{
+    id: ID
+    alternatives: [ProbabilisticAlternative]
+  }
+
+  type ProbabilisticAlternative{
+    mean: Float
+    median: Float
+    q1: Float
+    q2: Float
+    q3: Float
+    min: Float
+    max: Float
+    name: String
   }
 
   type ResultCriteria{
@@ -133,6 +151,7 @@ const queries = `
     currentUserSingleProblem(problemId: String): ahpProblem
     result(resultId: String): Result
     sensitivity(sensitivityId: String): Sensitivity
+    probabilistic(probabilisticId: String): Probabilistic
   }
 `;
 

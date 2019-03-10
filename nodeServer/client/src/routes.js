@@ -84,12 +84,10 @@ const requireAuth = WrappedComponent => {
         this.props.history.push('/login');
       }
     }
-
     render() {
       return <WrappedComponent {...this.props} />;
     }
   }
-
   return graphql(CURRENT_USER)(RequireAuth);
 };
 

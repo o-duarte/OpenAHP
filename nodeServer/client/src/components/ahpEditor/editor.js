@@ -166,7 +166,7 @@ class Editor extends Component{
     render() {
         const { classes } = this.props;
         const { currentUserSingleProblem, loading, error } = this.props.data;
-        console.log(currentUserSingleProblem)
+        
         
         if (loading) {
             return (
@@ -178,10 +178,12 @@ class Editor extends Component{
             if (this.state.initialLoad) {
                 this.state.tree = problemToTree(currentUserSingleProblem);
                 this.state.initialLoad = false;
+                console.log(currentUserSingleProblem)
                 this.props.setMethods(currentUserSingleProblem.priorityMethod, currentUserSingleProblem.consistencyMethod, currentUserSingleProblem.errorMeasure)
                 if(currentUserSingleProblem.result!=null && currentUserSingleProblem.sensitivity!=null){
                     this.props.setResultId(currentUserSingleProblem.result.id,
-                                            currentUserSingleProblem.sensitivity.id,)
+                                            currentUserSingleProblem.sensitivity.id,
+                                            currentUserSingleProblem.probabilistic.id,)
                     
                 }
             }

@@ -22,6 +22,7 @@ import Editor from './editor'
 import Centered from '../widgets/layouts/Centered'
 import Results from '../results'
 import Sensitivity from '../sensitivity'
+import Probabilistic from '../probabilistic'
 import Params from '../params'
 import strings from '../../strings'
 import { Loading } from '../widgets/layouts';
@@ -45,8 +46,9 @@ const styles = theme => ({
 });
 
 function getSteps() {
-  return [strings.data, strings.params, strings.results, strings.analisis];
+  return [strings.data, strings.params, strings.results, strings.probAnalisis, strings.analisis];
 }
+
 
 
 export class GetStepContent extends React.Component {
@@ -79,6 +81,10 @@ export class GetStepContent extends React.Component {
                           
                           />;
         case 3:
+          return <Probabilistic innerRef={(step) => { this.results = step; }}
+                                probabilisticId = {this.props.probabilisticId}
+                          />
+        case 4:
           return <Sensitivity innerRef={(step) => { this.sensitivity = step; }}
                               sensitivityId={this.props.sensitivityId}
                           />;
@@ -99,14 +105,15 @@ class ProblemStepper extends React.Component {
       skipped: new Set(),
       resultId: undefined,
       sensitivityId: undefined,
+      probabilisticId: undefined,
       open: false,
       priorityMethod: 0,
       consistencyMethod:0,
       errorMeasure: 0,
     };
   }
-  setResultId(result_id, sensitivity_id){
-    this.setState({resultId: result_id, sensitivityId: sensitivity_id});
+  setResultId(result_id, sensitivity_id, probabilistic_id){
+    this.setState({resultId: result_id, sensitivityId: sensitivity_id, probabilisticId: probabilistic_id});
   }
   setMethods(p,c,e){
     this.setState({priorityMethod: p,
@@ -176,7 +183,7 @@ class ProblemStepper extends React.Component {
         })
         .then((recurso) => {
             console.log(recurso)
-            this.setResultId(recurso.result,recurso.sensitivity)
+            this.setResultId(recurso.result,recurso.sensitivity, recurso.probabilistic)
             this.setState({ open: false });
             this.handleNext()
         })
@@ -283,6 +290,7 @@ class ProblemStepper extends React.Component {
                                             problemId={this.props.problemId}
                                             resultId={this.state.resultId}
                                             sensitivityId= {this.state.sensitivityId}
+                                            probabilisticId= {this.state.probabilisticId}
                                             setMethods = {this.setMethods}
                                             error = {this.state.errorMeasure}
                                             consistency = {this.state.consistencyMethod}

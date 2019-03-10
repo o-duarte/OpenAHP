@@ -36,7 +36,7 @@ export function treeToProblem(tree){
         /////
         problem.criteria.push(criteria)
     }
-
+    problem.rawCriteria = JSON.stringify(problem.criteria)
 
     return problem;
   };

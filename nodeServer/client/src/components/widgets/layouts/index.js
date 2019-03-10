@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import FullScreen from './FullScreen';
 import Centered from './Centered';
+import FullCentered from './FullCentered';
 import Fluid from './Fluid';
 import LayoutPermanentMenu from './LayoutPermanentMenu';
 import LayoutShiftMenu from './LayoutShiftMenu';
@@ -74,4 +75,4 @@ class Layout extends Component {
   }
 }
 
-export { Layout, LayoutTypes, FullScreen, Centered, Fluid, LayoutWithTabs, Loading };
+export { Layout, LayoutTypes, FullScreen, Centered, FullCentered, Fluid, LayoutWithTabs, Loading };

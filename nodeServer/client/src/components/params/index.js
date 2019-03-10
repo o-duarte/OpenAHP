@@ -20,7 +20,7 @@ import {
     UPDATE_METHODS
   } from '../../graphql';
 
-import { Loading, Centered } from '../widgets/layouts';
+import { Loading, Centered, FullCentered } from '../widgets/layouts';
 import { Typography } from '@material-ui/core';
 
 
@@ -65,6 +65,9 @@ const styles = theme => ({
     },
     divider:{
         marginBottom: 10,
+    },
+    grid:{
+        justifyContent: 'center',
     }
   });
 
@@ -113,13 +116,14 @@ class Params extends Component{
     render() {
         const { classes } = this.props;
             return(
+            
             <div className={classes.root}>
                 
                 <Centered>
-                    <Grid container spacing={16}>
+                    <Grid container className={classes.grid} spacing={16}>
                         <Grid item xs={8}>
                             <Paper className={classes.paper}>
-                                <Typography variant='h6' gutterBottom align='left'>{strings.methods} </Typography>
+                                <Typography variant='h5' gutterBottom align='left'>{strings.methods} </Typography>
                                 <Divider className={classes.divider}></Divider>
                                 <FormControl variant="outlined" className={classes.formControl}>
                                     <InputLabel
@@ -185,7 +189,6 @@ class Params extends Component{
                                         <MenuItem value={0}>{strings.priMean}</MenuItem>
                                         <MenuItem value={1}>{strings.priVec}</MenuItem>
                                         <MenuItem value={2}>{strings.pricol}</MenuItem>
-                                        <MenuItem value={3}>{strings.cIndexG}</MenuItem>
                                     </Select>
                                 </FormControl>
                             </Paper>

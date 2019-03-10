@@ -11,7 +11,7 @@ const styles = {
 const Logo = props => {
   return (
     <Typography variant="h4" >
-      <b>Open</b>AHP
+      Open<b>AHP</b>
     </Typography>
   );
 };

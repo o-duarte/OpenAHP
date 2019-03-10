@@ -4,10 +4,13 @@ import DashboardLayout from './DashboardLayout';
 import DashboardLayoutDocuments from './DashboardLayoutDocuments';
 import DashboardLayoutProblems from './DashboardLayoutProblems'
 import AhpEditor from '../ahpEditor'
+import {FullCentered} from '../widgets/layouts'
+import Typography from '@material-ui/core/Typography'
+import strings from '../../strings'
 
 
 const DashboardDefault = () => {
-  return <DashboardLayout component={() => <h1>Default</h1>} />;
+  return <DashboardLayout component={() => <FullCentered><Typography variant='h4'> {strings.welcome} </Typography></FullCentered>} />;
 };
 
 const DashboardDocuments = () => {

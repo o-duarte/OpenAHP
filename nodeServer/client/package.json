@@ -39,17 +39,21 @@
     "normalize.css": "^7.0.0",
     "object-path": "^0.11.4",
     "object-path-immutable": "^3.0.0",
+    "plotly.js": "^1.45.2",
     "prop-types": "^15.6.0",
     "react": "^16.5.2",
     "react-apollo": "^2.0.4",
     "react-autosuggest": "^9.3.2",
     "react-chartjs": "^1.2.0",
+    "react-data-export": "^0.5.0",
     "react-dom": "^16.5.2",
     "react-material-ui-form-validator": "^2.0.3",
+    "react-plotly.js": "^2.3.0",
     "react-popper": "^0.7.5",
     "react-router-dom": "^4.2.2",
     "react-scripts": "^1.0.17",
-    "style-loader": "^0.19.1"
+    "style-loader": "^0.19.1",
+    "xlsx": "^0.14.1"
   },
   "scripts": {
     "start": "react-scripts start",

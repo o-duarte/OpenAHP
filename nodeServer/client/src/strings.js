@@ -1,6 +1,7 @@
 const strings = {
     logout: 'logout',
     appName: 'OpenAHP',
+    welcome: 'Bienvenido a OpenAHP',
     //problem table
     new: 'Crear nuevo problema',
     name: 'Nombre del Problema',
@@ -20,6 +21,7 @@ const strings = {
     data: 'Datos del Problema',
     params: 'Parametros de Resolucion',
     results: 'Resultados',
+    probAnalisis: 'Analisis Probabilístico',
     analisis: 'Analisis de Sensibilidad',
     solve: 'Resolver',
     //List
@@ -63,9 +65,13 @@ const strings = {
     pricol: 'Columna normalizada',
     methods: 'Metodos',
     inconsistency: 'Inconsistencia',
-    rank: 'Rankings',
+    rank: 'Desempeños',
     weights: 'Pesos',
-    rankReversal: 'Rank Reversals'
+    rankReversal: 'Rank Reversals',
+    //result
+    downloadResults: 'Descargar resultados',
+    //probabilistic
+    rankings: 'Rankings'
 
 
 

@@ -8,8 +8,6 @@ import {InputLabel} from '@material-ui/core';
 import { FormControl } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
-import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
-
 
 import { FullScreen, Centered } from '../widgets/layouts';
 import Logo from '../widgets/Logo';

@@ -36,7 +36,7 @@ export function problemToTree(problem){
     tree.children = [];
     tree.id = [];
     var criteria;
-    for (criteria in problem.criteria){
+    for (criteria in JSON.parse(problem.rawCriteria)){
         var children = {};
         children.name = problem.criteria[criteria].name;
         children.matrix = problem.criteria[criteria].matrix

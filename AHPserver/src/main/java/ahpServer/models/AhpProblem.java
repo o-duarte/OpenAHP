@@ -25,6 +25,7 @@ public class AhpProblem {
   public ArrayList<problemCriteria> criteria;
   public ObjectId result;
   public ObjectId sensitivity;
+  public ObjectId probabilistic;
   
 
 
@@ -66,6 +67,7 @@ public class AhpProblem {
   public String getowner() { return owner.toHexString(); }
   public String getresult() { return result.toHexString(); }
   public String getsensitivity() { return sensitivity.toHexString(); }
+  public String getprobabilistic() {return probabilistic.toHexString(); }
   public void set_owner(ObjectId owner) { this.owner = owner; }
  
   public String getName() { return name; }

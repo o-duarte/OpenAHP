@@ -13,6 +13,7 @@ services:
     - react
 
   mongodb:
+    restart: always
     image: mongo
     expose:
       - "27017"
@@ -36,6 +37,7 @@ services:
       - mongodb
   
   express:
+    restart: always
     build:
       context: ./nodeServer/server
     command: npm start
@@ -53,9 +55,10 @@ services:
       - 3001:3001
 
   react:
+    restart: always
     build:
       context: ./nodeServer/client
-    command: npm start
+    command: npm start --loglevel=error
     volumes:
       - ./nodeServer/client/:/usr/app
       - /usr/app/node_modules

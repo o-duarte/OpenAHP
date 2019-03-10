@@ -9,6 +9,7 @@ const DocumentContent = mongoose.model('DocumentContent');
 const AhpProblem = mongoose.model('AhpProblem');
 const Result = mongoose.model('Result');
 const Sensitivity = mongoose.model('Sensitivity');
+const Probabilistic = mongoose.model('Probabilistic');
 
 
 const resolvers = {
@@ -65,6 +66,7 @@ const resolvers = {
           .populate('owner')
           .populate('result')
           .populate('sensitivity')
+          .populate('probabilistic')
           .exec()
 
       } catch (e) {
@@ -82,6 +84,14 @@ const resolvers = {
     sensitivity: async (_, { sensitivityId }, req) => {
       try {
         return await Sensitivity.findOne({ _id: sensitivityId })
+          .exec();
+      } catch (e) {
+        console.log(e.message);
+      }
+    },
+    probabilistic: async (_, { probabilisticId }, req) => {
+      try {
+        return await Probabilistic.findOne({ _id: probabilisticId })
           .exec();
       } catch (e) {
         console.log(e.message);
@@ -157,6 +167,7 @@ const resolvers = {
           { _id: problemId },
           { $set: { goal: data.goal,
                     criteria: data.criteria ,
+                    rawCriteria: JSON.stringify(data.criteria),
                     rootMatrix: data.rootMatrix,
                     alternatives: data.alternatives,
                      } },
@@ -204,6 +215,16 @@ const resolvers = {
              subcriteria: []
             }
           ],
+          rawCriteria: JSON.stringify([
+            {name: 'Criteria 1',
+             matrix: [[1,1],[1,1]],
+             subcriteria: []
+            },
+            {name: 'Criteria 2',
+             matrix: [[1,1],[1,1]],
+             subcriteria: []
+            }
+          ]),
           owner: req.user
           
         }).save()

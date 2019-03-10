@@ -294,6 +294,9 @@ const AhpProblemSchema = new Schema(
     criteria: {
       type: [Criteria],
     },
+    rawCriteria:{
+      type: String
+    },
     result: {
       type: Schema.Types.ObjectId,
       ref: 'Result',
@@ -301,6 +304,10 @@ const AhpProblemSchema = new Schema(
     sensitivity: {
       type: Schema.Types.ObjectId,
       ref: 'Sensitivity',
+    },
+    probabilistic: {
+      type: Schema.Types.ObjectId,
+      ref: 'Probabilistic',
     },
     owner: {
       type: Schema.Types.ObjectId,
@@ -419,6 +426,16 @@ const SensitivitySchema = new Schema(
 const SensitivityModel = mongoose.model('Sensitivity', SensitivitySchema, 'sensitivities');
 
 
+const ProbabilisticSchema = new Schema(
+  {
+    alternatives: []
+  }
+);
+
+const ProbabilisticModel = mongoose.model('Probabilistic', ProbabilisticSchema);
+
+
+
 /*
  * Module exports.
  */
@@ -444,5 +461,7 @@ export {
   ResultModel,
   ResultSchema,
   SensitivityModel,
-  SensitivitySchema
+  SensitivitySchema,
+  ProbabilisticModel,
+  ProbabilisticSchema,
 };

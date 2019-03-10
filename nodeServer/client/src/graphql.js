@@ -126,6 +126,10 @@ export const CURRENT_USER_SINGLE_PROBLEM= gql`
       sensitivity {
         id
       }
+      probabilistic {
+        id
+      }
+      rawCriteria
       criteria {
         name
         matrix
@@ -201,6 +205,25 @@ export const SENSITIVITY  = gql`
     }
   }
 `;
+
+export const PROBABILISTIC = gql`
+  query probabilistic($probabilisticId: String!){
+    probabilistic(probabilisticId: $probabilisticId){
+      alternatives{
+        mean
+        median
+        q1
+        q2
+        q3
+        min
+        max
+        name
+      }
+    }
+  }
+`;
+
+
 export const PARAMS  = gql`
   query currentUserSingleProblem($problemId: String!) {
     currentUserSingleProblem(problemId: $problemId) {
