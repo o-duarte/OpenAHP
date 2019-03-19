@@ -11,6 +11,9 @@
     },
     "/ahpsolver": {
       "target": "http://localhost:3001"
+    },
+    "/ahpanalisis": {
+      "target": "http://localhost:3001"
     }
   },
   "dependencies": {

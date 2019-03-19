@@ -124,6 +124,26 @@ app.get('/ahpsolver/:id', function(req,res) {
   })
 })
 
+app.post('/ahpanalisis/:id', function(req,res) {
+  var path = SOLVER_URL + '/ahp/analisis/' + req.params.id
+  console.log(req.body)
+  console.log(JSON.stringify(req.body))
+  request({
+    method: 'POST',
+    uri: path,
+    json: true,
+    body: req.body,     
+  },
+  function (error, response, body) {
+    if (error) {
+      return console.error('upload failed:', error);
+    }
+    console.log('Upload successful!  Server responded with:', body);
+    res.send(body)
+  })
+})
+
+
 /*
  * Static File server setup.
  */

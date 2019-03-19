@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import ahpServer.models.AhpProblem;
 import ahpServer.models.problemCriteria;
 import ahpServer.models.Result;
+import ahpServer.models.Analisis;
 import ahpServer.models.ResultCriteria;
 import ahpServer.models.Sensitivity;
 import ahpServer.models.SensitivityCriteria;
@@ -168,13 +169,11 @@ public class AhpProblemController {
                                           subParentWeight,
                                           priorityMethod,
                                           method, i));
-  }
-  
-  
-    return result;
-
+    }
+  return result;  
   }
 
+  
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
   public AhpProblem getProblemById(@PathVariable("id") ObjectId id) {
     
@@ -278,7 +277,8 @@ public class AhpProblemController {
     try {
         String json = mapper.writeValueAsString(result);
         result.raw = json;
-    } catch (JsonProcessingException e) {
+    } 
+    catch (JsonProcessingException e) {
         e.printStackTrace();
     }
 
@@ -367,8 +367,81 @@ public class AhpProblemController {
     TestCreators test = new TestCreators();
     test.problem2();
     repository.save(test.problem);
- 
-
   }
+  @RequestMapping(value= "/analisis/{id}", method = RequestMethod.POST)
+  public ArrayList<Double> makeAnalisis(@PathVariable("id") ObjectId id, @Valid @RequestBody Analisis analisis){
+    AhpProblem problem = repository.findBy_id(id);
+    DecisionProblem decisionProblem =  new DecisionProblem(problem.name);
+    DecisionProblemSolver decisionSolver = new DecisionProblemSolver();
+
+    String[] strNames = new String[problem.alternatives.size()];
+    strNames = problem.alternatives.toArray(strNames);
+    decisionProblem.setAlternatives(strNames);
+
+    DecisionElement decisionElement = new DecisionElement(problem.goal);
+    
+    /* Root matrix */
+    int dimension = problem.criteria.size();
+    ComparisonMatrix comparisonMatrix = new ComparisonMatrix(dimension, true);
+    for (int i = 0; i < dimension; i++){
+      for (int j = 0; j < dimension; j++) {
+         if (i < j) {
+           comparisonMatrix.set(i,j,problem.rootMatrix.get(i).get(j));
+         }
+      }
+    }
+    decisionElement.setComparisonMatrix(comparisonMatrix);
+    decisionProblem.setRootNode(decisionElement);
+
+    /* Criteria */
+    for(int i=0;i<problem.criteria.size();i++){
+      decisionProblem.addSubCriterion(toDecisionElement(problem.criteria.get(i)),false);
+    }
+
+    /* Solver */
+    for(FactoryPriorityMethod.PriorityMethodEnum enume:
+                FactoryPriorityMethod.PriorityMethodEnum.values()){
+            decisionSolver.addPriorityMethod(enume);
+    }
+    for(FactoryConsistencyMethod.ConsistencyMethodEnum enume:
+            FactoryConsistencyMethod.ConsistencyMethodEnum.values()){
+        decisionSolver.addConsistencyMethod(enume);
+    }
+    for(FactoryErrorMethod.ErrorMethodEnum enume:
+            FactoryErrorMethod.ErrorMethodEnum.values()){
+        decisionSolver.addErrorMeasureMethod(enume);
+    }
+
+    
+    PriorityMethodEnum priorityMethod = FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM;
+    switch(problem.priorityMethod){
+      case 0:
+        priorityMethod = FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM;
+      case 1:
+        priorityMethod = FactoryPriorityMethod.PriorityMethodEnum.EIGENVECTOR;
+      case 2:
+        priorityMethod = FactoryPriorityMethod.PriorityMethodEnum.GEOMETRIC_MEAN;
+      case 3:
+        priorityMethod = FactoryPriorityMethod.PriorityMethodEnum.REVISED_GEOMETRIC_MEAN;
+    }
+
+    /*first solve */ 
+    decisionSolver.computeResults(decisionProblem, false);
+    /*find decisionElement to change*/
+    //decisionProblem.getRoot().getRanking();
+    /*solve again */
+    if(analisis.weights.size()==1){
+      return decisionProblem.getRoot().getRanking(analisis.weights, priorityMethod);
+    }
+    //decisionProblem.getRanking(priorityMethod, analisis.weights);
+    
+    DecisionElement element = decisionProblem.getRoot();
+    analisis.id.remove(0);
+    for (Integer index : analisis.id){
+      element = element.getSubCriterionByIndex(index);
+    }
+
+    return element.getRanking(analisis.weights, priorityMethod);
+  } 
 
 }

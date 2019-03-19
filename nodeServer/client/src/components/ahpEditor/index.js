@@ -22,11 +22,14 @@ import Editor from './editor'
 import Centered from '../widgets/layouts/Centered'
 import Results from '../results'
 import Sensitivity from '../sensitivity'
+import Analisis from '../analisis'
 import Probabilistic from '../probabilistic'
 import Params from '../params'
 import strings from '../../strings'
 import { Loading } from '../widgets/layouts';
 import {MACHINE_URL} from '../../config'
+
+import SliderList from '../analisis/sliderList'
 
 const styles = theme => ({
   root: {
@@ -46,7 +49,7 @@ const styles = theme => ({
 });
 
 function getSteps() {
-  return [strings.data, strings.params, strings.results, strings.probAnalisis, strings.analisis];
+  return [strings.data, strings.params, strings.results, strings.probAnalisis, strings.rankReversal, strings.analisis ];
 }
 
 
@@ -62,6 +65,7 @@ export class GetStepContent extends React.Component {
       const step = this.props.step;
       const { classes } = this.props;
       switch (step) {
+        
         case 0:
           return <Editor innerRef={(step) => { this.editor = step; }}
                          problemId={this.props.problemId}
@@ -88,6 +92,11 @@ export class GetStepContent extends React.Component {
           return <Sensitivity innerRef={(step) => { this.sensitivity = step; }}
                               sensitivityId={this.props.sensitivityId}
                           />;
+        case 5: 
+          return <Analisis innerRef={(step) => { this.sensitivity = step; }}
+                            sensitivityId={this.props.sensitivityId}
+                            problemId={this.props.problemId}
+                        />
         default:
           return 'Unknown step';
       }
@@ -189,7 +198,7 @@ class ProblemStepper extends React.Component {
         })
     
   }
-
+  
 
 
   render() {
@@ -260,9 +269,9 @@ class ProblemStepper extends React.Component {
 
                   <IconButton
                       onClick={this.handleNext}
-                      disabled={activeStep === 1 && this.state.resultId==undefined}
+                      disabled={(activeStep === 1 && this.state.resultId==undefined) || activeStep === steps.length - 1}
                   >
-                      {activeStep === steps.length - 1 ? <Publish/> : <KeyboardArrowRight/>}
+                       <KeyboardArrowRight/>
                   </IconButton>
               </Paper>
               

@@ -6,10 +6,9 @@ import ReactDOM from 'react-dom';
 import Tooltip from '@material-ui/core/Tooltip';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography'
+import {Typography, Divider} from '@material-ui/core'
 import TreeView from './treeView'
 import {Bar} from 'react-chartjs'
-import Divider from '@material-ui/core/Divider';
 import Cloud from '@material-ui/icons/CloudDownloadOutlined'
 import IconButton from '@material-ui/core/IconButton';
 
@@ -45,6 +44,7 @@ const styles = theme => ({
       textAlign: 'center',
       color: theme.palette.text.secondary,
     },
+    
     treeView: {
         minWidth: '150px',
         padding: '12px',
@@ -66,6 +66,9 @@ const styles = theme => ({
         display: 'flex',
         alignItems: 'baseline',
     },
+    divider:{
+        marginBottom: 20,
+    }
   });
 
   class Download extends React.Component {
@@ -221,6 +224,7 @@ class Results extends Component{
                                 <Typography variant="h6" gutterBottom>
                                     {strings.criteria}
                                 </Typography>
+                                <Divider></Divider>
                                 <TreeView tree={this.state.tree} 
                                           onSelectedCriteria={this.onSelectedCriteria}
                                           innerRef={(item) => { this.treeView = item; }}
@@ -231,7 +235,7 @@ class Results extends Component{
                         <Grid item xs={10}>
                             <Paper className={classes.paper}>
                             <div className={classes.download}>
-                                <Typography align="left" variant='h5' gutterBottom>
+                                <Typography align="left" variant='h6' gutterBottom>
                                         {strings.rank}: {this.state.name}
                                 </Typography>
                                 
@@ -239,7 +243,7 @@ class Results extends Component{
                                 
                             </div>
                             
-                            <Divider></Divider>
+                            <Divider className={classes.divider}></Divider>
                             <Bar data={this.state.graphData}  width="600" height="250"/>
                             <Typography align="right">
                                 {strings.error} : <b>{Number(this.state.error).toFixed(2)}</b> %

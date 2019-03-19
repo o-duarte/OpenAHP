@@ -123,7 +123,7 @@ class Params extends Component{
                     <Grid container className={classes.grid} spacing={16}>
                         <Grid item xs={8}>
                             <Paper className={classes.paper}>
-                                <Typography variant='h5' gutterBottom align='left'>{strings.methods} </Typography>
+                                <Typography variant='h6' gutterBottom align='left'>{strings.methods} </Typography>
                                 <Divider className={classes.divider}></Divider>
                                 <FormControl variant="outlined" className={classes.formControl}>
                                     <InputLabel

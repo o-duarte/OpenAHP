@@ -10,7 +10,9 @@ import strings from '../../strings'
 
 
 const DashboardDefault = () => {
-  return <DashboardLayout component={() => <FullCentered><Typography variant='h4'> {strings.welcome} </Typography></FullCentered>} />;
+  return <DashboardLayout component={() => <FullCentered><Typography variant='h4'> {strings.welcome} </Typography>
+  <Typography variant='h6'> Pulsa sobre el engrane para ir a problemas </Typography>
+  </FullCentered>} />;
 };
 
 const DashboardDocuments = () => {

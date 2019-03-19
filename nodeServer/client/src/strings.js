@@ -71,7 +71,8 @@ const strings = {
     //result
     downloadResults: 'Descargar resultados',
     //probabilistic
-    rankings: 'Rankings'
+    rankings: 'Rankings',
+    calculate: 'Calcular',
 
 
 
