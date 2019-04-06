@@ -131,8 +131,14 @@ class Probabilistic extends Component{
                                 <Divider className={classes.divider}></Divider>
                                 <Plot
                                     data = {data}
-                                    layout={{yaxis: {
-                                        autorange: 'reversed',}}}
+                                    layout={{
+                                        yaxis: {
+                                            autorange: 'reversed',
+                                        },
+                                        xaxis: {
+                                            type: 'category',
+                                        }
+                                    }}
                                 />
                             </Paper>
                         </Grid>

@@ -48,8 +48,8 @@ const strings = {
     vStrong: 'Demasiada',
     extreme: 'Extrema',
     //sliders
-    sliderTextImp: 'Comparar la relativa importancia respeto a:',
-    sliderTextPref: 'Comparar la relativa preferencia respeto a:',
+    sliderTextImp: 'Comparar la relativa importancia respecto a:',
+    sliderTextPref: 'Comparar la relativa preferencia respecto a:',
     //params
     consistency: 'Consistencia',
     error: 'Error',

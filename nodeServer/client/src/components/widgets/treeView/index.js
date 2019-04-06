@@ -191,6 +191,7 @@ class Treeview extends Component {
       this.props.onChangedTree(newTree)
     }
     else{
+      console.log('path') 
       //this never happens
     } 
   }
@@ -318,6 +319,11 @@ class Treeview extends Component {
           <Tooltip title={strings.edit} placement="top">
           <i className="fa fa-pencil" onClick={(e)=> { e.stopPropagation(); this.makeEditable(this.state.data) }}>&nbsp;&nbsp;&nbsp;</i>
           </Tooltip>
+          {children === null && 
+            <Tooltip title={strings.addCriteria} placement="top">
+            <i className="fa fa-plus" onClick={(e) => { e.stopPropagation(); this.addChild(this.state.data, this.state.data) }}>&nbsp;&nbsp;&nbsp;</i>
+            </Tooltip>
+          }
         </span>
       </span>
 

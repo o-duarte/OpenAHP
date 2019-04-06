@@ -175,6 +175,9 @@ class Editor extends Component{
         } else if (error) {
             return <h1>Error</h1>;
         } else {
+            if (currentUserSingleProblem === null){
+                return <h1>Error</h1>; 
+            }
             if (this.state.initialLoad) {
                 this.state.tree = problemToTree(currentUserSingleProblem);
                 this.state.initialLoad = false;

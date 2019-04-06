@@ -22,6 +22,17 @@ const resolvers = {
         statusList = ['draft', 'published', 'archived', 'contributor']
       } = args;
       console.log('currentUserDocuments called!', statusList, req.user.email);
+      //admin by-pass
+      if(req.user.isAdmin){
+        return Document.find({})
+        .sort({ createdAt: -1 })
+        .populate('owner')
+        .populate('contributors')
+        .populate('tags')
+        .populate('content')
+        .exec();
+      }
+      //normal curse
 
       return Document.find({
         owner: req.user._id,
@@ -41,7 +52,7 @@ const resolvers = {
           documentId,
           req.user.email
         );
-        return await Document.findOne({ _id: documentId })
+        return await Document.findOne({ _id: documentId, owner: req.user._id })
           .populate('owner')
           .populate('contributors')
           .populate('tags')
@@ -52,6 +63,15 @@ const resolvers = {
       }
     },
     currentUserProblems: (_, args, req) => {
+      ///admin by-pass
+      if(req.user.isAdmin){
+        return AhpProblem.find({        
+        })
+          .sort({ createdAt: -1 })
+          .populate('owner')
+          .exec();
+      }
+
       return AhpProblem.find({
         owner: req.user._id,
         //status: { $in: statusList }
@@ -61,8 +81,23 @@ const resolvers = {
         .exec();
     },
     currentUserSingleProblem: async (_, { problemId }, req) => {
+      //admin by-pass
+      if(req.user.isAdmin){
+        try {
+          return await AhpProblem.findOne({ _id: problemId })
+            .populate('owner')
+            .populate('result')
+            .populate('sensitivity')
+            .populate('probabilistic')
+            .exec()
+  
+        } catch (e) {
+          console.log(e.message);
+        }
+      }
+
       try {
-        return await AhpProblem.findOne({ _id: problemId })
+        return await AhpProblem.findOne({ _id: problemId, owner: req.user._id })
           .populate('owner')
           .populate('result')
           .populate('sensitivity')
