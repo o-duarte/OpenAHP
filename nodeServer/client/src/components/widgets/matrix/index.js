@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import {compose, graphql} from "react-apollo/index";
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
+//import {compose, graphql} from "react-apollo/index";
+//import Paper from '@material-ui/core/Paper';
+//import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography'
 
 const styles = theme => ({
@@ -40,12 +40,8 @@ const styles = theme => ({
   });
 
 class Matrix extends Component{
-    constructor() {
-        super();
-
-      }
     matrixData(data, index) {
-        if(index==-1){
+        if(index===-1){
             return(
                 data.rootMatrix
             )
@@ -61,8 +57,9 @@ class Matrix extends Component{
         }
     }
     headers(data, index){
-        if(index == -1){
-            var headers = []
+        var headers = []
+        if(index === -1){
+            headers = []
             data.children.forEach(x => {
                 headers = headers.concat([x.name])
             })
@@ -78,7 +75,7 @@ class Matrix extends Component{
                 headers = data.alternatives
             }
             else{
-                var headers = []
+                headers = []
                 criteria.children.forEach(x => {
                 headers = headers.concat([x.name])
             })
@@ -117,7 +114,7 @@ class Matrix extends Component{
                                                 <Typography  align="center">-</Typography>
                                         </div>)
                                     }
-                                    if(i==j){
+                                    if(i===j){
                                         return(
                                         <div key={[i,j]} className={classes.optionalItem}>
                                                 <Typography  align="center">{item}</Typography>

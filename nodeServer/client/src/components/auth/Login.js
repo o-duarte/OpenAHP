@@ -93,7 +93,6 @@ class Login extends React.Component {
   }
 
   componentWillUpdate(nextProps) {
-    console.log('will update');
 
     if (!this.props.data.currentUser && nextProps.data.currentUser) {
       this.props.history.push('/dashboard');

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import {compose, graphql} from "react-apollo/index";
-import ReactDOM from 'react-dom';
+//import ReactDOM from 'react-dom';
 //
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -109,11 +109,11 @@ class Analisis extends Component{
             headers:{'Content-Type': 'application/json'}
         })
         .then((response) => {
-        if(response.ok){
-            return response.json();
-        }{
+            if(response.ok){
+                return response.json();}
+            else  {
             throw new Error("Post Failed")
-        }
+            }
         }).then((responseBody) => {
             //here are the result 
             this.data(responseBody)        
@@ -130,8 +130,7 @@ class Analisis extends Component{
     }
 
     rankData(data, index) {
-        console.log(index)
-        if(index==-1){
+        if(index===-1){
             return null
         }
         else{

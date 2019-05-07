@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import {compose, graphql} from "react-apollo/index";
-import ReactDOM from 'react-dom';
+//import ReactDOM from 'react-dom';
 //
 import Tooltip from '@material-ui/core/Tooltip';
 import Paper from '@material-ui/core/Paper';
@@ -136,7 +136,7 @@ class Results extends Component{
     }
 
     eycData(data, index) {
-        if(index==-1){
+        if(index===-1){
             return(
                 [data.consistency, data.error, data.name]
             )
@@ -154,7 +154,7 @@ class Results extends Component{
 
 
     rankData(data, index) {
-        if(index==-1){
+        if(index===-1){
             return(
                 data.ranking
             )
@@ -179,7 +179,7 @@ class Results extends Component{
                     <ExcelColumn  value={column.toString()}/>
                 )}
                 <ExcelColumn label="Alternative" value="alternative"/>
-                <ExcelColumn label="Ranking" value="ranking"/>
+                <ExcelColumn label="Performace" value="ranking"/>
                 
             </ExcelSheet>
         </ExcelFile>

@@ -1,10 +1,13 @@
 const strings = {
     logout: 'logout',
     appName: 'OpenAHP',
-    welcome: 'Bienvenido a OpenAHP',
+    welcome: 'Bienvenido a OpenAHP ',
+    nextstep: 'Pulsa sobre el engrane para ir a problemas',
     //problem table
     new: 'Crear nuevo problema',
     name: 'Nombre del Problema',
+    deleteConfirm: 'Confirmar eliminación?',
+    confirm: 'Aceptar',
     //editor
     comparison: 'Comparación',
     alternatives: 'Alternativas',
@@ -16,20 +19,20 @@ const strings = {
     scale: 'Escala',
     newAlternative: 'Añadir Alternativa',
     newCriteria: 'Nuevo criterio',
-    noResults: 'Sin Resultados',
+    //noResults: 'Sin Resultados',
     //stepper
     data: 'Datos del Problema',
-    params: 'Parametros de Resolucion',
+    params: 'Parámetros de Resolución',
     results: 'Resultados',
-    probAnalisis: 'Analisis Probabilístico',
-    analisis: 'Analisis de Sensibilidad',
+    probAnalisis: 'Análisis Probabilístico',
+    analisis: 'Análisis de Sensibilidad',
     solve: 'Resolver',
     //List
     problem: 'Problema',
     objetive: 'Objetivo',
     autor: 'Autor',
-    lastEdition: 'Ultima edicion',
-    lastResolution: 'Ultima resolucion',
+    lastEdition: 'Ultima edición',
+    lastResolution: 'Ultima resolución',
     noResults: 'Sin Resultados',
     //criteria tree
     edit: 'Editar',
@@ -57,13 +60,13 @@ const strings = {
     cIndex: 'Índice de consistencia',
     cRatio: 'Razón de consistencia',
     cDet: 'Índice de determinantes',
-    cIndexG: 'Índice de consistencia geometrico',
-    errDes: 'Desviación cuadratica' ,
+    cIndexG: 'Índice de consistencia geométrico',
+    errDes: 'Desviación cuadrática' ,
     errPri: 'Violaciones de prioridades',
     priVec: 'Vector propio',
-    priMean: 'Media Geometrica',
+    priMean: 'Media Geométrica',
     pricol: 'Columna normalizada',
-    methods: 'Metodos',
+    methods: 'Métodos',
     inconsistency: 'Inconsistencia',
     rank: 'Desempeños',
     weights: 'Pesos',
@@ -73,8 +76,6 @@ const strings = {
     //probabilistic
     rankings: 'Rankings',
     calculate: 'Calcular',
-
-
 
 }
 export default strings

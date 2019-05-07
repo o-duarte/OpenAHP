@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import {compose, graphql} from "react-apollo/index";
-import ReactDOM from 'react-dom';
+import { graphql} from "react-apollo/index";
+//import ReactDOM from 'react-dom';
 //
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -20,7 +20,7 @@ import {
     UPDATE_METHODS
   } from '../../graphql';
 
-import { Loading, Centered, FullCentered } from '../widgets/layouts';
+import {  Centered,  } from '../widgets/layouts';
 import { Typography } from '@material-ui/core';
 
 
@@ -56,10 +56,6 @@ const styles = theme => ({
     inputSelect:{
         height: 40,
     },
-    formControl: {
-        margin: theme.spacing.unit,
-        minWidth: 120,
-      },
     selectEmpty: {
         marginTop: theme.spacing.unit * 2,
     },
@@ -73,7 +69,6 @@ const styles = theme => ({
 
 class Params extends Component{
     constructor(props) {
-        console.log(props)
         super(props);
         this.state = {
           initialLoad: true,

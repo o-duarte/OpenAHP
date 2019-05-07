@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
+//import PropTypes from 'prop-types';
+//import classNames from 'classnames';
 
 import { withStyles } from '@material-ui/core/styles';
 
@@ -8,7 +8,7 @@ import Hidden from '@material-ui/core/Hidden';
 import Drawer from '@material-ui/core/Drawer';
 
 import { MenuList } from '../menuList';
-import FullScreen from './FullScreen';
+//import FullScreen from './FullScreen';
 
 const drawerWidth = 240;
 

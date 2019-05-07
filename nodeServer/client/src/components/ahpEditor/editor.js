@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import {compose, graphql} from "react-apollo/index";
-import ReactDOM from 'react-dom';
+//import ReactDOM from 'react-dom';
 //
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -91,18 +91,20 @@ class Editor extends Component{
     onSelectedCriteria(nodeid){
         this.setState({selectedCriteria: nodeid, selectedMatrixItem: [0,1]})
         this.slider.onMatrixChange(this.state.tree, nodeid, [0,1]);
+        this.forceUpdate()
     }
     onChangedTree(tree){
         const updatedTree = problemToTree(treeToProblem(tree))
-        console.log(updatedTree)
+        //console.log(updatedTree)
         this.setState({tree: updatedTree, selectedCriteria: -1,selectedMatrixItem: [0,1] })
         this.treeView.setState({data: updatedTree})
         this.matrix.setState({data: updatedTree})
+        this.forceUpdate()
     }
     onSelectedMatrixItem(x,y){
         this.setState({selectedMatrixItem: [x,y]});
         this.slider.onMatrixChange(this.state.tree, this.state.selectedCriteria, [x,y]);
-        
+        this.forceUpdate()
     }
     onDeletedAlternative(index){
         const updatedTree = deleteAlternative(this.state.tree, index);
@@ -110,13 +112,13 @@ class Editor extends Component{
         this.treeView.setState({data: updatedTree})
         this.matrix.setState({data: updatedTree})
         this.Alternatives.setState({data: updatedTree})
+        this.forceUpdate()
     }
     onAddAlternative(alternative){
         const updatedTree = addAlternative(this.state.tree, alternative);
         this.setState({tree: updatedTree, selectedCriteria: -1,selectedMatrixItem: [0,1] })
         this.treeView.setState({data: updatedTree})
         this.matrix.setState({data: updatedTree})
-
     }
     makeMutations = () =>{
         this.props.mutate({
@@ -127,7 +129,7 @@ class Editor extends Component{
             }
         })
             .then(({ data }) => {
-                console.log('got data', data);
+                //console.log('got data', data);
                 const { refetch } = this.props.data;
                 refetch();
             }).catch((error) => {
@@ -138,7 +140,7 @@ class Editor extends Component{
         const tree = this.state.tree
         const x = this.state.selectedMatrixItem[0]
         const y = this.state.selectedMatrixItem[1]
-        if(this.state.selectedCriteria == -1){
+        if(this.state.selectedCriteria === -1){
             const newTree = immutable.set(tree, 'rootMatrix.'+String(x)+'.'+String(y), value)
             this.setState({tree: newTree})
             this.forceUpdate()
@@ -181,7 +183,7 @@ class Editor extends Component{
             if (this.state.initialLoad) {
                 this.state.tree = problemToTree(currentUserSingleProblem);
                 this.state.initialLoad = false;
-                console.log(currentUserSingleProblem)
+                //console.log(currentUserSingleProblem)
                 this.props.setMethods(currentUserSingleProblem.priorityMethod, currentUserSingleProblem.consistencyMethod, currentUserSingleProblem.errorMeasure)
                 if(currentUserSingleProblem.result!=null && currentUserSingleProblem.sensitivity!=null){
                     this.props.setResultId(currentUserSingleProblem.result.id,
@@ -209,7 +211,7 @@ class Editor extends Component{
                         <Grid item xs={8}>
                             <Paper className={classes.paper}>
                                 
-                                {this.state.comparison == strings.gPairwise?  (<Centered>
+                                {this.state.comparison === strings.gPairwise?  (<Centered>
                                     <GPSlider data={this.state.tree}
                                             selectedCriteria={this.state.selectedCriteria}
                                             selectedMatrixItem={this.state.selectedMatrixItem}
@@ -218,14 +220,14 @@ class Editor extends Component{
                                             />
                                  
                                 </Centered>  ): (<div/>) }
-                                {this.state.comparison == strings.pairwise?  (
+                                {this.state.comparison === strings.pairwise?  (
                                     <PSlider data={this.state.tree}
                                             selectedCriteria={this.state.selectedCriteria}
                                             selectedMatrixItem={this.state.selectedMatrixItem}
                                             onChangedMatrixValue={this.onChangedMatrixValue}
                                             innerRef={(item) => { this.slider = item; }}
                                             />): (<div/>) }
-                                {this.state.comparison == strings.verbal?  (
+                                {this.state.comparison === strings.verbal?  (
                                     <VSlider data={this.state.tree}
                                             selectedCriteria={this.state.selectedCriteria}
                                             selectedMatrixItem={this.state.selectedMatrixItem}
@@ -264,7 +266,7 @@ class Editor extends Component{
                                             <MenuItem value={strings.verbal}>{strings.verbal}</MenuItem>
                                         </Select>
                                     </FormControl>
-                                    {this.state.comparison == strings.verbal?  (
+                                    {this.state.comparison === strings.verbal?  (
                                     <FormControl variant="outlined" className={classes.formControl}>
                                         <InputLabel
                                             htmlFor="outlined-age-simple"

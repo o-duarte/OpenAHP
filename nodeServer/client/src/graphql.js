@@ -169,6 +169,7 @@ export const CURRENT_USER_PROBLEMS = gql`
       name
       goal
       updatedAt
+      lastResolutionAt
       owner {
         fullname
       }
@@ -191,6 +192,14 @@ export const PROBLEM_NEW  = gql`
     }
   }
 `;
+export const PROBLEM_DELETE  = gql`
+  mutation ProblemDelete($problemId: String!) {
+    problemDelete(problemId: $problemId) {
+      id
+    }
+  }
+`;
+
 export const RESULT  = gql`
   query result($resultId: String!) {
     result(resultId: $resultId) {

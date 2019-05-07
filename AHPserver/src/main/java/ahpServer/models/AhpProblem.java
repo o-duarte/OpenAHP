@@ -26,13 +26,9 @@ public class AhpProblem {
   public ObjectId result;
   public ObjectId sensitivity;
   public ObjectId probabilistic;
-  
-
-
-  @CreatedDate
-  public Date createdAt;
-  @LastModifiedDate
+  public String rawCriteria;
   public Date updatedAt;
+  public Date createdAt;
   @LastModifiedDate
   public Date lastResolutionAt;
   

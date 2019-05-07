@@ -14,7 +14,6 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import SkipNext from '@material-ui/icons/SkipNext'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 import Save from '@material-ui/icons/Save'
-import Publish from '@material-ui/icons/Publish'
 import Paper from '@material-ui/core/Paper'
 import Play from'@material-ui/icons/PlayCircleOutline'
 
@@ -28,8 +27,6 @@ import Params from '../params'
 import strings from '../../strings'
 import { Loading } from '../widgets/layouts';
 import {MACHINE_URL} from '../../config'
-
-import SliderList from '../analisis/sliderList'
 
 const styles = theme => ({
   root: {
@@ -55,15 +52,13 @@ function getSteps() {
 
 
 export class GetStepContent extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+  
   handleChange = event => {
       this.setState({ [event.target.name]: event.target.value });
   };
   render(){
       const step = this.props.step;
-      const { classes } = this.props;
+      //const { classes } = this.props;
       switch (step) {
         
         case 0:
@@ -191,7 +186,7 @@ class ProblemStepper extends React.Component {
             return response.json()
         })
         .then((recurso) => {
-            console.log(recurso)
+            //console.log(recurso)
             this.setResultId(recurso.result,recurso.sensitivity, recurso.probabilistic)
             this.setState({ open: false });
             this.handleNext()
@@ -269,7 +264,7 @@ class ProblemStepper extends React.Component {
 
                   <IconButton
                       onClick={this.handleNext}
-                      disabled={(activeStep === 1 && this.state.resultId==undefined) || activeStep === steps.length - 1}
+                      disabled={(activeStep === 1 && this.state.resultId===undefined) || activeStep === steps.length - 1}
                   >
                        <KeyboardArrowRight/>
                   </IconButton>

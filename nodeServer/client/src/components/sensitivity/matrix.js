@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import {compose, graphql} from "react-apollo/index";
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
+//import {compose, graphql} from "react-apollo/index";
+//import Paper from '@material-ui/core/Paper';
+//import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography'
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -54,7 +54,7 @@ class Matrix extends Component{
       }
     matrixData(data, index) {
         this.weightData(data, index)
-        if(index==-1){
+        if(index===-1){
             return(
                 data.rankReversal
             )
@@ -70,7 +70,7 @@ class Matrix extends Component{
         }
     }
     weightData(data, index) {
-        if(index==-1){
+        if(index===-1){
             return(
                 data.weights
             )
@@ -85,13 +85,12 @@ class Matrix extends Component{
         }
     }
     weightNames(data, index) {
-        console.log(index)
-        if(index.length==1){
-            var c= [];
+        var c= [];
+        if(index.length===1){
+            c= [];
             data.children.map(i => {
                 c.push(i.name) 
               })
-            console.log(c)
             return c
         }
         else{
@@ -100,11 +99,10 @@ class Matrix extends Component{
             index.slice(0,-1).forEach(i => {
               criteria = criteria.children[i]  
             });
-            var c= [];
+            c= [];
             criteria.children.map(i => {
                 c.push(i.name) 
               })
-            console.log(c)
             return c
         }
     }
@@ -164,7 +162,7 @@ class Matrix extends Component{
                                             <Typography  align="center">-</Typography>
                                     </div>)
                                 }
-                                if(i==j){
+                                if(i===j){
                                     return(
                                     <div key={[i,j]} className={classes.optionalItem}>
                                             <Typography  align="center">{item}</Typography>

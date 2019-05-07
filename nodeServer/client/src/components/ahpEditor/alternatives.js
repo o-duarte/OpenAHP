@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import {compose, graphql} from "react-apollo/index";
+//import {compose, graphql} from "react-apollo/index";
 import classNames from 'classnames';
 import immutable from 'object-path-immutable'
 
@@ -18,8 +18,8 @@ import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
 
 import Popover from '@material-ui/core/Popover';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
+//import Input from '@material-ui/core/Input';
+//import InputLabel from '@material-ui/core/InputLabel';
 
 
 import strings from '../../strings'
@@ -89,7 +89,7 @@ class Alternatives extends Component{
     };
 
     handleOpen = (event, index, alternative)=>{
-        console.log(event)
+        //console.log(event)
         this.setState({
             openPopover: index,
             anchorEl: event.currentTarget,
@@ -126,7 +126,7 @@ class Alternatives extends Component{
                                 primary={alternative}
                                 onClick={(e) => this.handleOpen(e, index, alternative)}/>
                             <Popover
-                                    open={this.state.openPopover==index}
+                                    open={this.state.openPopover===index}
                                     anchorEl={this.state.anchorEl}
                                     anchorOrigin={{
                                         vertical: 'center',
@@ -158,6 +158,7 @@ class Alternatives extends Component{
                                         
                                     </div>
                             </Popover>
+                            {alternatives.length > 1 &&  
                             <ListItemSecondaryAction>
                                 <IconButton aria-label="Delete">
                                     <DeleteIcon onClick={() => this.handleDelete(index)}
@@ -165,6 +166,7 @@ class Alternatives extends Component{
                                                 fontSize="small" />
                                 </IconButton>
                             </ListItemSecondaryAction>
+                            }
                         </ListItem>
                         )
                     })}

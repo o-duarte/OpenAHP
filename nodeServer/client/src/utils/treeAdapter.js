@@ -1,6 +1,6 @@
 ///this function adapts the model of tree to the model of database 
 function addChildren(children){
-    if(children.length == 0){
+    if(children.length === 0){
         return []
     }
     var subtree = []
@@ -8,7 +8,7 @@ function addChildren(children){
     delete children.showChildren
     var x;
     for (x in children){
-        if(x=='children'){
+        if(x==='children'){
                 
         }
         else{

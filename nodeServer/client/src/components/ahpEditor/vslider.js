@@ -68,7 +68,7 @@ class DiagonalComponent extends React.Component{
     const {classes} = this.props;
     var {text} = this.props;
     const {L} = this.props;
-    if(L=='L') {
+    if(L==='L') {
       return(
         <pre className={classes.diagonalL}>
         {text}
@@ -101,7 +101,7 @@ class VSlider extends React.Component {
     this.props.onChangedMatrixValue(this.returnValue(value));
   };
   getCriteria(data, selectedCriteria){
-    if(selectedCriteria==-1){
+    if(selectedCriteria===-1){
        return(data.name)
     }
     else{
@@ -115,9 +115,10 @@ class VSlider extends React.Component {
   }
   getAlternatives(data, selectedCriteria, selectedMatrixItem){
     var alternatives=['','']
-    if(selectedCriteria == -1){
+    var headers = []
+    if(selectedCriteria === -1){
       this.state.sliderText = strings.sliderTextImp
-      var headers = []
+      headers = []
       data.children.forEach(x => {
           headers = headers.concat([x.name])
       })
@@ -137,7 +138,7 @@ class VSlider extends React.Component {
         }
         else{
             this.state.sliderText = strings.sliderTextImp
-            var headers = []
+            headers = []
             criteria.children.forEach(x => {
             headers = headers.concat([x.name])
         })
@@ -150,7 +151,7 @@ class VSlider extends React.Component {
   getValue(data, selectedCriteria, selectedMatrixItem) {
     const x = selectedMatrixItem[0]
     const y = selectedMatrixItem[1]
-    if(selectedCriteria==-1){
+    if(selectedCriteria===-1){
         return(
             data.rootMatrix[x][y]
         )
@@ -166,7 +167,7 @@ class VSlider extends React.Component {
     }
   }
   returnValue(value){
-    if(this.props.scale==strings.balanced){
+    if(this.props.scale===strings.balanced){
       switch(value){
         case -8: return(Math.pow(9,-1))
         case -7: return(Math.pow(5.76,-1))
@@ -185,6 +186,7 @@ class VSlider extends React.Component {
         case 6: return(4)
         case 7: return(5.76)
         case 8: return(9)
+        default: return(1)
       }
     }
 

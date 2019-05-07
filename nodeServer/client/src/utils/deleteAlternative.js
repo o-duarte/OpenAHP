@@ -24,14 +24,14 @@ export function deleteAlternative(tree, index){
 
 
 function recursiveSearch(node){
-    if (node.children.length == 0){
+    if (node.children.length === 0){
         ids.push(node.id)
         return node.id;
     }  
     var children = node.children; 
     var res = [];
     for (var x in children) {         
-        if(x== 'children' || x=='editMode' || x=='showChildren' ){ }
+        if(x=== 'children' || x==='editMode' || x==='showChildren' ){ }
         else{
             res.push(recursiveSearch(children[x]))
         }

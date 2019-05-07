@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 
 import { withStyles } from '@material-ui/core/styles';
-import Icon from '@material-ui/core/Icon';
 import Avatar from '@material-ui/core/Avatar';
 
 import { Layout, LayoutTypes, Loading } from '../widgets/layouts';

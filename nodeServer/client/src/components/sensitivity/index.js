@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import {compose, graphql} from "react-apollo/index";
-import ReactDOM from 'react-dom';
 //
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography'
 import TreeView from './treeView'
 import Matrix from './matrix'
-import {Bar} from 'react-chartjs'
 //
 import strings from '../../strings'
 
@@ -78,8 +76,7 @@ class Sensitivity extends Component{
     }
 
     rankData(data, index) {
-        console.log(index)
-        if(index==-1){
+        if(index===-1){
             return null
         }
         else{
@@ -116,7 +113,7 @@ class Sensitivity extends Component{
                 const json = JSON.parse(sensitivity.raw);
                 this.state.tree = problemToTree(json);
                 this.state.initialLoad = false;
-                console.log(this.state.tree)
+                //console.log(this.state.tree)
                 //this.state.graphData = this.data(-1);
             }
             return(

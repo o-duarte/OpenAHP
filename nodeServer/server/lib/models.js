@@ -314,6 +314,9 @@ const AhpProblemSchema = new Schema(
       ref: 'User',
       required: true
     },
+    lastResolutionAt:{
+      type: Schema.Types.Date,
+    }
   },
   {
     timestamps: true

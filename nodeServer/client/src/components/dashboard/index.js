@@ -11,7 +11,7 @@ import strings from '../../strings'
 
 const DashboardDefault = () => {
   return <DashboardLayout component={() => <FullCentered><Typography variant='h4'> {strings.welcome} </Typography>
-  <Typography variant='h6'> Pulsa sobre el engrane para ir a problemas </Typography>
+  <Typography variant='h6'> {strings.nextstep} </Typography>
   </FullCentered>} />;
 };
 

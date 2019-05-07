@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+//import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
 
 import { withStyles } from '@material-ui/core/styles';
 
 import {
   EditorState,
-  ContentState,
+  //ContentState,
   getDefaultKeyBinding,
   KeyBindingUtil
 } from 'draft-js';
@@ -52,7 +52,8 @@ const kaTeXPlugin = createKaTeXPlugin({
   katex,
   doneContent: { valid: 'Close', invalid: 'Invalid syntax' }
 });
-const { InsertButton } = kaTeXPlugin;
+
+//const { InsertButton } = kaTeXPlugin;
 
 const imagePlugin = createImagePlugin();
 
@@ -129,7 +130,6 @@ class TextEditor extends Component {
 
   blockStyleFn(contentBlock) {
     const type = contentBlock.getType();
-    console.log(type);
     if (type === 'unstyled') {
       return 'editor-paragraph';
     }

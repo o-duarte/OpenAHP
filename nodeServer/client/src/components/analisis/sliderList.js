@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/lab/Slider';
 import strings from '../../strings';
-import { Hidden, Divider, Paper } from '@material-ui/core';
+import {  Divider, Paper } from '@material-ui/core';
 
 const styles = {
     root: {
@@ -73,7 +73,7 @@ class SliderList extends React.Component{
     */
   };
   weightData(data, index) {
-    if(index==-1){
+    if(index===-1){
         return(
             data.weights
         )
@@ -88,13 +88,13 @@ class SliderList extends React.Component{
     }
 }
 weightNames(data, index) {
-    console.log(index)
-    if(index.length==1){
-        var c= [];
+    var c= [];
+    if(index.length===1){
+        c= [];
         data.children.map(i => {
             c.push(i.name) 
           })
-        console.log(c)
+        //console.log(c)
         return c
     }
     else{
@@ -103,17 +103,17 @@ weightNames(data, index) {
         index.slice(0,-1).forEach(i => {
           criteria = criteria.children[i]  
         });
-        var c= [];
+        c= [];
         criteria.children.map(i => {
             c.push(i.name) 
           })
-        console.log(c)
+        //console.log(c)
         return c
     }
 }
   
   render(){
-    const { classes, selectedCriteria, data } = this.props;
+    const { classes,  } = this.props;
     //this.state.criterias = this.weightNames(data, selectedCriteria)
     //this.state.list = this.weightData(data, selectedCriteria)
     return (

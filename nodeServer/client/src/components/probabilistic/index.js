@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import {compose, graphql} from "react-apollo/index";
-import ReactDOM from 'react-dom';
+//import ReactDOM from 'react-dom';
 //
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import Divider from '@material-ui/core/Divider';
 import Plot from 'react-plotly.js';
 
@@ -20,7 +15,7 @@ import strings from '../../strings'
 import {
     PROBABILISTIC,
   } from '../../graphql';
-import { Loading, Centered, FullCentered } from '../widgets/layouts';
+import { Loading, Centered } from '../widgets/layouts';
 import { Typography } from '@material-ui/core';
 
 
@@ -56,10 +51,6 @@ const styles = theme => ({
     inputSelect:{
         height: 40,
     },
-    formControl: {
-        margin: theme.spacing.unit,
-        minWidth: 120,
-      },
     selectEmpty: {
         marginTop: theme.spacing.unit * 2,
     },
@@ -73,7 +64,6 @@ const styles = theme => ({
 
 class Probabilistic extends Component{
     constructor(props) {
-        console.log(props)
         super(props);
         this.state = {
           initialLoad: true,
@@ -111,7 +101,7 @@ class Probabilistic extends Component{
             return (
                 <Loading/>
             );
-        } else if (error) {
+        } else if (error || probabilistic.alternatives===undefined) {
             return (
                 <Centered>
                     <Typography variant='h4'>{strings.noResults}</Typography>
@@ -155,5 +145,4 @@ export default  compose(
         options: ({ probabilisticId }) => ({
             variables: { probabilisticId }
         })
-    }),)
- (withStyles(styles)(Probabilistic));
+    }),)(withStyles(styles)(Probabilistic));

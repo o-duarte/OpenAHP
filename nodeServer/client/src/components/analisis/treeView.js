@@ -6,9 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import immutable from 'object-path-immutable'
-import objectPath from 'object-path'
-
 
 const styles = theme => ({
   whiteText: {
@@ -33,7 +30,7 @@ class Treeview extends Component {
   }
 
   updateTree(){
-    console.log(this.state.data)
+    //console.log(this.state.data)
     var newTree = this.state.data
     this.props.onChangedTree(newTree)
     
@@ -79,7 +76,7 @@ class Treeview extends Component {
     this.setState({ ob });
   }
   onNodeClick = (node,index) =>{
-    if(index==-1){
+    if(index===-1){
       this.props.onSelectedCriteria(-1)  
     }
     else{

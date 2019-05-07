@@ -126,8 +126,6 @@ app.get('/ahpsolver/:id', function(req,res) {
 
 app.post('/ahpanalisis/:id', function(req,res) {
   var path = SOLVER_URL + '/ahp/analisis/' + req.params.id
-  console.log(req.body)
-  console.log(JSON.stringify(req.body))
   request({
     method: 'POST',
     uri: path,
@@ -138,7 +136,7 @@ app.post('/ahpanalisis/:id', function(req,res) {
     if (error) {
       return console.error('upload failed:', error);
     }
-    console.log('Upload successful!  Server responded with:', body);
+    //console.log('Upload successful!  Server responded with:', body);
     res.send(body)
   })
 })

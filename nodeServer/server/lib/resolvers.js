@@ -18,6 +18,7 @@ const resolvers = {
       return req.user;
     },
     currentUserDocuments: (_, args, req) => {
+      
       const {
         statusList = ['draft', 'published', 'archived', 'contributor']
       } = args;
@@ -62,23 +63,62 @@ const resolvers = {
         console.log(e.message);
       }
     },
-    currentUserProblems: (_, args, req) => {
-      ///admin by-pass
-      if(req.user.isAdmin){
+    currentUserProblems: (_, {statusList}, req) => {
+      //add a status make this more clean
+      if(statusList[0]==='all'){
+        if(req.user.isAdmin){
         return AhpProblem.find({        
+        })
+          .sort({ createdAt: -1 })
+          .populate('owner')
+          .exec();
+        }
+
+        return AhpProblem.find({
+          owner: req.user._id,
         })
           .sort({ createdAt: -1 })
           .populate('owner')
           .exec();
       }
 
-      return AhpProblem.find({
-        owner: req.user._id,
-        //status: { $in: statusList }
-      })
-        .sort({ createdAt: -1 })
-        .populate('owner')
-        .exec();
+      if(statusList[0]==='draft'){
+        if(req.user.isAdmin){
+        return AhpProblem.find({ 
+           "lastResolutiondAt": {$exists: false}       
+        })
+          .sort({ createdAt: -1 })
+          .populate('owner')
+          .exec();
+         }
+
+        return AhpProblem.find({
+          owner: req.user._id,
+          "lastResolutionAt": {$exists: false} 
+        })
+          .sort({ createdAt: -1 })
+          .populate('owner')
+          .exec();
+        }
+        if(statusList[0]==='solved'){
+          if(req.user.isAdmin){
+          return AhpProblem.find({ 
+             "lastResolutiondAt": {$exists: true}       
+          })
+            .sort({ createdAt: -1 })
+            .populate('owner')
+            .exec();
+           }
+  
+          return AhpProblem.find({
+            owner: req.user._id,
+            "lastResolutionAt": {$exists: true} 
+          })
+            .sort({ createdAt: -1 })
+            .populate('owner')
+            .exec();
+          }
+      
     },
     currentUserSingleProblem: async (_, { problemId }, req) => {
       //admin by-pass
@@ -171,6 +211,33 @@ const resolvers = {
         console.log(e.message);
       }
     },
+    problemDelete: async (_, {problemId}, req) => {
+      if (typeof req.user === 'undefined') {
+        throw new Error('Debe iniciar sesión para ejecutar esta acción');
+      }
+      const prob = await AhpProblem.findOne(
+        { _id: problemId }
+      ).exec();
+      try {
+        if (typeof prob.sensitivity !== 'undefined'){
+          Sensitivity.findOneAndRemove({ _id: prob.sensitivity }, function (err,offer){ if(err) { throw err; }}  )
+        }
+        if (typeof prob.result !== 'undefined'){
+          Result.findOneAndRemove({ _id: prob.result }, function (err,offer){ if(err) { throw err; }} )
+        }
+        if (typeof prob.probabilistic !== 'undefined'){
+          Probabilistic.findOneAndRemove({ _id: prob.probabilistic }, function (err,offer){ if(err) { throw err; }} )
+        }
+
+        return await AhpProblem.findOneAndRemove(
+          { _id: problemId }
+        );
+      } catch (e) {
+        console.log(e.message);
+      }
+    },
+
+
     documentSaveContent: async (_, { documentId, title, description, html, raw }, req ) => {
       try {
         console.log('documentSaveContent called!', documentId, html);
@@ -214,7 +281,7 @@ const resolvers = {
       }
     },
     updateMethods: async (_, { problemId ,consistency, error, priority }, req ) => {
-      console.log('update',consistency, error, priority)
+      //console.log('update',consistency, error, priority)
       try {
         return await AhpProblem.findOneAndUpdate(
           { _id: problemId },

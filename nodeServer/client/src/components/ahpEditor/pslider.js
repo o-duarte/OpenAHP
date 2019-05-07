@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/lab/Slider';
 import Grid from '@material-ui/core/Grid';
-import { Hidden, Divider } from '@material-ui/core';
+import {  Divider } from '@material-ui/core';
 import strings from '../../strings';
 
 const styles = {
@@ -55,7 +55,7 @@ class PSlider extends React.Component {
     this.props.onChangedMatrixValue(this.returnValue(value))
   };
   getCriteria(data, selectedCriteria){
-    if(selectedCriteria==-1){
+    if(selectedCriteria===-1){
        return(data.name)
     }
     else{
@@ -69,9 +69,10 @@ class PSlider extends React.Component {
   }
   getAlternatives(data, selectedCriteria, selectedMatrixItem){
     var alternatives=['','']
-    if(selectedCriteria == -1){
+    var headers = []
+    if(selectedCriteria === -1){
       this.state.sliderText = strings.sliderTextImp
-      var headers = []
+      headers = []
       data.children.forEach(x => {
           headers = headers.concat([x.name])
       })
@@ -91,7 +92,7 @@ class PSlider extends React.Component {
         }
         else{
             this.state.sliderText = strings.sliderTextImp
-            var headers = []
+            headers = []
             criteria.children.forEach(x => {
             headers = headers.concat([x.name])
         })
@@ -104,7 +105,7 @@ class PSlider extends React.Component {
   getValue(data, selectedCriteria, selectedMatrixItem) {
     const x = selectedMatrixItem[0]
     const y = selectedMatrixItem[1]
-    if(selectedCriteria==-1){
+    if(selectedCriteria===-1){
         return(
             data.rootMatrix[x][y]
         )

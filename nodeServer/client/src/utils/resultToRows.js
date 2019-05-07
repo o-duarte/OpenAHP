@@ -28,8 +28,8 @@ export function resultToRows(data){
         Rows.push(row)
     }
     for (var x in data.criteria){
-        for (var i = 0; i< data.alternatives.length; i++){
-            var row  = {}
+        for (i = 0; i< data.alternatives.length; i++){
+            row  = {}
             row["1"] = data.criteria[x].name
             row.alternative = data.alternatives[i]
             row.rank = data.criteria[x].ranking[i].toFixed(4);

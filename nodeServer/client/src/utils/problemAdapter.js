@@ -1,6 +1,6 @@
 ///this function adapts the model of database to the model of component treeview 
 function addChildren(subcriteria, parent){
-    if(subcriteria.length == 0){
+    if(subcriteria.length === 0){
         return []
     }
     var subtree = []
@@ -14,7 +14,7 @@ function addChildren(subcriteria, parent){
         children.matrix = subcriteria[x].matrix
         children.showChildren = true;
         children.editMode = false;
-        children.id = parent.id.concat([parseInt(x)])
+        children.id = parent.id.concat([Number(x)])
         if(subcriteria[x].subCriteria.length>0){
             children.children = addChildren(subcriteria[x].subCriteria, children);
         }
@@ -36,13 +36,14 @@ export function problemToTree(problem){
     tree.children = [];
     tree.id = [];
     var criteria;
-    for (criteria in problem.criteria){
+    //for (criteria in problem.criteria){
+    for (criteria in JSON.parse(problem.rawCriteria)){
         var children = {};
         children.name = problem.criteria[criteria].name;
         children.matrix = problem.criteria[criteria].matrix
         children.showChildren = true;
         children.editMode = false;
-        children.id = tree.id.concat([parseInt(criteria)])
+        children.id = tree.id.concat([Number(criteria)])
         children.children = addChildren(problem.criteria[criteria].subCriteria, children);
         /////
         tree.children.push(children)
