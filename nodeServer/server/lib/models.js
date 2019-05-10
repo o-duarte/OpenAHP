@@ -291,6 +291,15 @@ const AhpProblemSchema = new Schema(
     errorMeasure: {
       type: Number,
     },
+    generator: {
+      type: Number,
+    },
+    beta: {
+      type: Number,
+    },
+    preserveRank:{
+      type: Boolean,
+    },
     criteria: {
       type: [Criteria],
     },

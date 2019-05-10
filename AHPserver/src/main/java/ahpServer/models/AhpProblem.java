@@ -29,6 +29,9 @@ public class AhpProblem {
   public String rawCriteria;
   public Date updatedAt;
   public Date createdAt;
+  public Integer generator;
+  public Double beta;
+  public Boolean preserveRank;
   @LastModifiedDate
   public Date lastResolutionAt;
   

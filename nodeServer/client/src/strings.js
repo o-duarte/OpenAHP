@@ -70,6 +70,11 @@ const strings = {
     inconsistency: 'Inconsistencia',
     rank: 'Desempeños',
     weights: 'Pesos',
+    random: 'Generador aleatorio ',
+    simple: 'Simple',
+    gamma: 'Gamma' ,
+    pScale: 'Parámetro de escala',
+    preserveRank: 'Preservar Orden',
     rankReversal: 'Rank Reversals',
     //result
     downloadResults: 'Descargar resultados',

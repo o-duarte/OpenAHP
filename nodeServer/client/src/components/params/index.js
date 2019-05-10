@@ -11,7 +11,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Divider from '@material-ui/core/Divider';
-
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 
 //
 import strings from '../../strings'
@@ -64,7 +66,12 @@ const styles = theme => ({
     },
     grid:{
         justifyContent: 'center',
-    }
+    },
+    textField: {
+        marginLeft: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
+        width: 200,
+      }
   });
 
 class Params extends Component{
@@ -79,6 +86,9 @@ class Params extends Component{
           consistency: props.consistency,
           error: props.error,
           priority: props.priority,
+          generator: props.generator,
+          beta: 1/props.beta,
+          order: props.order
         };
       }
 
@@ -89,14 +99,32 @@ class Params extends Component{
         this.setState({ [event.target.name]: event.target.value });
         };
 
-    makeMutations = () =>{
-        this.props.setMethods(this.state.priority, this.state.consistency, this.state.error)
+    handleChangeSw = event => {
+        this.setState({ [event.target.name]: event.target.checked });
+    };
+
+    makeMutations = () =>{  
+        
+        var beta = this.state.beta
+        if(beta === undefined || beta==='0'){
+            this.setState({beta: 1})
+            beta=1
+        }
+        if(beta<0){
+            beta=-beta
+            this.setState({beta: beta})
+        }
+        this.props.setMethods(this.state.priority, this.state.consistency, this.state.error,
+            this.state.generator ,1/beta, this.state.order)
         this.props.mutate({
             variables: {
                 problemId: this.props.problemId,
                 priority: this.state.priority,
                 consistency: this.state.consistency,
                 error: this.state.error,
+                beta: 1/beta,
+                generator: this.state.generator,
+                order: this.state.order
             }
         })
             .then(({ data }) => {
@@ -186,6 +214,55 @@ class Params extends Component{
                                         <MenuItem value={2}>{strings.pricol}</MenuItem>
                                     </Select>
                                 </FormControl>
+                                <Divider className={classes.divider}></Divider>
+                                <FormControl variant="outlined" className={classes.formControl}>
+                                    <InputLabel
+                                        htmlFor="outlined-age-simple"
+                                    >
+                                        {strings.random}
+                                    </InputLabel>
+                                    <Select
+                                        value={this.state.generator}
+                                        onChange={this.handleChange}
+                                        input={
+                                        <OutlinedInput
+                                            labelWidth = {90}
+                                            name= "generator"
+                                            id="outlined-age-simple"
+                                        />
+                                        }
+                                    >
+                                        <MenuItem value={0}>{strings.simple}</MenuItem>
+                                        <MenuItem value={1}>{strings.gamma}</MenuItem>
+                                    </Select>
+                                </FormControl>
+                                {this.state.generator===1? 
+                                <TextField
+                                        id="standard-number"
+                                        label={strings.pScale}
+                                        value={this.state.beta}
+                                        onChange={this.handleChange}
+                                        type="number"
+                                        name="beta"
+                                        className={classes.textField}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        margin="normal"
+                                        /> : null
+                                    
+                                }
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                        checked={this.state.order}
+                                        onChange={this.handleChangeSw}
+                                        name="order"
+                                        color="primary"
+                                        />
+                                    }
+                                    label={strings.preserveRank}
+                                />
                             </Paper>
                         </Grid>
                     </Grid>

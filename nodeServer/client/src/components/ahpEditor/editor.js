@@ -184,7 +184,8 @@ class Editor extends Component{
                 this.state.tree = problemToTree(currentUserSingleProblem);
                 this.state.initialLoad = false;
                 //console.log(currentUserSingleProblem)
-                this.props.setMethods(currentUserSingleProblem.priorityMethod, currentUserSingleProblem.consistencyMethod, currentUserSingleProblem.errorMeasure)
+                this.props.setMethods(currentUserSingleProblem.priorityMethod, currentUserSingleProblem.consistencyMethod, currentUserSingleProblem.errorMeasure, 
+                    currentUserSingleProblem.generator, currentUserSingleProblem.beta, currentUserSingleProblem.preserveRank )
                 if(currentUserSingleProblem.result!=null && currentUserSingleProblem.sensitivity!=null){
                     this.props.setResultId(currentUserSingleProblem.result.id,
                                             currentUserSingleProblem.sensitivity.id,

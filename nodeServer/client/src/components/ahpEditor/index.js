@@ -25,7 +25,7 @@ import Analisis from '../analisis'
 import Probabilistic from '../probabilistic'
 import Params from '../params'
 import strings from '../../strings'
-import { Loading } from '../widgets/layouts';
+import { Loading, FullCentered } from '../widgets/layouts';
 import {MACHINE_URL} from '../../config'
 
 const styles = theme => ({
@@ -73,7 +73,10 @@ export class GetStepContent extends React.Component {
                          setMethods={this.props.setMethods}
                          error = {this.props.error}
                          priority = {this.props.priority}
-                         consistency = {this.props.consistency}/>;
+                         consistency = {this.props.consistency}
+                         generator = {this.props.generator}
+                         beta= {this.props.beta}
+                         order= {this.props.order}/>;
         case 2:
           return <Results innerRef={(step) => { this.results = step; }}
                           resultId={this.props.resultId}
@@ -114,15 +117,19 @@ class ProblemStepper extends React.Component {
       priorityMethod: 0,
       consistencyMethod:0,
       errorMeasure: 0,
+      order: false,
     };
   }
   setResultId(result_id, sensitivity_id, probabilistic_id){
     this.setState({resultId: result_id, sensitivityId: sensitivity_id, probabilisticId: probabilistic_id});
   }
-  setMethods(p,c,e){
+  setMethods(p,c,e,g,b,pr){
     this.setState({priorityMethod: p,
                    consistencyMethod: c,
-                   errorMeasure: e});
+                   errorMeasure: e,
+                   generator:g,
+                   beta: b,
+                   order: pr});
   }
 
   isStepOptional = step => {
@@ -283,10 +290,9 @@ class ProblemStepper extends React.Component {
               </div>
             ) : (
               <div>
-                <Modal aria-labelledby="simple-modal-title"
-                  aria-describedby="simple-modal-description"
-                  open={this.state.open}>
-                <Loading/></Modal>
+                <Modal open={this.state.open} disableAutoFocus>
+                  <FullCentered><Loading/></FullCentered>
+                </Modal>
                 <GetStepContent ref={(step) => { this.stepContent = step; }}
                                             step={activeStep}
                                             classes={classes}
@@ -299,7 +305,9 @@ class ProblemStepper extends React.Component {
                                             error = {this.state.errorMeasure}
                                             consistency = {this.state.consistencyMethod}
                                             priority = {this.state.priorityMethod}
-
+                                            generator = {this.state.generator}
+                                            beta = {this.state.beta}
+                                            order= {this.state.order}
                                             />
                                                                                                                         
               </div>

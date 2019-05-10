@@ -45,6 +45,7 @@ import sty.ProbabilisticSensitivityMethod;
 import sty.ProbabilisticSensitivityMethod.Statistics;
 import sty.AbstracSensitivityMethod;
 import sty.RankReversal;
+import sty.RandomGenerators.GammaRandomGenerator;
 
 import ahpServer.TestCreators;
 
@@ -331,6 +332,11 @@ public class AhpProblemController {
     ProbabilisticSensitivityMethod prob = new ProbabilisticSensitivityMethod(decisionProblem, FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM);
     prob.setPreserveRankOrder(true);
     prob.addAllSimulationNodes(false);
+    if(problem.generator==1){
+      prob.setRandomGenerator(new GammaRandomGenerator(problem.beta));
+    }
+    prob.setPreserveRankOrder(problem.preserveRank);
+
     ArrayList<Double> testse = prob.getRanking();
     ArrayList<Statistics> simulation = prob.simulate();
     for(int i=0; i<simulation.size();i++){

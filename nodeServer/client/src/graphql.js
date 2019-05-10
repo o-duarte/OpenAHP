@@ -120,6 +120,9 @@ export const CURRENT_USER_SINGLE_PROBLEM= gql`
       priorityMethod
       consistencyMethod
       errorMeasure
+      generator
+      beta
+      preserveRank
       result {
         id
       }
@@ -243,8 +246,8 @@ export const PARAMS  = gql`
   }
 `;
 export const UPDATE_METHODS  = gql`
-  mutation updateMethods($problemId: String!, $consistency: Int, $error: Int, $priority: Int) {
-    updateMethods(problemId: $problemId, consistency:$consistency, error:$error, priority:$priority) {
+  mutation updateMethods($problemId: String!, $consistency: Int, $error: Int, $priority: Int, $generator: Int, $beta: Float, $order: Boolean) {
+    updateMethods(problemId: $problemId, consistency:$consistency, error:$error, priority:$priority, generator:$generator, beta:$beta, order:$order) {
       priorityMethod
       consistencyMethod
       errorMeasure

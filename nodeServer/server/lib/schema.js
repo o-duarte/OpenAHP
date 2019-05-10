@@ -83,6 +83,9 @@ const types = `
     result: Result
     sensitivity: Sensitivity
     probabilistic: Probabilistic
+    generator: Int
+    beta: Float
+    preserveRank: Boolean
     updatedAt: String
     createdAt: String
     lastResolutionAt: String
@@ -170,7 +173,7 @@ const mutations = `
     problemSave(problemId: String!, rawData: String!): ahpProblem 
     problemNew(name: String!): ahpProblem
     problemDelete(problemId: String!): ahpProblem
-    updateMethods(problemId: String! ,consistency: Int, error: Int, priority: Int): ahpProblem
+    updateMethods(problemId: String! ,consistency: Int, error: Int, priority: Int, generator: Int,  beta: Float, order: Boolean): ahpProblem
   }
 `;
 

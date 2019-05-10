@@ -94,7 +94,8 @@ class Analisis extends Component{
                     strokeColor: "rgba(30,136,229,0.9)",
                     highlightFill: "rgba(151,187,205,0.75)",
                     highlightStroke: "rgba(151,187,205,1)",
-                    data: list
+                    data: list.map(function(each_element){
+                        return Number(each_element.toFixed(3));})
                 }
             ]
         }

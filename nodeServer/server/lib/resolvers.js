@@ -280,7 +280,7 @@ const resolvers = {
         console.log(e.message);
       }
     },
-    updateMethods: async (_, { problemId ,consistency, error, priority }, req ) => {
+    updateMethods: async (_, { problemId ,consistency, error, priority, generator, beta, order }, req ) => {
       //console.log('update',consistency, error, priority)
       try {
         return await AhpProblem.findOneAndUpdate(
@@ -289,6 +289,9 @@ const resolvers = {
                     priorityMethod: priority,
                     consistencyMethod: consistency,
                     errorMeasure: error,
+                    generator: generator,
+                    beta: beta,
+                    preserveRank: order,
                      } },
           { new: true }
         ).exec();
@@ -307,6 +310,9 @@ const resolvers = {
           priorityMethod: 0,
           consistencyMethod: 0,
           errorMeasure: 0,
+          generator: 0,
+          beta: 1,
+          preserveRank: false,
           criteria: [
             {name: 'Criteria 1',
              matrix: [[1,1],[1,1]],
