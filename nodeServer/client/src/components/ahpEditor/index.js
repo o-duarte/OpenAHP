@@ -46,7 +46,7 @@ const styles = theme => ({
 });
 
 function getSteps() {
-  return [strings.data, strings.params, strings.results, strings.probAnalisis, strings.rankReversal, strings.analisis ];
+  return [strings.data, strings.params, strings.results, strings.probAnalisis, strings.analisis, strings.rankReversal ];
 }
 
 
@@ -85,12 +85,15 @@ export class GetStepContent extends React.Component {
         case 3:
           return <Probabilistic innerRef={(step) => { this.results = step; }}
                                 probabilisticId = {this.props.probabilisticId}
+                                generator = {this.props.generator}
+                                beta= {this.props.beta}
+                                order= {this.props.order}
                           />
-        case 4:
+        case 5:
           return <Sensitivity innerRef={(step) => { this.sensitivity = step; }}
                               sensitivityId={this.props.sensitivityId}
                           />;
-        case 5: 
+        case 4: 
           return <Analisis innerRef={(step) => { this.sensitivity = step; }}
                             sensitivityId={this.props.sensitivityId}
                             problemId={this.props.problemId}

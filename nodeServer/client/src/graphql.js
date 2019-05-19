@@ -203,6 +203,14 @@ export const PROBLEM_DELETE  = gql`
   }
 `;
 
+export const DOCUMENT_DELETE  = gql`
+  mutation documentDelete($documentId: String!) {
+    documentDelete(documentId: $documentId) {
+      id
+    }
+  }
+`;
+
 export const RESULT  = gql`
   query result($resultId: String!) {
     result(resultId: $resultId) {

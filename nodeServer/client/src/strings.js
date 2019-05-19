@@ -19,6 +19,7 @@ const strings = {
     scale: 'Escala',
     newAlternative: 'Añadir Alternativa',
     newCriteria: 'Nuevo criterio',
+    saved: 'Guardado',
     //noResults: 'Sin Resultados',
     //stepper
     data: 'Datos del Problema',

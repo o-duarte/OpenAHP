@@ -14,6 +14,7 @@ import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+import Snackbar from '@material-ui/core/Snackbar';
 
 //
 import strings from '../../strings'
@@ -102,7 +103,13 @@ class Params extends Component{
     handleChangeSw = event => {
         this.setState({ [event.target.name]: event.target.checked });
     };
-
+    handleOpen = () => {
+        this.setState({ open: true });
+      };
+    
+    handleClose = () => {
+    this.setState({ open: false });
+    };
     makeMutations = () =>{  
         
         var beta = this.state.beta
@@ -128,7 +135,7 @@ class Params extends Component{
             }
         })
             .then(({ data }) => {
-                
+                this.handleOpen();    
             }).catch((error) => {
             console.log('there was an error sending the query', error);
         });
@@ -141,7 +148,16 @@ class Params extends Component{
             return(
             
             <div className={classes.root}>
-                
+                <Snackbar
+                        anchorOrigin={{ vertical:'top' , horizontal:'right' }}
+                        open={this.state.open}
+                        autoHideDuration={1500}
+                        onClose={this.handleClose}
+                        ContentProps={{
+                            'aria-describedby': 'message-id',
+                        }}
+                        message={<span id="message-id">{strings.saved}</span>}
+                    />
                 <Centered>
                     <Grid container className={classes.grid} spacing={16}>
                         <Grid item xs={8}>

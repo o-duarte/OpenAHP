@@ -88,6 +88,20 @@ class Probabilistic extends Component{
         return data
         
     }
+    title(){
+        var text = ''
+        if(this.props.generator === 0 ){
+            text = strings.random + ': ' + strings.simple
+        }
+        else {
+            text = strings.random + ': ' + strings.gamma + '<br>' + strings.pScale + ' : ' + 1/this.props.beta
+        }
+
+        if(this.props.order){
+            text = text + '<br>' + strings.preserveRank
+        }
+        return text
+    }
     
     
     handleChange = event => {
@@ -109,6 +123,7 @@ class Probabilistic extends Component{
         }
         else {
             const data = this.boxplotdata(probabilistic.alternatives);
+            const title = this.title()
             return(
             
             <div className={classes.root}>
@@ -122,12 +137,21 @@ class Probabilistic extends Component{
                                 <Plot
                                     data = {data}
                                     layout={{
+                                        title: {
+                                            text: title,
+                                            font: {
+                                              family: 'Roboto',
+                                              size: 14
+                                            },
+                                            xref: 'paper',
+                                            x: 0,
+                                        },
                                         yaxis: {
                                             autorange: 'reversed',
                                         },
                                         xaxis: {
                                             type: 'category',
-                                        }
+                                        },
                                     }}
                                 />
                             </Paper>

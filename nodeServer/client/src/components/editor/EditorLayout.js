@@ -70,7 +70,6 @@ class EditorLayout extends Component {
 
   saveCallback({ html, raw }) {
     const { currentUserSingleDocument } = this.props.data;
-
     const blocks = raw.getBlockMap();
 
     let blockTexts = [];
@@ -78,7 +77,8 @@ class EditorLayout extends Component {
       blockTexts.push(item.getText());
     });
 
-    this.props
+    if(blockTexts.length>1){
+      this.props
       .mutate({
         variables: {
           documentId: currentUserSingleDocument.id,
@@ -94,6 +94,7 @@ class EditorLayout extends Component {
       .catch(error => {
         console.log('there was an error sending the query', error);
       });
+    }
   }
 
   render() {

@@ -173,6 +173,7 @@ const mutations = `
     problemSave(problemId: String!, rawData: String!): ahpProblem 
     problemNew(name: String!): ahpProblem
     problemDelete(problemId: String!): ahpProblem
+    documentDelete(documentId: String!): Document
     updateMethods(problemId: String! ,consistency: Int, error: Int, priority: Int, generator: Int,  beta: Float, order: Boolean): ahpProblem
   }
 `;

@@ -129,7 +129,9 @@ class Matrix extends Component{
                                     primary={alternative}></ListItemText>
                                 
                                 <ListItemSecondaryAction>
-                                     {Number(wheightData[index]).toFixed(2)}
+                                    <Typography>
+                                        {Number(wheightData[index]).toFixed(2)}
+                                    </Typography>
                                 </ListItemSecondaryAction>
                             </ListItem>
                             )

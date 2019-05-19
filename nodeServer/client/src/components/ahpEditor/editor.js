@@ -23,6 +23,7 @@ import VSlider from './vslider';
 import Alternatives from './alternatives'
 import { Loading, Centered } from '../widgets/layouts';
 import immutable from 'object-path-immutable'
+import Snackbar from '@material-ui/core/Snackbar';
 
 
 import {
@@ -42,6 +43,13 @@ const styles = theme => ({
       //overflow: 'auto',
       width: '95%',
       minWidth: '1100px'
+    },
+    margin: {
+        margin: theme.spacing.unit,
+      },
+    message: {
+    display: 'flex',
+    alignItems: 'center',
     },
     paper: {
       minWidth: '300px',
@@ -79,6 +87,7 @@ class Editor extends Component{
         this.onAddAlternative = this.onAddAlternative.bind(this)
         this.onChangedTree = this.onChangedTree.bind(this);
         this.state = {
+          open: false,
           initialLoad: true,
           tree: '',
           selectedCriteria: -1,
@@ -132,10 +141,20 @@ class Editor extends Component{
                 //console.log('got data', data);
                 const { refetch } = this.props.data;
                 refetch();
+                this.handleOpen();
             }).catch((error) => {
             console.log('there was an error sending the query', error);
         });
     };
+    handleOpen = () => {
+        this.setState({ open: true });
+      };
+    
+    handleClose = () => {
+    this.setState({ open: false });
+    };
+    
+       
     onChangedMatrixValue(value){
         const tree = this.state.tree
         const x = this.state.selectedMatrixItem[0]
@@ -196,6 +215,16 @@ class Editor extends Component{
             return(
             <div className={classes.root}>
                 <Centered>
+                    <Snackbar
+                        anchorOrigin={{ vertical:'top' , horizontal:'right' }}
+                        open={this.state.open}
+                        autoHideDuration={1500}
+                        onClose={this.handleClose}
+                        ContentProps={{
+                            'aria-describedby': 'message-id',
+                        }}
+                        message={<span id="message-id">{strings.saved}</span>}
+                    />
                     <Grid container spacing={16}>
                         <Grid item xs={2}>
                             <Paper className={classes.treeView}>

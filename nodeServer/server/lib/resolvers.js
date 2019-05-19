@@ -236,6 +236,25 @@ const resolvers = {
         console.log(e.message);
       }
     },
+    documentDelete: async (_, {documentId}, req) => {
+      if (typeof req.user === 'undefined') {
+        throw new Error('Debe iniciar sesión para ejecutar esta acción');
+      }
+      const doc = await Document.findOne(
+        { _id: documentId }
+      ).exec();
+      console.log(doc.content)
+      try {
+        if (typeof doc.content !== 'undefined'){
+          DocumentContent.findOneAndRemove({ _id: doc.content }, function (err,offer){ if(err) { throw err; }}  )
+        }
+        return await Document.findOneAndRemove(
+          { _id: documentId }
+        );
+      } catch (e) {
+        console.log(e.message);
+      }
+    },
 
 
     documentSaveContent: async (_, { documentId, title, description, html, raw }, req ) => {
