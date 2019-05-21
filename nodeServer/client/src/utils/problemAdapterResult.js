@@ -10,7 +10,7 @@ function addChildren(subcriteria, parent){
     var x;
     for (x in subcriteria){
         var children = {};
-        children.name = subcriteria[x].name;
+        children.name = subcriteria[x].name +' ('+ subcriteria[x].weight.toFixed(3)+')' ;
         children.ranking = subcriteria[x].ranking.map(function(each_element){
             return Number(each_element.toFixed(3));
         });
@@ -46,7 +46,7 @@ export function problemToTree(problem){
     var criteria;
     for (criteria in problem.criteria){
         var children = {};
-        children.name = problem.criteria[criteria].name;
+        children.name = problem.criteria[criteria].name +' ('+ problem.criteria[criteria].weight.toFixed(3)+')';
         children.ranking = problem.criteria[criteria].ranking.map(function(each_element){
             return Number(each_element.toFixed(3));
         });

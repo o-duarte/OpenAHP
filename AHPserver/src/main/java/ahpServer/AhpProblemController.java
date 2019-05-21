@@ -97,15 +97,19 @@ public class AhpProblemController {
   private ResultCriteria getSubResults(DecisionElement subresult,
                                        ErrorMethodEnum errorMethod, 
                                        PriorityMethodEnum priorityMethod,
-                                       ConsistencyMethodEnum consistencyMethod ){
+                                       ConsistencyMethodEnum consistencyMethod,
+                                       Double weight ){
     ResultCriteria result = new ResultCriteria();
     result.name = subresult.getName();
+    result.weight = weight;
     result.ranking = subresult.getRanking(priorityMethod);
     result.consistency = subresult.getConsistency(consistencyMethod, priorityMethod);
     result.error = subresult.getErrorMeasure(errorMethod, priorityMethod);
     result.subCriteria = new ArrayList<ResultCriteria>();
     for(int i=0;i<subresult.getSubcriteria().size();i++){
-      result.subCriteria.add(getSubResults(subresult.getSubcriteria().get(i), errorMethod, priorityMethod, consistencyMethod));
+      result.subCriteria.add(getSubResults(subresult.getSubcriteria().get(i),
+                                           errorMethod, priorityMethod, consistencyMethod,
+                                           subresult.getPriorityVector(priorityMethod).get(i)));
     }
     return result;
 
@@ -268,7 +272,9 @@ public class AhpProblemController {
     result.error = decisionProblem.getRoot().getErrorMeasure(errorMethod, priorityMethod);
     ArrayList<DecisionElement> criterias = decisionProblem.getRoot().getSubcriteria();
     for(int i=0;i<criterias.size();i++){
-      result.criteria.add(getSubResults(criterias.get(i), errorMethod, priorityMethod, consistencyMethod)); 
+      result.criteria.add(getSubResults(criterias.get(i),
+                           errorMethod, priorityMethod, consistencyMethod,
+                           decisionProblem.getRoot().getPriorityVector(priorityMethod).get(i) )); 
     }
     if(repository.findBy_id(problem._id).result != null  ){
       resultRepository.delete(resultRepository.findBy_id(repository.findBy_id(problem._id).result));
@@ -375,7 +381,7 @@ public class AhpProblemController {
     repository.save(test.problem);
   }
   @RequestMapping(value= "/analisis/{id}", method = RequestMethod.POST)
-  public ArrayList<Double> makeAnalisis(@PathVariable("id") ObjectId id, @Valid @RequestBody Analisis analisis){
+  public  ArrayList<ArrayList<Double>> makeAnalisis(@PathVariable("id") ObjectId id, @Valid @RequestBody Analisis analisis){
     AhpProblem problem = repository.findBy_id(id);
     DecisionProblem decisionProblem =  new DecisionProblem(problem.name);
     DecisionProblemSolver decisionSolver = new DecisionProblemSolver();
@@ -435,10 +441,12 @@ public class AhpProblemController {
     decisionSolver.computeResults(decisionProblem, false);
     /*find decisionElement to change*/
     //decisionProblem.getRoot().getRanking();
-    /*solve again */
+    /*solve again 
     if(analisis.weights.size()==1){
+
       return decisionProblem.getRoot().getRanking(analisis.weights, priorityMethod);
     }
+    */
     //decisionProblem.getRanking(priorityMethod, analisis.weights);
     
     DecisionElement element = decisionProblem.getRoot();
@@ -446,8 +454,10 @@ public class AhpProblemController {
     for (Integer index : analisis.id){
       element = element.getSubCriterionByIndex(index);
     }
-
-    return element.getRanking(analisis.weights, priorityMethod);
+    ArrayList<ArrayList<Double>> results = new ArrayList<ArrayList<Double>>();
+    results.add(element.getRanking(priorityMethod));
+    results.add(element.getRanking(analisis.weights, priorityMethod));
+    return results;
   } 
 
 }

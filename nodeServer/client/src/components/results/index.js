@@ -207,6 +207,7 @@ class Results extends Component{
             if (this.state.initialLoad) {
                 if(result==null){ return (<Centered><Typography variant='h4'>{strings.noResults}</Typography></Centered>)}
                 const json = JSON.parse(result.raw);
+                console.log(json)
                 this.state.tree = problemToTree(json);
                 this.state.initialLoad = false;
                 this.state.graphData = this.data(-1);
@@ -222,7 +223,7 @@ class Results extends Component{
                         <Grid item xs={2}>
                             <Paper className={classes.treeView}>
                                 <Typography variant="h6" gutterBottom>
-                                    {strings.criteria}
+                                    {strings.criteria} ({strings.weights})
                                 </Typography>
                                 <Divider></Divider>
                                 <TreeView tree={this.state.tree} 

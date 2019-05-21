@@ -115,7 +115,7 @@ class Probabilistic extends Component{
             return (
                 <Loading/>
             );
-        } else if (error || probabilistic.alternatives===undefined) {
+        } else if (error || probabilistic===undefined) {
             return (
                 <Centered>
                     <Typography variant='h4'>{strings.noResults}</Typography>

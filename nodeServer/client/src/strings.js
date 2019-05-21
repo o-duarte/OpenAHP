@@ -82,6 +82,9 @@ const strings = {
     //probabilistic
     rankings: 'Rankings',
     calculate: 'Calcular',
+    //analisis
+    original: 'Resultado original',
+    modified: 'Resultado modificado',
 
 }
 export default strings

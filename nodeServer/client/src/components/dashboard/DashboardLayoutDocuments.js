@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 
 import { CURRENT_USER as query ,CURRENT_USER_DOCUMENTS , DOCUMENT_NEW, DOCUMENT_DELETE } from '../../graphql';
 import { documentsTabItems } from './config.js';
-import { LayoutWithTabs, Loading } from '../widgets/layouts';
+import { LayoutWithTabs, Loading, Centered } from '../widgets/layouts';
 import { Paper, IconButton, Modal } from '@material-ui/core';
 import strings from '../../strings';
 
@@ -163,7 +163,9 @@ handleDelete(){
       } else {
         return (
           <div className={classes.root}>
-            <p>No elements...</p>
+            <Centered>
+                    <Typography variant='h4'>{strings.noResults}</Typography>
+            </Centered>
           </div>
         );
       }

@@ -350,6 +350,9 @@ const ResultCriteria = new Schema({
   ranking:{
     type: [],
   },
+  weigth: {
+    type: Number,
+  },
 });
 
 

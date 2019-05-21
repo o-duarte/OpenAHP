@@ -111,6 +111,7 @@ const types = `
     name: String
     ranking: [[Float]]
     subCriteria: [ResultCriteria]
+    weight: Float
   }
 
   type Result {

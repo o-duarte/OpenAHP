@@ -21,7 +21,20 @@ import {
 import { problemToTree } from '../../utils/problemAdapterSensitivity';
 import SliderList from './sliderList';
 
-
+const options = {
+    scaleOverride: true,
+    scaleSteps: 10,
+	scaleStepWidth: 0.1,
+	scaleStartValue: 0,
+    scales: {
+        yAxes: [{
+            ticks: {
+                max: 0.1,
+                min: 0,
+            }
+        }]
+    }
+};
 
 const styles = theme => ({
     root: {
@@ -84,17 +97,27 @@ class Analisis extends Component{
         };
       }
 
+
     data(list){
         const graphData =  {
             labels: this.state.tree.alternatives,
             datasets: [
                 {
-                    label: "My Second dataset",
+                    label: strings.original,
+                    fillColor: "rgba(180,180,180,0.5)",
+                    strokeColor: "rgba(180,180,180,0.9)",
+                    highlightFill: "rgba(180,180,180,0.75)",
+                    highlightStroke: "rgba(180,180,180,1)",
+                    data: list[0].map(function(each_element){
+                        return Number(each_element.toFixed(3));})
+                },
+                {
+                    label: strings.modified,
                     fillColor: "rgba(30,136,229,0.5)",
                     strokeColor: "rgba(30,136,229,0.9)",
                     highlightFill: "rgba(151,187,205,0.75)",
                     highlightStroke: "rgba(151,187,205,1)",
-                    data: list.map(function(each_element){
+                    data: list[1].map(function(each_element){
                         return Number(each_element.toFixed(3));})
                 }
             ]
@@ -116,7 +139,7 @@ class Analisis extends Component{
             throw new Error("Post Failed")
             }
         }).then((responseBody) => {
-            //here are the result 
+            //here are the result
             this.data(responseBody)        
             return responseBody
         })
@@ -152,6 +175,7 @@ class Analisis extends Component{
     render() {
         const { classes } = this.props;
         const { sensitivity, loading, error } = this.props.data;
+        console.log(options)
         if (loading) {
             return (
                 <Loading/>
@@ -209,7 +233,9 @@ class Analisis extends Component{
                                 <Divider ></Divider>
                                 {
                                     this.state.graphData !== undefined &&
-                                    <Bar data={this.state.graphData}  width="600" height="250"/>
+                                    <Bar data = {this.state.graphData}  width="600" height="450"
+                                        options = {options}
+                                    />
                                 }
                                 
                             </Paper>

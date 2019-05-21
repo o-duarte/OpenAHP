@@ -230,6 +230,7 @@ class Params extends Component{
                                         <MenuItem value={2}>{strings.pricol}</MenuItem>
                                     </Select>
                                 </FormControl>
+                                <Typography variant='h6' gutterBottom align='left'>{strings.probAnalisis} </Typography>
                                 <Divider className={classes.divider}></Divider>
                                 <FormControl variant="outlined" className={classes.formControl}>
                                     <InputLabel
