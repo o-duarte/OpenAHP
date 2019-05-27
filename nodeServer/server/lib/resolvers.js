@@ -67,26 +67,21 @@ const resolvers = {
       //add a status make this more clean
       if(statusList[0]==='all'){
         if(req.user.isAdmin){
-        return AhpProblem.find({        
-        })
-          .sort({ createdAt: -1 })
-          .populate('owner')
-          .exec();
-        }
+           return AhpProblem.find({  })
+              .sort({ createdAt: -1 })
+              .populate('owner')
+              .exec();
+            }
 
-        return AhpProblem.find({
-          owner: req.user._id,
-        })
+        return AhpProblem.find({ owner: req.user._id, })
           .sort({ createdAt: -1 })
           .populate('owner')
           .exec();
-      }
+    }
 
       if(statusList[0]==='draft'){
         if(req.user.isAdmin){
-        return AhpProblem.find({ 
-           "lastResolutiondAt": {$exists: false}       
-        })
+          return AhpProblem.find({  lastResolutionAt: {$exists: false}  })
           .sort({ createdAt: -1 })
           .populate('owner')
           .exec();
@@ -94,30 +89,30 @@ const resolvers = {
 
         return AhpProblem.find({
           owner: req.user._id,
-          "lastResolutionAt": {$exists: false} 
+          lastResolutionAt: {$exists: false} 
+        })
+          .sort({ createdAt: -1 })
+          .populate('owner')
+          .exec();
+      }
+      if(statusList[0]==='solved'){
+        if(req.user.isAdmin){
+            return AhpProblem.find({ 
+                lastResolutionAt: {$exists: true}       
+            })
+          .sort({ createdAt: -1 })
+          .populate('owner')
+          .exec();
+        }
+
+        return AhpProblem.find({
+          owner: req.user._id,
+          lastResolutionAt: {$exists: true} 
         })
           .sort({ createdAt: -1 })
           .populate('owner')
           .exec();
         }
-        if(statusList[0]==='solved'){
-          if(req.user.isAdmin){
-          return AhpProblem.find({ 
-             "lastResolutiondAt": {$exists: true}       
-          })
-            .sort({ createdAt: -1 })
-            .populate('owner')
-            .exec();
-           }
-  
-          return AhpProblem.find({
-            owner: req.user._id,
-            "lastResolutionAt": {$exists: true} 
-          })
-            .sort({ createdAt: -1 })
-            .populate('owner')
-            .exec();
-          }
       
     },
     currentUserSingleProblem: async (_, { problemId }, req) => {
