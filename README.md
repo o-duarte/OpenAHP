@@ -6,17 +6,17 @@ Open source AHP  platform
  - Docker-compose 1.23.1
 
 **Ejecutar local:**
-
-    #in root folder execute 
-    >docker-compose build
-    >docker-compose up 
-
+```
+#in root folder execute 
+>docker-compose build
+>docker-compose up 
+```
 **Publicar plataforma:**
 
  1. Cambiar la dirección ip (o url) de la maquina en los siguientes archivos 
  
-   ``` 
-   ##/nodeServer/client/package.json
+	``` 
+	##/nodeServer/client/package.json
 	"proxy": {
 		"/auth/": {
 			"target": "http://{machineIP}:3001"
@@ -30,16 +30,16 @@ Open source AHP  platform
 		"/ahpanalisis": {
 			"target": "http://{machineIP}:3001"
 				}
-			},
-```
-```
-##/nodeServer/server/lib/config.js
-const MACHINE_URL = 'http://{machineIP}'
-```
-```
-##/nodeServer/client/src/config.json
-const MACHINE_URL = 'http://{machineIP}'
-```
+		},
+	```
+	```
+	##/nodeServer/server/lib/config.js
+	const MACHINE_URL = 'http://{machineIP}'
+	```
+	```
+	##/nodeServer/client/src/config.json
+	const MACHINE_URL = 'http://{machineIP}'
+	```
 2. Ejecutar
 	
 		#in root folder execute 
