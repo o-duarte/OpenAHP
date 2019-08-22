@@ -37,7 +37,7 @@ Open source AHP  platform
 	const MACHINE_URL = 'http://{machineIP}'
 	```
 	```
-	##/nodeServer/client/src/config.json
+	##/nodeServer/client/src/config.js
 	const MACHINE_URL = 'http://{machineIP}'
 	```
 2. Ejecutar
@@ -52,5 +52,5 @@ Open source AHP  platform
 		/nginx/conf.d/app.conf
 - Si se desea habilitar el control de usuarios por medio de google, se deben cambiar el client_id y client_secret en los archivos
 		
-		/nodeServer/client/src/config.json
+		/nodeServer/client/src/config.js
 		/nodeServer/server/lib/config.js
