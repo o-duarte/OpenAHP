@@ -4,16 +4,16 @@
   "private": true,
   "proxy": {
     "/auth/": {
-      "target": "http://localhost:3001"
+      "target": "http://host.docker.internal:3001"
     },
     "/graphql": {
-      "target": "http://localhost:3001"
+      "target": "http://host.docker.internal:3001"
     },
     "/ahpsolver": {
-      "target": "http://localhost:3001"
+      "target": "http://host.docker.internal:3001"
     },
     "/ahpanalisis": {
-      "target": "http://localhost:3001"
+      "target": "http://host.docker.internal:3001"
     }
   },
   "dependencies": {
