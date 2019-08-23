@@ -14,24 +14,7 @@ Open source AHP  platform
 **Publicar plataforma:**
 
  1. Cambiar la dirección ip (o url) de la maquina en los siguientes archivos 
- 
-	``` 
-	##/nodeServer/client/package.json
-	"proxy": {
-		"/auth/": {
-			"target": "http://{machineIP}:3001"
-				},
-		"/graphql": {
-			"target": "http://{machineIP}:3001"
-				},
-		"/ahpsolver": {
-			"target": "http://{machineIP}:3001"
-				},
-		"/ahpanalisis": {
-			"target": "http://{machineIP}:3001"
-				}
-		},
-	```
+
 	```
 	##/nodeServer/server/lib/config.js
 	const MACHINE_URL = 'http://{machineIP}'
