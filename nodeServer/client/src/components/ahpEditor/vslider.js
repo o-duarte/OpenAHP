@@ -70,16 +70,16 @@ class DiagonalComponent extends React.Component{
     const {L} = this.props;
     if(L==='L') {
       return(
-        <pre className={classes.diagonalL}>
+        <div className={classes.diagonalL}>
         {text}
-        </pre>
+        </div>
       )
     }
     else {
       return(
-        <pre className={classes.diagonal}>
+        <div className={classes.diagonal}>
         {text}
-        </pre>
+        </div>
       )
     }
   }
