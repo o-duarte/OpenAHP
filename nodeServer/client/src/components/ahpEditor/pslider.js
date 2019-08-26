@@ -9,7 +9,7 @@ import strings from '../../strings';
 
 const styles = {
   root: {
-    width: 310,
+    width: 332,
     justifyContent: 'center',
     alignItems: 'center',
     margin: '0 auto'
@@ -162,7 +162,19 @@ class PSlider extends React.Component {
                     <Grid item xs={6}>
                       <div className={classes.root}>
                         <Typography variant='caption' id="psl">
-                            <pre className={classes.noPadding}>10 9  8  7  6  5  4  3  2  |  2  3  4  5  6  7  8  9 10</pre>
+                            <div className={classes.noPadding}>
+                              10&nbsp;&nbsp;9&nbsp;&nbsp;&nbsp;&nbsp;
+                              8&nbsp;&nbsp;&nbsp;&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;
+                              6&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;
+                              4&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;
+                              2&nbsp;&nbsp;&nbsp;&nbsp;
+                              |&nbsp;&nbsp;&nbsp;&nbsp;
+                              2&nbsp;&nbsp;&nbsp;&nbsp;
+                              3&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;
+                              5&nbsp;&nbsp;&nbsp;&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;
+                              7&nbsp;&nbsp;&nbsp;&nbsp;8&nbsp;&nbsp;&nbsp;&nbsp;
+                              9&nbsp;&nbsp;10
+                            </div>
                           </Typography>
                           <Slider
                             aria-labelledby="psl"
