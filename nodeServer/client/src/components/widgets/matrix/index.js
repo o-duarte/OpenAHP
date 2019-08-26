@@ -11,7 +11,8 @@ const styles = theme => ({
       padding: '12px',
       overflow: 'auto',
       minWidth: '600px',
-      marginTop: 20
+      marginTop: 20,
+      display: 'flex',
     },
     paper: {
       minWidth: '300px',
@@ -90,52 +91,49 @@ class Matrix extends Component{
         const headers = this.headers(data, selectedCriteria)
         return(
             <div className={classes.root}>
-                <div>
-                    <div className={classes.col}>
-                        <div className={classes.yheader}></div>
-                        {headers.map((head) =>{
-                            return(
-                                <div className={classes.optionalItem}>
-                                        <Typography align="justify">{head}</Typography>
-                                </div>
-                            )
-                        })}
-                    </div>
-                    {matrix.map((row,i) =>{
+                <div className={classes.col}>
+                    <div className={classes.yheader}></div>
+                    {headers.map((head) =>{
                         return(
-                            <div className={classes.col}>
-                                <div className={classes.yheader}>
-                                    <Typography align="center">{headers[i]}</Typography>
-                                </div>
-                                {row.map((item,j) =>{
-                                    if(i<j){
-                                        return(
-                                        <div key={[i,j]} className={classes.optionalItem} >
-                                                <Typography  align="center">-</Typography>
-                                        </div>)
-                                    }
-                                    if(i===j){
-                                        return(
-                                        <div key={[i,j]} className={classes.optionalItem}>
-                                                <Typography  align="center">{item}</Typography>
-                                        </div>)
-                                    }
-                                    else{
-                                        return(
-                                        <div key={[i,j]} className={classes.item}
-                                            onClick={(e) => { e.stopPropagation();
-                                                    this.props.onSelectedMatrixItem(j,i)}}>
-                                                <Typography align="center">
-                                                    <b>{String(matrix[j][i]).slice(0,4)}</b>
-                                                </Typography>
-                                        </div>)
-                                    }
-                                })}
+                            <div className={classes.optionalItem}>
+                                    <Typography align="justify">{head}</Typography>
                             </div>
                         )
                     })}
                 </div>
-
+                {matrix.map((row,i) =>{
+                    return(
+                        <div className={classes.col}>
+                            <div className={classes.yheader}>
+                                <Typography align="center">{headers[i]}</Typography>
+                            </div>
+                            {row.map((item,j) =>{
+                                if(i<j){
+                                    return(
+                                    <div key={[i,j]} className={classes.optionalItem} >
+                                            <Typography  align="center">-</Typography>
+                                    </div>)
+                                }
+                                if(i===j){
+                                    return(
+                                    <div key={[i,j]} className={classes.optionalItem}>
+                                            <Typography  align="center">{item}</Typography>
+                                    </div>)
+                                }
+                                else{
+                                    return(
+                                    <div key={[i,j]} className={classes.item}
+                                        onClick={(e) => { e.stopPropagation();
+                                                this.props.onSelectedMatrixItem(j,i)}}>
+                                            <Typography align="center">
+                                                <b>{String(matrix[j][i]).slice(0,4)}</b>
+                                            </Typography>
+                                    </div>)
+                                }
+                            })}
+                        </div>
+                    )
+                })}
             </div> 
         )
     }
