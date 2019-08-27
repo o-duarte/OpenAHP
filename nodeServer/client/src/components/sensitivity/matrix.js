@@ -157,7 +157,7 @@ class Matrix extends Component{
 
                 <div className={classes.matrix}>
                 <div className={classes.col}>
-                    <div className={classes.yheader}></div>
+                    <div className={classes.yheader}>&nbsp;</div>
                     {headers.map((head) =>{
                         return(
                             <div className={classes.optionalItem}>
