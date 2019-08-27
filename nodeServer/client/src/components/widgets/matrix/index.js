@@ -32,10 +32,29 @@ const styles = theme => ({
         cursor: 'pointer',
         margin: 20 ,
         fontWeight:'bold',
+        transition: "0.3s",
+        backgroundColor: "#9e9e9e",
+        "-webkit-border-radius": "8px",
+        "-moz-border-radius": "8px",
+        "border-radius": "8px",
+        '&:hover': {
+            backgroundColor: "#1e88e5",
+            "-webkit-border-radius": "8px",
+            "-moz-border-radius": "8px",
+            "border-radius": "8px",
+        }
+        
     },
     optionalItem:{
         margin: 20 ,
     },
+    center:{
+        justifyContent: 'center',
+        
+    },
+    whiteText:{
+        color:"#fffffff"
+    }
     
 
   });
@@ -92,11 +111,11 @@ class Matrix extends Component{
         return(
             <div className={classes.root}>
                 <div className={classes.col}>
-                    <div className={classes.yheader}></div>
+                    <div className={classes.yheader}><Typography align="justify">&nbsp;</Typography></div>
                     {headers.map((head) =>{
                         return(
                             <div className={classes.optionalItem}>
-                                    <Typography align="justify">{head}</Typography>
+                                    <Typography align="justify" noWrap="true">{head}</Typography>
                             </div>
                         )
                     })}
@@ -125,7 +144,7 @@ class Matrix extends Component{
                                     <div key={[i,j]} className={classes.item}
                                         onClick={(e) => { e.stopPropagation();
                                                 this.props.onSelectedMatrixItem(j,i)}}>
-                                            <Typography align="center">
+                                            <Typography align="center" className={classes.whiteText}>
                                                 <b>{String(matrix[j][i]).slice(0,4)}</b>
                                             </Typography>
                                     </div>)
