@@ -17,7 +17,16 @@ const styles = theme => ({
       padding: '12px',
       overflow: 'auto',
       minWidth: '600px',
-      //marginTop: 20
+      marginTop: 20,
+      //display: 'flex'
+    },
+    matrix: {
+      flexGrow: 1,
+      padding: '12px',
+      overflow: 'auto',
+      minWidth: '600px',
+      marginTop: 20,
+      display: 'flex',
     },
     paper: {
       minWidth: '300px',
@@ -34,14 +43,20 @@ const styles = theme => ({
         align: 'center'
     },
     item:{
-        cursor: 'pointer',
         margin: 20 ,
         fontWeight:'bold',
+        transition: "0.3s",
+        backgroundColor: "#9e9e9e",
+        "-webkit-border-radius": "8px",
+        "-moz-border-radius": "8px",
+        "border-radius": "8px",  
     },
     optionalItem:{
         margin: 20 ,
     },
-    
+    whiteText:{
+        color: "rgba(255,255,255,1)"
+    }
 
   });
 
@@ -140,13 +155,13 @@ class Matrix extends Component{
                 <Typography align="justify" variant='h6'>{strings.rankReversal} : {this.state.criteria}</Typography>
                 <Divider></Divider>
 
-
+                <div className={classes.matrix}>
                 <div className={classes.col}>
                     <div className={classes.yheader}></div>
                     {headers.map((head) =>{
                         return(
                             <div className={classes.optionalItem}>
-                                    <Typography align="justify">{head}</Typography>
+                                    <Typography align="justify" noWrap>{head}</Typography>
                             </div>
                         )
                     })}
@@ -174,7 +189,7 @@ class Matrix extends Component{
                                     return(
                                     <div key={[i,j]} className={classes.item}>
                                         
-                                            <Typography align="center">
+                                            <Typography align="center" className={classes.whiteText}>
                                                 <b>{String(matrix[j][i]).slice(0,4)}</b>
                                             </Typography>
                                     </div>)
@@ -183,6 +198,7 @@ class Matrix extends Component{
                         </div>
                     )
                 })}
+                </div>
             </div> 
         )
     }
