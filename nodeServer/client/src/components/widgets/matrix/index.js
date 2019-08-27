@@ -53,7 +53,7 @@ const styles = theme => ({
         
     },
     whiteText:{
-        color:"#fffffff"
+        color:"rgba(255,255,255,1)"
     }
     
 
