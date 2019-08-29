@@ -124,7 +124,7 @@ class Matrix extends Component{
                     return(
                         <div className={classes.col}>
                             <div className={classes.yheader}>
-                                <Typography align="center">{headers[i]}</Typography>
+                                <Typography align="center" noWrap>{headers[i]}</Typography>
                             </div>
                             {row.map((item,j) =>{
                                 if(i<j){
