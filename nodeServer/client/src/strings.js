@@ -20,6 +20,7 @@ const strings = {
     newAlternative: 'Añadir Alternativa',
     newCriteria: 'Nuevo criterio',
     saved: 'Guardado',
+    errorRepeat: 'Error: Criterio o alternativa repetida',
     //noResults: 'Sin Resultados',
     //stepper
     data: 'Datos del Problema',

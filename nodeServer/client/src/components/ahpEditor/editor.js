@@ -24,7 +24,7 @@ import Alternatives from './alternatives'
 import { Loading, Centered } from '../widgets/layouts';
 import immutable from 'object-path-immutable'
 import Snackbar from '@material-ui/core/Snackbar';
-
+import {check} from '../../utils/checker'
 
 import {
     CURRENT_USER_SINGLE_PROBLEM,
@@ -95,6 +95,7 @@ class Editor extends Component{
           comparison: strings.pairwise,
           labelWidth: 100,
           verbal: strings.linear,
+          snacktext: strings.saved,
         };
       }
     onSelectedCriteria(nodeid){
@@ -130,6 +131,11 @@ class Editor extends Component{
         this.matrix.setState({data: updatedTree})
     }
     makeMutations = () =>{
+        if(check(this.state.tree)){
+            this.state.snacktext = strings.errorRepeat
+            this.handleOpen();
+            return 
+        }
         this.props.mutate({
             variables: {
                 problemId: this.props.problemId,
@@ -140,6 +146,7 @@ class Editor extends Component{
             .then(({ data }) => {
                 //console.log('got data', data);
                 const { refetch } = this.props.data;
+                this.state.snacktext = strings.saved
                 refetch();
                 this.handleOpen();
             }).catch((error) => {
@@ -223,7 +230,7 @@ class Editor extends Component{
                         ContentProps={{
                             'aria-describedby': 'message-id',
                         }}
-                        message={<span id="message-id">{strings.saved}</span>}
+                        message={<span id="message-id">{this.state.snacktext}</span>}
                     />
                     <Grid container spacing={16}>
                         <Grid item xs={2}>

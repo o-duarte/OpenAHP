@@ -211,6 +211,7 @@ public class AhpProblemController {
     }
 
     /* Solver */
+    /*
     for(FactoryPriorityMethod.PriorityMethodEnum enume:
                 FactoryPriorityMethod.PriorityMethodEnum.values()){
             decisionSolver.addPriorityMethod(enume);
@@ -223,8 +224,7 @@ public class AhpProblemController {
             FactoryErrorMethod.ErrorMethodEnum.values()){
         decisionSolver.addErrorMeasureMethod(enume);
     }
-
-    decisionSolver.computeResults(decisionProblem, false);
+    */
     parentProblem = decisionProblem;
 
     PriorityMethodEnum priorityMethod = FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM;
@@ -256,8 +256,12 @@ public class AhpProblemController {
       case 3:
         consistencyMethod = FactoryConsistencyMethod.ConsistencyMethodEnum.GEOMETRIC_INDEX;
     }
+    //set solver methods
+    decisionSolver.addPriorityMethod(priorityMethod);
+    decisionSolver.addConsistencyMethod(consistencyMethod);
+    decisionSolver.addErrorMeasureMethod(errorMethod);
+    decisionSolver.computeResults(decisionProblem, false);
 
-    
     Result result = new Result();
     result.set_id(ObjectId.get());
     result.name = problem.name;
@@ -367,7 +371,7 @@ public class AhpProblemController {
 
     return problem;
   }
- 
+  /*
   @RequestMapping(value = "/new1", method= RequestMethod.GET)
   public void newtest1(){
     TestCreators test = new TestCreators();
@@ -380,6 +384,7 @@ public class AhpProblemController {
     test.problem2();
     repository.save(test.problem);
   }
+  */
   @RequestMapping(value= "/analisis/{id}", method = RequestMethod.POST)
   public  ArrayList<ArrayList<Double>> makeAnalisis(@PathVariable("id") ObjectId id, @Valid @RequestBody Analisis analisis){
     AhpProblem problem = repository.findBy_id(id);
@@ -410,7 +415,7 @@ public class AhpProblemController {
       decisionProblem.addSubCriterion(toDecisionElement(problem.criteria.get(i)),false);
     }
 
-    /* Solver */
+    /* Solver 
     for(FactoryPriorityMethod.PriorityMethodEnum enume:
                 FactoryPriorityMethod.PriorityMethodEnum.values()){
             decisionSolver.addPriorityMethod(enume);
@@ -423,7 +428,7 @@ public class AhpProblemController {
             FactoryErrorMethod.ErrorMethodEnum.values()){
         decisionSolver.addErrorMeasureMethod(enume);
     }
-
+    */
     
     PriorityMethodEnum priorityMethod = FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM;
     switch(problem.priorityMethod){
@@ -436,7 +441,9 @@ public class AhpProblemController {
       case 3:
         priorityMethod = FactoryPriorityMethod.PriorityMethodEnum.REVISED_GEOMETRIC_MEAN;
     }
-
+    ConsistencyMethodEnum consistencyMethod = FactoryConsistencyMethod.ConsistencyMethodEnum.CONSISTENCY_INDEX;
+    decisionSolver.addConsistencyMethod(consistencyMethod);
+    decisionSolver.addPriorityMethod(priorityMethod);
     /*first solve */ 
     decisionSolver.computeResults(decisionProblem, false);
     /*find decisionElement to change*/
